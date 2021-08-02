@@ -31,6 +31,11 @@ const routes: Route[] = [
     title: 'Categories',
     icon: 'shape',
   },
+  {
+    key: 'account',
+    title: 'Account',
+    icon: 'account',
+  },
 ];
 
 export default routes;

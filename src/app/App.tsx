@@ -26,6 +26,7 @@ import Search from './search/search';
 import ProductList from './product/product-list';
 import colors from '../styles/colors';
 import {StatusBar, useColorScheme} from 'react-native';
+import Account from './account/account';
 
 const initialNavigationState = {
   index: 0,
@@ -61,6 +62,9 @@ const RenderScene = ({route}: any) => {
       break;
     case 'categories':
       comp = <Categories />;
+      break;
+    case 'account':
+      comp = <Account />;
       break;
   }
   return (
