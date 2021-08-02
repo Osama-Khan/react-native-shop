@@ -16,6 +16,7 @@ import {
   Appbar,
   Title,
   DefaultTheme,
+  FAB,
 } from 'react-native-paper';
 import routes from './app.routes';
 import Home from './home/home';
@@ -39,43 +40,50 @@ const App = () => {
       <BottomNavigation
         navigationState={navState}
         barStyle={{backgroundColor: colors.primary}}
-        renderScene={({route}) => {
-          let comp;
-          switch (route.key) {
-            case 'home':
-              comp = <Home />;
-              break;
-            case 'explore':
-              comp = <Explore />;
-              break;
-            case 'search':
-              comp = <Search />;
-              break;
-            case 'categories':
-              comp = <Categories />;
-              break;
-            case 'products':
-              comp = <ProductList />;
-              break;
-          }
-          return (
-            <>
-              <StatusBar backgroundColor={colors.primaryDark} />
-              <Appbar style={styles.appBar}>
-                <Title style={{marginLeft: 20}}>{route.title}</Title>
-              </Appbar>
-              {comp}
-            </>
-          );
-        }}
+        renderScene={RenderScene}
         onIndexChange={index => setNavState({...navState, index})}
       />
     </PaperProvider>
   );
 };
 
+const RenderScene = ({route}: any) => {
+  let comp;
+  switch (route.key) {
+    case 'home':
+      comp = <Home />;
+      break;
+    case 'explore':
+      comp = <Explore />;
+      break;
+    case 'search':
+      comp = <Search />;
+      break;
+    case 'categories':
+      comp = <Categories />;
+      break;
+  }
+  return (
+    <>
+      <StatusBar backgroundColor={colors.primaryDark} />
+      <Appbar style={styles.appBar}>
+        <Title style={styles.appBarTitle}>{route.title}</Title>
+      </Appbar>
+      {comp}
+      <FAB icon="cart" style={styles.fab} onPress={() => {}} />
+    </>
+  );
+};
+
 const styles = {
   appBar: {backgroundColor: colors.primary},
+  appBarTitle: {marginLeft: 20},
+  fab: {
+    position: 'absolute',
+    bottom: 12,
+    right: 12,
+    backgroundColor: colors.primary,
+  },
 };
 
 export default App;
