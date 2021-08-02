@@ -2,7 +2,7 @@ import axios from 'axios';
 import Criteria from '../models/criteria';
 import ApiService from './api.service';
 
-export default class FavoriteService extends ApiService {
+class FavoriteService extends ApiService {
   endpoint = this.domain + '/favorites';
 
   /**
@@ -89,3 +89,5 @@ export default class FavoriteService extends ApiService {
     return res;
   }
 }
+
+export default new FavoriteService();

@@ -3,7 +3,7 @@ import Criteria from '../models/criteria';
 import Product from '../models/product/product';
 import ApiService from './api.service';
 
-export default class ProductService extends ApiService {
+class ProductService extends ApiService {
   private endpoint = `${this.domain}/products`;
 
   /**
@@ -122,3 +122,5 @@ export default class ProductService extends ApiService {
     return ret;
   }
 }
+
+export default new ProductService();

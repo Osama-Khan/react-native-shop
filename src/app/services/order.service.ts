@@ -3,7 +3,7 @@ import {OrderStateEnum} from '../../data/order-state.enum';
 import Criteria from '../models/criteria';
 import ApiService from './api.service';
 
-export default class OrderService extends ApiService {
+class OrderService extends ApiService {
   endpoint = `${this.domain}/orders`;
 
   /**
@@ -125,3 +125,5 @@ export default class OrderService extends ApiService {
     return res;
   }
 }
+
+export default new OrderService();

@@ -2,6 +2,7 @@ import axios from 'axios';
 import Criteria from '../models/criteria';
 import {User} from '../models/user';
 import ApiService from './api.service';
+import storageService from './storage.service';
 
 type RegisterData = {
   firstName: string;
@@ -12,7 +13,7 @@ type RegisterData = {
   dateOfBirth: string;
 };
 
-export default class UserService extends ApiService {
+class UserService extends ApiService {
   /**
    * Logs in the user with given parameters
    * @param username The username of the login user
@@ -21,21 +22,13 @@ export default class UserService extends ApiService {
    * @param remember Should the token be remembered
    * @returns An object with user data along with token
    */
-  async login(
-    username: string,
-    password: string,
-    context?: any,
-    remember = true,
-  ) {
+  async login(username: string, password: string, remember = true) {
     const obj = {username, password};
     const res = await axios.post(`${this.domain}/login`, obj, {
       headers: {'Content-type': 'application/json'},
     });
-    if (context) {
-      const user = res.data;
-      context.setState({...context.state, user});
-      if (remember) context.services.storageService.saveUserToken(user.token);
-    }
+    const user = res.data;
+    if (remember) storageService.saveUserToken(user.token);
     return res;
   }
 
@@ -102,3 +95,5 @@ export default class UserService extends ApiService {
     return res;
   }
 }
+
+export default new UserService();

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import ApiService from './api.service';
 
-export default class SettingService extends ApiService {
+class SettingService extends ApiService {
   endpoint = this.domain + '/settings';
 
   /**
@@ -27,3 +27,5 @@ export default class SettingService extends ApiService {
     return res.data ? {...res, data: res.data.defaultAddress} : res;
   }
 }
+
+export default new SettingService();

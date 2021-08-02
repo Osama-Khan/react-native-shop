@@ -2,7 +2,7 @@ import axios from 'axios';
 import Criteria from '../models/criteria';
 import ApiService from './api.service';
 
-export default class LocationService extends ApiService {
+class LocationService extends ApiService {
   endpoint = this.domain;
 
   async getCountries(criteria?: Criteria<any>) {
@@ -40,3 +40,5 @@ export default class LocationService extends ApiService {
     return res;
   }
 }
+
+export default new LocationService();

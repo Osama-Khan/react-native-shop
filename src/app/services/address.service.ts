@@ -2,7 +2,7 @@ import axios from 'axios';
 import Criteria from '../models/criteria';
 import ApiService from './api.service';
 
-export default class AddressService extends ApiService {
+class AddressService extends ApiService {
   endpoint = `${this.domain}/addresses`;
   /**
    * Fetches addresses of the user provided
@@ -55,3 +55,5 @@ export default class AddressService extends ApiService {
     return ret;
   }
 }
+
+export default new AddressService();
