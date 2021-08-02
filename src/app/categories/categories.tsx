@@ -1,9 +1,9 @@
 import React from 'react';
 import {ScrollView, View} from 'react-native';
 import {Card, ProgressBar, Title, IconButton} from 'react-native-paper';
-import {catIconMap} from '../../data/category-icon-map';
 import Criteria from '../models/criteria';
 import categoryService from '../services/category.service';
+import {icons as categoryIcons} from './categories.helper';
 
 export default class Categories extends React.Component<any, any> {
   constructor(props: any) {
@@ -24,7 +24,7 @@ export default class Categories extends React.Component<any, any> {
   render() {
     const categories = this.state.categories;
     const cats = this.getRootCategories(categories)?.map((c: any) => {
-      const icon = catIconMap[c.name.toLowerCase()];
+      const icon = categoryIcons[c.name.toLowerCase()];
       return (
         <Card
           key={'cat-' + c.name}
