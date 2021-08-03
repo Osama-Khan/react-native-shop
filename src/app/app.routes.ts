@@ -1,41 +1,42 @@
-import {IconSource} from 'react-native-paper/lib/typescript/components/Icon';
+import Account from './account/account';
+import Categories from './categories/categories';
+import Explore from './explore/explore';
+import Home from './home/home';
+import Search from './search/search';
 
-declare type Route = {
-  key: string;
-  title?: string;
-  icon?: IconSource;
-  badge?: string | number | boolean;
-  color?: string;
-  accessibilityLabel?: string;
-  testID?: string;
+const routes = {
+  bottomNav: [
+    {
+      id: 'home',
+      name: 'Home',
+      icon: 'home',
+      component: Home,
+    },
+    {
+      id: 'explore',
+      name: 'Explore',
+      icon: 'compass',
+      component: Explore,
+    },
+    {
+      id: 'search',
+      name: 'Search',
+      icon: 'magnify',
+      component: Search,
+    },
+    {
+      id: 'categories',
+      name: 'Categories',
+      icon: 'shape',
+      component: Categories,
+    },
+    {
+      id: 'account',
+      name: 'Account',
+      icon: 'account',
+      component: Account,
+    },
+  ],
 };
-
-const routes: Route[] = [
-  {
-    key: 'home',
-    title: 'Home',
-    icon: 'home',
-  },
-  {
-    key: 'explore',
-    title: 'Explore',
-    icon: 'compass',
-  },
-  {
-    key: 'search',
-    title: 'Search',
-    icon: 'magnify',
-  },
-  {
-    key: 'categories',
-    title: 'Categories',
-    icon: 'shape',
-  },
-  {
-    key: 'account',
-    title: 'Account',
-    icon: 'account',
-  },
-];
 
 export default routes;

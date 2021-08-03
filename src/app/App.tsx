@@ -8,85 +8,41 @@
  * @format
  */
 
-import React, {useState} from 'react';
-import {
-  BottomNavigation,
-  Provider as PaperProvider,
-  DarkTheme,
-  Appbar,
-  Title,
-  DefaultTheme,
-  FAB,
-} from 'react-native-paper';
+import React from 'react';
 import routes from './app.routes';
-import Home from './home/home';
-import Explore from './explore/explore';
-import Categories from './categories/categories';
-import Search from './search/search';
-import colors from '../styles/colors';
-import {StatusBar, StyleSheet, useColorScheme} from 'react-native';
-import Account from './account/account';
-
-const initialNavigationState = {
-  index: 0,
-  routes: routes,
-};
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {useColorScheme} from 'react-native';
+import {Provider as PaperProvider} from 'react-native-paper';
+import {DarkTheme, DefaultTheme} from '../styles/themes/themes';
 
 const App = () => {
-  const [navState, setNavState] = useState(initialNavigationState);
+  const isDark = useColorScheme() === 'dark';
+  const Stack = createStackNavigator();
+  const BottomTab = createBottomTabNavigator();
   return (
-    <PaperProvider
-      theme={useColorScheme() === 'dark' ? DarkTheme : DefaultTheme}>
-      <BottomNavigation
-        navigationState={navState}
-        barStyle={{backgroundColor: colors.primary}}
-        renderScene={RenderScene}
-        onIndexChange={index => setNavState({...navState, index})}
-      />
+    <PaperProvider theme={isDark ? DarkTheme : DefaultTheme}>
+      <NavigationContainer theme={isDark ? DarkTheme : DefaultTheme}>
+        <BottomTab.Navigator
+          screenOptions={{
+            tabBarHideOnKeyboard: true,
+          }}>
+          {routes.bottomNav.map(r => (
+            <BottomTab.Screen
+              name={r.name}
+              key={r.id}
+              component={r.component}
+              options={{
+                tabBarIcon: (props: any) => <Icon name={r.icon} {...props} />,
+              }}
+            />
+          ))}
+        </BottomTab.Navigator>
+      </NavigationContainer>
     </PaperProvider>
   );
 };
-
-const RenderScene = ({route}: any) => {
-  let comp;
-  switch (route.key) {
-    case 'home':
-      comp = <Home />;
-      break;
-    case 'explore':
-      comp = <Explore />;
-      break;
-    case 'search':
-      comp = <Search />;
-      break;
-    case 'categories':
-      comp = <Categories />;
-      break;
-    case 'account':
-      comp = <Account />;
-      break;
-  }
-  return (
-    <>
-      <StatusBar backgroundColor={colors.primaryDark} />
-      <Appbar style={styles.appBar}>
-        <Title style={styles.appBarTitle}>{route.title}</Title>
-      </Appbar>
-      {comp}
-      <FAB icon="cart" style={styles.fab} onPress={() => {}} />
-    </>
-  );
-};
-
-const styles = StyleSheet.create({
-  appBar: {backgroundColor: colors.primary},
-  appBarTitle: {marginLeft: 20},
-  fab: {
-    position: 'absolute',
-    bottom: 12,
-    right: 12,
-    backgroundColor: colors.primary,
-  },
-});
 
 export default App;
