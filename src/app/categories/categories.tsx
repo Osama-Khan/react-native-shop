@@ -1,9 +1,10 @@
 import React from 'react';
 import {ScrollView, View} from 'react-native';
-import {Card, ProgressBar, Title, IconButton} from 'react-native-paper';
+import {Card, ProgressBar, Title, IconButton, List} from 'react-native-paper';
+import colors from '../../styles/colors';
 import Criteria from '../models/criteria';
 import categoryService from '../services/category.service';
-import {icons as categoryIcons} from './categories.helper';
+import {getChildrenOf, icons} from './categories.helper';
 
 export default class Categories extends React.Component<any, any> {
   constructor(props: any) {
@@ -14,6 +15,7 @@ export default class Categories extends React.Component<any, any> {
   componentDidMount() {
     const criteria = new Criteria<any>();
     criteria.addRelation('parentCategory');
+    criteria.addRelation('childCategories');
     criteria.setLimit(1000);
     categoryService.fetchCategories(criteria).then(res => {
       const categories = res.data.data;
@@ -23,24 +25,41 @@ export default class Categories extends React.Component<any, any> {
 
   render() {
     const categories = this.state.categories;
-    const cats = this.getRootCategories(categories)?.map((c: any) => {
-      const icon = categoryIcons[c.name.toLowerCase()];
-      return (
-        <Card
-          key={'cat-' + c.name}
-          style={styles.card}
-          focusable={true}
-          onPress={() => {}}>
-          <View style={styles.row}>
-            {icon ? <IconButton icon={icon} /> : ''}
-            <Title style={styles.alignCenter}>{c.name}</Title>
-            <IconButton style={styles.mlAuto} icon="chevron-down" />
-          </View>
-        </Card>
-      );
-    }) || <ProgressBar indeterminate={true} />;
-    return <ScrollView>{cats}</ScrollView>;
+    const cats = this.getRootCategories(categories);
+    return cats ? (
+      <ScrollView>
+        <this.CategoryList categories={cats} />
+      </ScrollView>
+    ) : (
+      <ProgressBar indeterminate={true} />
+    );
   }
+
+  CategoryList = ({categories, level = 0}) => {
+    return (
+      <List.AccordionGroup>
+        {categories.map((c: any) => {
+          const icon = () => (
+            <List.Icon icon={icons[c.name.toLowerCase()]} style={{margin: 0}} />
+          );
+          return c.childCategories?.length > 0 ? (
+            <List.Accordion id={c.id} key={c.id} title={c.name} left={icon}>
+              {this.CategoryList({
+                categories: getChildrenOf(c, this.state.categories),
+              })}
+            </List.Accordion>
+          ) : (
+            <List.Item
+              title={c.name}
+              key={c.id}
+              left={icon}
+              onPress={() => {}}
+            />
+          );
+        })}
+      </List.AccordionGroup>
+    );
+  };
 
   getRootCategories = (categories: any[]) =>
     categories?.filter(c => !c.parentCategory);
