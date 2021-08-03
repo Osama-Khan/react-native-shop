@@ -1,37 +1,44 @@
 import React from 'react';
 import {Image, StyleSheet, View} from 'react-native';
 import {Text, IconButton, Card, Divider} from 'react-native-paper';
-import colors from '../../../styles/colors';
+import appStyle from '../../../styles/styles';
 
-export default function ProductListingCard({product}: any) {
+export default function ProductListingCard({product, ...props}: any) {
   const outOfStock = product.stock === 0;
   return (
-    <Card style={styles.card} onPress={() => {}}>
-      <View style={styles.row}>
+    <Card style={s.card} {...props}>
+      <View style={s.row}>
         <Image
           source={{uri: product.images[0].image}}
-          style={styles.imgBg}
+          style={s.imgBg}
           blurRadius={12}
         />
         <Image
           source={{uri: product.images[0].image}}
-          style={styles.img}
+          style={s.img}
           resizeMode="contain"
         />
-        <View style={styles.content}>
-          <Text numberOfLines={2} style={styles.textHead}>
+        <View style={s.content}>
+          <Text numberOfLines={2} style={s.textBold}>
             {product.title}
           </Text>
           <Text numberOfLines={1}>{product.description}</Text>
-          <Text style={[styles.textPrice, outOfStock ? styles.textRed : {}]}>
+          <Text
+            style={[
+              s.mlAuto,
+              s.p4,
+              s.mt8,
+              s.textBadge,
+              outOfStock ? s.textOutOfStock : s.textPrice,
+            ]}>
             {outOfStock ? 'Out Of Stock' : 'Rs. ' + product.price}
           </Text>
         </View>
       </View>
-      <View style={styles.row}>
-        <Divider style={{width: '100%'}} />
+      <View style={[s.row, s.flexWrap]}>
+        <Divider style={s.col12} />
         <IconButton
-          style={{width: '100%', margin: 'auto'}}
+          style={[s.col12, s.mAuto]}
           icon="cart-plus"
           onPress={() => {}}
         />
@@ -40,27 +47,9 @@ export default function ProductListingCard({product}: any) {
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    margin: 4,
-    overflow: 'hidden',
-  },
-  row: {flexDirection: 'row', flexWrap: 'wrap'},
+const s = StyleSheet.create({
+  ...appStyle,
   imgBg: {width: '25%', height: '100%', position: 'absolute', left: 0},
   img: {width: '25%', minHeight: 64},
   content: {padding: 8, width: '75%'},
-  textHead: {fontSize: 16, fontWeight: 'bold'},
-  textPrice: {
-    color: colors.green,
-    backgroundColor: colors.greenSubtle,
-    borderRadius: 8,
-    padding: 4,
-    fontWeight: 'bold',
-    marginLeft: 'auto',
-    marginTop: 8,
-  },
-  textRed: {
-    color: colors.red,
-    backgroundColor: colors.redSubtle,
-  },
 });

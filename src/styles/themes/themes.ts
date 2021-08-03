@@ -5,7 +5,6 @@ import {
 import {
   DarkTheme as PaperDark,
   DefaultTheme as PaperDefault,
-  Provider as PaperProvider,
 } from 'react-native-paper';
 import colors from '../colors';
 

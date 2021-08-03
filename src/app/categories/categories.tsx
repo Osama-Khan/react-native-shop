@@ -1,7 +1,7 @@
 import React from 'react';
-import {ScrollView, View} from 'react-native';
-import {Card, ProgressBar, Title, IconButton, List} from 'react-native-paper';
-import colors from '../../styles/colors';
+import {ScrollView} from 'react-native';
+import {ProgressBar, List} from 'react-native-paper';
+import styles from '../../styles/styles';
 import Criteria from '../models/criteria';
 import categoryService from '../services/category.service';
 import {getChildrenOf, icons} from './categories.helper';
@@ -40,7 +40,7 @@ export default class Categories extends React.Component<any, any> {
       <List.AccordionGroup>
         {categories.map((c: any) => {
           const icon = () => (
-            <List.Icon icon={icons[c.name.toLowerCase()]} style={{margin: 0}} />
+            <List.Icon icon={icons[c.name.toLowerCase()]} style={styles.m0} />
           );
           return c.childCategories?.length > 0 ? (
             <List.Accordion id={c.id} key={c.id} title={c.name} left={icon}>
@@ -64,10 +64,3 @@ export default class Categories extends React.Component<any, any> {
   getRootCategories = (categories: any[]) =>
     categories?.filter(c => !c.parentCategory);
 }
-
-const styles = {
-  card: {margin: 1, padding: 8},
-  row: {flexDirection: 'row'},
-  alignCenter: {alignSelf: 'center'},
-  mlAuto: {marginLeft: 'auto'},
-};

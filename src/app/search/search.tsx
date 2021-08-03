@@ -2,6 +2,7 @@ import React from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {Badge, Searchbar, Text} from 'react-native-paper';
 import colors from '../../styles/colors';
+import styles from '../../styles/styles';
 import ProductListingCard from '../components/product/product-listing-card';
 import Criteria from '../models/criteria';
 import productService from '../services/product.service';
@@ -72,12 +73,3 @@ export default class Search extends React.Component<any, any> {
     });
   };
 }
-
-const styles = StyleSheet.create({
-  m4: {margin: 4},
-  mlAuto: {marginLeft: 'auto'},
-  flex: {flex: 1},
-  center: {justifyContent: 'center', alignItems: 'center'},
-  textMuted: {color: colors.gray},
-  bgNone: {backgroundColor: '#0000'},
-});

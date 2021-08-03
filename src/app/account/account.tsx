@@ -10,6 +10,7 @@ import {
   Title,
 } from 'react-native-paper';
 import colors from '../../styles/colors';
+import defaultStyles from '../../styles/styles';
 import userService from '../services/user.service';
 import state from '../state/state';
 
@@ -176,18 +177,12 @@ export default class Account extends React.Component<any, any> {
 }
 
 const styles = StyleSheet.create({
+  ...defaultStyles,
   loginForm: {
     margin: 8,
     flex: 1,
     justifyContent: 'center',
   },
-  textCenter: {textAlign: 'center'},
-  textMuted: {color: colors.gray},
-  m4: {margin: 4},
-  m8: {margin: 8},
-  mt8: {marginTop: 8},
-  mlAuto: {marginLeft: 'auto'},
-  row: {flexDirection: 'row'},
   profileImage: {
     width: '25%',
     minHeight: 92,
