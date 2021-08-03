@@ -20,7 +20,7 @@ export default class Explore extends React.Component<any, any> {
 
   render() {
     const products = this.state.products?.map((p: any) => (
-      <ProductListingCard product={p} />
+      <ProductListingCard product={p} key={p.id} />
     )) || <ProgressBar indeterminate={true} />;
     return <ScrollView>{products}</ScrollView>;
   }

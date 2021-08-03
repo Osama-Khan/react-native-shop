@@ -23,9 +23,8 @@ import Home from './home/home';
 import Explore from './explore/explore';
 import Categories from './categories/categories';
 import Search from './search/search';
-import ProductList from './product/product-list';
 import colors from '../styles/colors';
-import {StatusBar, useColorScheme} from 'react-native';
+import {StatusBar, StyleSheet, useColorScheme} from 'react-native';
 import Account from './account/account';
 
 const initialNavigationState = {
@@ -79,7 +78,7 @@ const RenderScene = ({route}: any) => {
   );
 };
 
-const styles = {
+const styles = StyleSheet.create({
   appBar: {backgroundColor: colors.primary},
   appBarTitle: {marginLeft: 20},
   fab: {
@@ -88,6 +87,6 @@ const styles = {
     right: 12,
     backgroundColor: colors.primary,
   },
-};
+});
 
 export default App;
