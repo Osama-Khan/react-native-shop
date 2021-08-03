@@ -1,14 +1,6 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-  useColorScheme,
-  ScrollView,
-  Button,
-  ToastAndroid,
-} from 'react-native';
-import {Text} from '../components/react-native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {StyleSheet, View, ScrollView, ToastAndroid} from 'react-native';
+import {Text, Button} from 'react-native-paper';
 import colors from '../../styles/colors';
 
 export default function Home() {
@@ -17,16 +9,16 @@ export default function Home() {
       <View style={styles.sectionContainer}>
         <Text style={[styles.sectionTitle]}>Hello</Text>
         <Text style={[styles.sectionDescription]}>
-          Welcome to
-          <Text style={styles.highlight}> Shop</Text>
+          Welcome to&nbsp;
+          <Text style={styles.highlight}>Shop</Text>
         </Text>
       </View>
       <View style={styles.sectionContainer}>
         <Button
-          title="Products"
           color={colors.primary}
-          onPress={e => ToastAndroid.show('Hello', ToastAndroid.SHORT)}
-        />
+          onPress={() => ToastAndroid.show('Hello', ToastAndroid.SHORT)}>
+          Products
+        </Button>
       </View>
     </ScrollView>
   );
