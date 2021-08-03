@@ -4,7 +4,7 @@ export interface IUser {
   firstName?: string;
   lastName?: string;
   img?: string;
-  roles?: string[];
+  roles?: {id: number; name: string}[];
   dateOfBirth?: Date;
   profileImage?: string;
 }
@@ -15,7 +15,7 @@ export class User implements IUser {
   firstName?: string;
   lastName?: string;
   img?: string;
-  roles?: string[];
+  roles?: {id: number; name: string}[];
   dateOfBirth?: Date;
   profileImage?: string;
 
