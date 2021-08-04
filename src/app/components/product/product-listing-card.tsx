@@ -2,6 +2,7 @@ import React from 'react';
 import {Image, StyleSheet, View} from 'react-native';
 import {Text, IconButton, Card, Divider} from 'react-native-paper';
 import appStyle from '../../../styles/styles';
+import Rating from './product-rating';
 
 export default function ProductListingCard({product, ...props}: any) {
   const outOfStock = product.stock === 0;
@@ -22,6 +23,7 @@ export default function ProductListingCard({product, ...props}: any) {
           <Text numberOfLines={2} style={s.textBold}>
             {product.title}
           </Text>
+          <Rating rating={product.rating} style={s.my4} />
           <Text numberOfLines={1}>{product.description}</Text>
           <Text
             style={[
