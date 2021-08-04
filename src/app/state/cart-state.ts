@@ -1,5 +1,5 @@
 import CartProduct from '../models/product/cart-product';
-import Product from '../models/product/product';
+import {ProductType} from '../models/types/product.types';
 
 export default class CartState {
   /** The list of items in the cart */
@@ -20,7 +20,7 @@ export default class CartState {
    * @param p The product to add
    * @param q Number of products to add
    */
-  addProduct = (p: Product, q = 1): void => {
+  addProduct = (p: ProductType, q = 1): void => {
     let exists = false;
     this.products = this.products.map(prd => {
       if (prd.id === p.id) {

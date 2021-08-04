@@ -1,4 +1,4 @@
-import Product from './product';
+import {ProductType} from '../types/product.types';
 
 export default class CartProduct {
   id: number;
@@ -6,16 +6,16 @@ export default class CartProduct {
   description: string;
   quantity: number;
   price: number;
-  img: string;
+  img?: string;
   stock: number;
 
-  constructor(p: Product, quantity = 1) {
+  constructor(p: ProductType, quantity = 1) {
     this.id = p.id;
     this.title = p.title;
     this.description = p.description;
     this.quantity = quantity;
     this.price = p.price;
-    this.img = p.images[0].image;
+    if (p.images) this.img = p.images[0].image;
     this.stock = p.stock;
   }
 

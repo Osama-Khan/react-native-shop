@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Criteria from '../models/criteria';
-import Product from '../models/product/product';
+import {ProductType} from '../models/types/product.types';
 import ApiService from './api.service';
 
 class ProductService extends ApiService {
@@ -11,7 +11,7 @@ class ProductService extends ApiService {
    * @param criteria filters for the products
    * @returns A list of products
    */
-  async fetchProducts(criteria?: Criteria<Product>) {
+  async fetchProducts(criteria?: Criteria<ProductType>) {
     const critStr = criteria?.getUrlParameters() || '';
     const ret = await axios.get(this.endpoint + critStr);
     return ret;
