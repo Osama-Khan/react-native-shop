@@ -41,7 +41,13 @@ export default class Search extends React.Component<any, any> {
           </Badge>
           <ScrollView>
             {this.state.products.map((p: any) => (
-              <ProductListingCard product={p} key={p.id} />
+              <ProductListingCard
+                product={p}
+                key={p.id}
+                onPress={() =>
+                  this.props.navigation.navigate('Detail', {id: p.id})
+                }
+              />
             ))}
             <View style={{margin: 48}} />
           </ScrollView>

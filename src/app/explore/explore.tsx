@@ -20,7 +20,11 @@ export default class Explore extends React.Component<any, any> {
 
   render() {
     const products = this.state.products?.map((p: any) => (
-      <ProductListingCard product={p} key={p.id} />
+      <ProductListingCard
+        product={p}
+        key={p.id}
+        onPress={() => this.props.navigation.navigate('Detail', {id: p.id})}
+      />
     )) || <ProgressBar indeterminate={true} />;
     return <ScrollView>{products}</ScrollView>;
   }
