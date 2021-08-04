@@ -17,29 +17,24 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useColorScheme} from 'react-native';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {DarkTheme, DefaultTheme} from '../styles/themes/themes';
+import ProductDetail from './product/product-detail';
 
 const App = () => {
   const isDark = useColorScheme() === 'dark';
   const Stack = createStackNavigator();
-  const BottomTab = createBottomTabNavigator();
   return (
     <PaperProvider theme={isDark ? DarkTheme : DefaultTheme}>
       <NavigationContainer theme={isDark ? DarkTheme : DefaultTheme}>
-        <BottomTab.Navigator
-          screenOptions={{
-            tabBarHideOnKeyboard: true,
-          }}>
-          {routes.bottomNav.map(r => (
-            <BottomTab.Screen
+        <Stack.Navigator>
+          {routes.stackNav.map(r => (
+            <Stack.Screen
               name={r.name}
               key={r.id}
+              options={r.options}
               component={r.component}
-              options={{
-                tabBarIcon: (props: any) => <Icon name={r.icon} {...props} />,
-              }}
             />
           ))}
-        </BottomTab.Navigator>
+        </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>
   );

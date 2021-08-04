@@ -2,6 +2,8 @@ import Account from './account/account';
 import Categories from './categories/categories';
 import Explore from './explore/explore';
 import Home from './home/home';
+import Main from './Main';
+import ProductDetail from './product/product-detail';
 import Search from './search/search';
 
 const routes = {
@@ -35,6 +37,19 @@ const routes = {
       name: 'Account',
       icon: 'account',
       component: Account,
+    },
+  ],
+  stackNav: [
+    {
+      id: 'main',
+      name: 'Main',
+      component: Main,
+      options: {headerShown: false},
+    },
+    {
+      id: 'detail',
+      name: 'Detail',
+      component: ProductDetail,
     },
   ],
 };
