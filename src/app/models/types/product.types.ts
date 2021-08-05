@@ -23,6 +23,7 @@ export type ProductType = EntityType & {
   price: number;
   highlights?: HighlightType[];
   images?: ImageType[];
+  rating?: number;
   ratings?: RatingType[];
   favorites?: FavoriteType[];
   category?: CategoryType;
