@@ -8,23 +8,26 @@ import {
 } from 'react-native-paper';
 import colors from '../colors';
 
-const DarkTheme = {
+type ThemeType = typeof PaperDefault & typeof NavDefault;
+const DarkTheme: ThemeType = {
   ...NavDark,
   ...PaperDark,
   colors: {
     ...PaperDark.colors,
     ...NavDark.colors,
-    primary: colors.primaryLight,
+    primary: colors.primary,
+    accent: colors.primaryLight,
   },
 };
 
-const DefaultTheme = {
+const DefaultTheme: ThemeType = {
   ...NavDefault,
   ...PaperDefault,
   colors: {
     ...PaperDefault.colors,
     ...NavDefault.colors,
     primary: colors.primary,
+    accent: colors.primaryLight,
   },
 };
 
