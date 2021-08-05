@@ -5,13 +5,13 @@ import colors from '../../../styles/colors';
 import s from '../../../styles/styles';
 import Icon from '../icon';
 
-type PropType = ViewProps & {rating: number; iconSize?: number};
+type PropType = ViewProps & {rating?: number; iconSize?: number};
 export default ({rating, iconSize, ...props}: PropType) => {
   const starsEl = [];
   const color = rating ? colors.yellow : colors.gray;
   const iProps = {color, size: iconSize};
 
-  if (rating > 0) {
+  if (rating && rating > 0) {
     let iters,
       count = 0;
     for (iters = rating; iters >= 1; iters--) {
