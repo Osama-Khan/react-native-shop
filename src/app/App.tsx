@@ -10,14 +10,11 @@
 
 import React from 'react';
 import routes from './app.routes';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useColorScheme} from 'react-native';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {DarkTheme, DefaultTheme} from '../styles/themes/themes';
-import ProductDetail from './product/product-detail';
 
 const App = () => {
   const isDark = useColorScheme() === 'dark';
