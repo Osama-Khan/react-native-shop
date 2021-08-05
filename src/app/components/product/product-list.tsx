@@ -1,11 +1,14 @@
 import {NavigationProp} from '@react-navigation/native';
 import React from 'react';
-import {ScrollView} from 'react-native';
-import {ProgressBar} from 'react-native-paper';
+import {ScrollView, View} from 'react-native';
+import {ProgressBar, Text} from 'react-native-paper';
 import ProductListingCard from './product-listing-card';
 import Criteria from '../../models/criteria';
 import {ProductType} from '../../models/types/product.types';
 import productService from '../../services/product.service';
+import s from '../../../styles/styles';
+import colors from '../../../styles/colors';
+import Icon from '../icon';
 
 type PropType = {
   /** Used to update card data when navigating back after construction. */
@@ -35,10 +38,23 @@ export default class extends React.Component<PropType, StateType> {
   }
 
   render() {
-    const products = this.state.products?.map((p: any) => (
-      <ProductListingCard product={p} key={p.id} {...this.props} />
-    )) || <ProgressBar indeterminate={true} />;
-    return <ScrollView>{products}</ScrollView>;
+    const products = this.state.products;
+    const view = products ? (
+      products.length > 0 ? (
+        products.map((p: any) => (
+          <ProductListingCard product={p} key={p.id} {...this.props} />
+        ))
+      ) : (
+        <View style={[s.mt24, s.center]}>
+          <Icon name="emoticon-sad" size={48} color={colors.gray} />
+          <Text style={[s.textMuted, s.mt12]}>No Products Found</Text>
+          <Text style={[s.textMuted]}>Try changing the filters</Text>
+        </View>
+      )
+    ) : (
+      <ProgressBar indeterminate={true} />
+    );
+    return <ScrollView>{view}</ScrollView>;
   }
 
   fetchProducts = (criteria: Criteria<ProductType>) => {
