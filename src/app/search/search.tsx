@@ -1,11 +1,13 @@
 import {NavigationProp} from '@react-navigation/native';
 import React from 'react';
 import {View} from 'react-native';
-import {Divider, Searchbar} from 'react-native-paper';
-import styles from '../../styles/styles';
+import {Searchbar, Text} from 'react-native-paper';
+import s from '../../styles/styles';
 import Criteria from '../models/criteria';
 import {ProductType} from '../models/types/product.types';
 import ProductList from '../components/product/product-list';
+import Icon from '../components/icon';
+import colors from '../../styles/colors';
 
 type PropType = {navigation: NavigationProp<any>};
 type StateType = {criteria?: Criteria<ProductType>; query: string};
@@ -22,13 +24,21 @@ export default class Search extends React.Component<PropType, StateType> {
     return (
       <View>
         <Searchbar
-          style={styles.m4}
+          style={s.m4}
           value={this.state.query}
           placeholder="Search Products..."
           onChangeText={this.handleSearchChange}
         />
-        <ProductList criteria={this.state.criteria} {...this.props} />
-        <Divider style={styles.m16} />
+        {this.state.criteria ? (
+          <ProductList criteria={this.state.criteria} {...this.props} />
+        ) : (
+          <View style={[s.myAuto, s.mt24, s.center]}>
+            <Icon name="text-box-search" size={48} color={colors.gray} />
+            <Text style={[s.textMuted, s.mt12]}>
+              Start typing to see results...
+            </Text>
+          </View>
+        )}
       </View>
     );
   }
@@ -47,9 +57,11 @@ export default class Search extends React.Component<PropType, StateType> {
 
     // Set a timeout to update criteria
     this.updateTimeout = setTimeout(() => {
-      const criteria = new Criteria<ProductType>();
+      const criteria = this.state.query
+        ? new Criteria<ProductType>()
+        : undefined;
       const query = `%${this.state.query}%`;
-      criteria.addFilter('title', query, 'like');
+      criteria?.addFilter('title', query, 'like');
       this.setState({...this.state, criteria});
       this.updateTimeout = undefined;
     }, this.updateDelay);
