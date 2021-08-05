@@ -1,6 +1,6 @@
 import Account from './account/account';
+import Cart from './cart/cart';
 import Categories from './categories/categories';
-import Explore from './explore/explore';
 import Home from './home/home';
 import Main from './Main';
 import ProductDetail from './product/product-detail';
@@ -28,10 +28,10 @@ const routes = {
       component: Home,
     },
     {
-      id: 'explore',
-      name: 'Explore',
-      icon: 'compass',
-      component: Explore,
+      id: 'categories',
+      name: 'Categories',
+      icon: 'shape',
+      component: Categories,
     },
     {
       id: 'search',
@@ -40,10 +40,10 @@ const routes = {
       component: Search,
     },
     {
-      id: 'categories',
-      name: 'Categories',
-      icon: 'shape',
-      component: Categories,
+      id: 'cart',
+      name: 'Cart',
+      icon: 'cart',
+      component: Cart,
     },
     {
       id: 'account',
