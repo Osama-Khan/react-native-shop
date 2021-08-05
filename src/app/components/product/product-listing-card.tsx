@@ -9,22 +9,23 @@ import appState from '../../state/state';
 import {ProductType} from '../../models/types/product.types';
 import {NavigationProp} from '@react-navigation/native';
 import {productDetailRoute} from '../../app.routes';
+import CartActions from '../cart/manage-cart-product-actions';
 
 type PropType = {
   product: ProductType;
   navigation: NavigationProp<any>;
 };
-type StateType = {inCart: boolean};
+type StateType = {};
 
 export default class extends React.Component<PropType, StateType> {
   constructor(props: PropType) {
     super(props);
-    this.state = {inCart: false};
+    this.state = {};
 
     // Add listener to update state when component gets focus
     this.props.navigation.addListener('focus', () => {
       const cp = appState.cart.getProduct(props.product.id);
-      this.setState({inCart: cp !== false});
+      this.setState({inCart: cp ? cp.quantity : 0});
     });
   }
 
@@ -69,8 +70,8 @@ export default class extends React.Component<PropType, StateType> {
             </Text>
           </View>
         </View>
-        <View style={[s.row, s.flexWrap]}>
-          <Divider style={s.col12} />
+        <View>
+          <Divider />
           <this.CartAction />
         </View>
       </Card>
@@ -79,31 +80,25 @@ export default class extends React.Component<PropType, StateType> {
 
   CartAction = () => {
     const product = this.props.product;
-    const inCart = this.state.inCart;
-    return (
+    const cp = appState.cart.getProduct(product.id);
+    return cp ? (
+      <CartActions
+        product={cp}
+        onAdd={() => this.setState({})}
+        onRemove={() => {
+          this.setState({});
+        }}
+      />
+    ) : (
       <Button
         style={[s.col12, s.mAuto]}
-        color={inCart ? colors.red : colors.green}
+        color={colors.green}
         onPress={() => {
-          if (inCart) {
-            appState.cart.removeProduct(product.id);
-            this.setState({inCart: false});
-            return;
-          }
           appState.cart.addProduct(product);
-          this.setState({inCart: true});
+          this.setState({});
         }}
         disabled={product.stock === 0}>
-        <Icon
-          name={
-            product.stock === 0
-              ? 'cart-off'
-              : inCart
-              ? 'cart-minus'
-              : 'cart-plus'
-          }
-          size={24}
-        />
+        <Icon name={product.stock === 0 ? 'cart-off' : 'cart-plus'} size={24} />
       </Button>
     );
   };
