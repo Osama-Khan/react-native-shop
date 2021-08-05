@@ -41,11 +41,13 @@ export default class extends React.Component<PropType, StateType> {
     const products = this.state.products;
     const view = products ? (
       products.length > 0 ? (
-        products.map((p: any) => (
-          <ProductListingCard product={p} key={p.id} {...this.props} />
-        ))
+        <ScrollView>
+          {products.map((p: any) => (
+            <ProductListingCard product={p} key={p.id} {...this.props} />
+          ))}
+        </ScrollView>
       ) : (
-        <View style={[s.mt24, s.center]}>
+        <View style={[s.flex, s.center]}>
           <Icon name="emoticon-sad" size={48} color={colors.gray} />
           <Text style={[s.textMuted, s.mt12]}>No Products Found</Text>
           <Text style={[s.textMuted]}>Try changing the filters</Text>
@@ -54,7 +56,7 @@ export default class extends React.Component<PropType, StateType> {
     ) : (
       <ProgressBar indeterminate={true} />
     );
-    return <ScrollView>{view}</ScrollView>;
+    return <View style={s.flex}>{view}</View>;
   }
 
   fetchProducts = (criteria: Criteria<ProductType>) => {

@@ -22,9 +22,9 @@ export default class Search extends React.Component<PropType, StateType> {
 
   render() {
     return (
-      <View>
+      <View style={s.flex}>
         <Searchbar
-          style={s.m4}
+          style={[s.m4]}
           value={this.state.query}
           placeholder="Search Products..."
           onChangeText={this.handleSearchChange}
@@ -32,7 +32,7 @@ export default class Search extends React.Component<PropType, StateType> {
         {this.state.criteria ? (
           <ProductList criteria={this.state.criteria} {...this.props} />
         ) : (
-          <View style={[s.myAuto, s.mt24, s.center]}>
+          <View style={[s.flex, s.myAuto, s.mt24, s.center]}>
             <Icon name="text-box-search" size={48} color={colors.gray} />
             <Text style={[s.textMuted, s.mt12]}>
               Start typing to see results...
