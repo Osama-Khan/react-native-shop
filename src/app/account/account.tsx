@@ -13,6 +13,7 @@ import colors from '../../styles/colors';
 import defaultStyles from '../../styles/styles';
 import userService from '../services/user.service';
 import state from '../state/state';
+import UserState from '../state/user-state';
 
 export default class Account extends React.Component<any, any> {
   constructor(props: any) {
@@ -114,7 +115,10 @@ export default class Account extends React.Component<any, any> {
       <List.Item
         title="Logout"
         titleStyle={{color: colors.red}}
-        onPress={() => {}}
+        onPress={() => {
+          state.user = new UserState();
+          this.setState({...this.state});
+        }}
         left={() => <List.Icon icon="power" color={colors.red} />}
       />
     </ScrollView>
