@@ -6,6 +6,19 @@ import Main from './Main';
 import ProductDetail from './product/product-detail';
 import Search from './search/search';
 
+export const mainRoute = {
+  id: 'main',
+  name: 'Main',
+  component: Main,
+  options: {headerShown: false},
+};
+
+export const productDetailRoute = {
+  id: 'detail',
+  name: 'Detail',
+  component: ProductDetail,
+};
+
 const routes = {
   bottomNav: [
     {
@@ -39,19 +52,7 @@ const routes = {
       component: Account,
     },
   ],
-  stackNav: [
-    {
-      id: 'main',
-      name: 'Main',
-      component: Main,
-      options: {headerShown: false},
-    },
-    {
-      id: 'detail',
-      name: 'Detail',
-      component: ProductDetail,
-    },
-  ],
+  stackNav: [mainRoute, productDetailRoute],
 };
 
 export default routes;
