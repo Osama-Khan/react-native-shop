@@ -32,6 +32,7 @@ export default class extends React.Component<PropType, any> {
 
   render() {
     const products = appState.cart.products;
+    const isLoggedIn = appState.user.token;
     return (
       <View style={s.flex}>
         <Surface style={[s.p8, s.row, s.flexWrap, s.center]}>
@@ -57,10 +58,10 @@ export default class extends React.Component<PropType, any> {
             </ScrollView>
             <FAB
               style={[s.bottomRight, s.mb8, s.mr8]}
-              label={appState.user.token ? 'Checkout' : 'Login'}
-              icon="cart-arrow-right"
+              label={isLoggedIn ? 'Checkout' : 'Login'}
+              icon={isLoggedIn ? 'cart-arrow-right' : 'account-arrow-right'}
               onPress={() => {
-                if (appState.user.token) {
+                if (isLoggedIn) {
                   // Navigate to Order Confirmation page
                   return;
                 }

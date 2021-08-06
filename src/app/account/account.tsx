@@ -14,12 +14,17 @@ import defaultStyles from '../../styles/styles';
 import userService from '../services/user.service';
 import state from '../state/state';
 import UserState from '../state/user-state';
+import {createRef} from 'react';
 
 export default class Account extends React.Component<any, any> {
+  passwordRef: any;
+
   constructor(props: any) {
     super(props);
     this.state = {loginData: {username: '', password: ''}};
+    this.passwordRef = createRef();
   }
+
   render() {
     return state.user.token ? <this.Profile /> : <this.LoginForm />;
   }
@@ -136,6 +141,7 @@ export default class Account extends React.Component<any, any> {
         style={styles.mt8}
         value={this.state.loginData.username}
         mode="outlined"
+        onSubmitEditing={() => this.passwordRef.current.focus()}
         onChangeText={username =>
           this.setState({
             ...this.state,
@@ -149,6 +155,8 @@ export default class Account extends React.Component<any, any> {
         value={this.state.loginData.password}
         mode="outlined"
         secureTextEntry={true}
+        onSubmitEditing={this.login}
+        ref={this.passwordRef}
         onChangeText={password =>
           this.setState({
             ...this.state,

@@ -8,16 +8,22 @@ import {ProductType} from '../models/types/product.types';
 import ProductList from '../components/product/product-list';
 import Icon from '../components/icon';
 import colors from '../../styles/colors';
+import {createRef} from 'react';
 
 type PropType = {navigation: NavigationProp<any>};
 type StateType = {criteria?: Criteria<ProductType>; query: string};
 export default class Search extends React.Component<PropType, StateType> {
   readonly updateDelay = 500;
   updateTimeout?: NodeJS.Timeout;
+  searchBarRef: any;
 
   constructor(props: PropType) {
     super(props);
     this.state = {query: ''};
+    this.searchBarRef = createRef();
+    props.navigation.addListener('focus', () => {
+      this.searchBarRef.current?.focus();
+    });
   }
 
   render() {
@@ -28,6 +34,7 @@ export default class Search extends React.Component<PropType, StateType> {
           value={this.state.query}
           placeholder="Search Products..."
           onChangeText={this.handleSearchChange}
+          ref={this.searchBarRef}
         />
         {this.state.criteria ? (
           <ProductList criteria={this.state.criteria} {...this.props} />
