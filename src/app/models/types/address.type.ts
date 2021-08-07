@@ -33,4 +33,6 @@ export type AddressType = EntityType & {
   address: string;
   user?: UserType;
   city?: CityType | string;
+  state?: string;
+  country?: string;
 };

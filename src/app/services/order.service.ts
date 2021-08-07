@@ -3,6 +3,8 @@ import {OrderStateEnum} from '../../data/order-state.enum';
 import Criteria from '../models/criteria';
 import ApiService from './api.service';
 
+type PlaceOrderProductType = {id: number; quantity: number};
+
 class OrderService extends ApiService {
   endpoint = `${this.domain}/orders`;
 
@@ -16,7 +18,7 @@ class OrderService extends ApiService {
   async placeOrder(
     address: string,
     userId: number,
-    products: [{id: number; quantity: number}],
+    products: PlaceOrderProductType[],
   ) {
     const url = this.endpoint;
     const ret = await axios.put(
