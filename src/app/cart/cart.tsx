@@ -18,7 +18,7 @@ import Icon from '../components/icon';
 import appState from '../state/state';
 import CartActions from '../components/cart/manage-cart-product-actions';
 import {ScrollView} from 'react-native-gesture-handler';
-import {productDetailRoute} from '../app.routes';
+import {checkoutRoute, productDetailRoute} from '../app.routes';
 
 type PropType = {navigation: NavigationProp<any>};
 export default class extends React.Component<PropType, any> {
@@ -62,7 +62,7 @@ export default class extends React.Component<PropType, any> {
               icon={isLoggedIn ? 'cart-arrow-right' : 'account-arrow-right'}
               onPress={() => {
                 if (isLoggedIn) {
-                  // Navigate to Order Confirmation page
+                  this.props.navigation.navigate(checkoutRoute.name);
                   return;
                 }
                 this.props.navigation.navigate('Account');

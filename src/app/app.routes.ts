@@ -3,6 +3,7 @@ import Cart from './cart/cart';
 import Categories from './categories/categories';
 import Home from './home/home';
 import Main from './Main';
+import Checkout from './checkout/checkout';
 import ProductDetail from './product/product-detail';
 import Search from './search/search';
 
@@ -17,6 +18,12 @@ export const productDetailRoute = {
   id: 'detail',
   name: 'Detail',
   component: ProductDetail,
+};
+
+export const checkoutRoute = {
+  id: 'checkout',
+  name: 'Checkout',
+  component: Checkout,
 };
 
 const routes = {
@@ -52,7 +59,7 @@ const routes = {
       component: Account,
     },
   ],
-  stackNav: [mainRoute, productDetailRoute],
+  stackNav: [mainRoute, productDetailRoute, checkoutRoute],
 };
 
 export default routes;
