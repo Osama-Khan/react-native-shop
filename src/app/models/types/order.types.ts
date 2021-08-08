@@ -18,4 +18,5 @@ export type OrderProductType = EntityType & {
   product?: ProductType;
   order?: OrderType;
   price: number;
+  quantity: number;
 };
