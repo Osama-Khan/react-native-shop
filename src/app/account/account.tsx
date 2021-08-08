@@ -19,6 +19,7 @@ export default class Account extends React.Component<any, any> {
           appState.user = new UserState();
           this.setState({...this.state});
         }}
+        navigation={this.props.navigation}
       />
     ) : (
       <Login onLogin={() => this.setState({})} />

@@ -1,3 +1,4 @@
+import {NavigationProp} from '@react-navigation/native';
 import React from 'react';
 import {ScrollView, Image, View} from 'react-native';
 import {Title, Text, Badge, Divider, List} from 'react-native-paper';
@@ -5,7 +6,8 @@ import colors from '../../styles/colors';
 import appStyles from '../../styles/styles';
 import appState from '../state/state';
 
-export default ({onLogout}: {onLogout: () => void}) => {
+type PropType = {onLogout: () => void; navigation: NavigationProp<any>};
+export default ({onLogout, navigation}: PropType) => {
   return (
     <ScrollView>
       <View style={[styles.m4, styles.row]}>
