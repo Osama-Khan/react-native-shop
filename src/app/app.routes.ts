@@ -6,6 +6,7 @@ import Main from './Main';
 import Checkout from './checkout/checkout';
 import ProductDetail from './product/product-detail';
 import Search from './search/search';
+import Orders from './order/orders';
 
 export const mainRoute = {
   id: 'main',
@@ -24,6 +25,12 @@ export const checkoutRoute = {
   id: 'checkout',
   name: 'Checkout',
   component: Checkout,
+};
+
+export const orderRoute = {
+  id: 'order',
+  name: 'Orders',
+  component: Orders,
 };
 
 const routes = {
@@ -59,7 +66,7 @@ const routes = {
       component: Account,
     },
   ],
-  stackNav: [mainRoute, productDetailRoute, checkoutRoute],
+  stackNav: [mainRoute, productDetailRoute, checkoutRoute, orderRoute],
 };
 
 export default routes;

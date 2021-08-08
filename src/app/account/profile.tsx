@@ -4,6 +4,7 @@ import {ScrollView, Image, View} from 'react-native';
 import {Title, Text, Badge, Divider, List} from 'react-native-paper';
 import colors from '../../styles/colors';
 import appStyles from '../../styles/styles';
+import {orderRoute} from '../app.routes';
 import appState from '../state/state';
 
 type PropType = {onLogout: () => void; navigation: NavigationProp<any>};
@@ -39,7 +40,9 @@ export default ({onLogout, navigation}: PropType) => {
         <List.Item
           title="Orders"
           description="View your orders"
-          onPress={() => {}}
+          onPress={() => {
+            navigation.navigate(orderRoute.name);
+          }}
           left={() => <List.Icon icon="receipt" />}
         />
         <List.Item
