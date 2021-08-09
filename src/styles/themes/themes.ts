@@ -6,12 +6,15 @@ import {
   DarkTheme as PaperDark,
   DefaultTheme as PaperDefault,
 } from 'react-native-paper';
+import appVariables from '../abstract/app.variables';
 import colors from '../colors';
 
 type ThemeType = typeof PaperDefault & typeof NavDefault;
+
 const DarkTheme: ThemeType = {
   ...NavDark,
   ...PaperDark,
+  roundness: appVariables.borderRadius,
   colors: {
     ...PaperDark.colors,
     ...NavDark.colors,
@@ -23,6 +26,7 @@ const DarkTheme: ThemeType = {
 const DefaultTheme: ThemeType = {
   ...NavDefault,
   ...PaperDefault,
+  roundness: appVariables.borderRadius,
   colors: {
     ...PaperDefault.colors,
     ...NavDefault.colors,
