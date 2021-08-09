@@ -1,2 +1,3 @@
-import Icon from './icon';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 export default Icon;
