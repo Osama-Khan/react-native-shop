@@ -4,7 +4,7 @@ import {ScrollView, Image, View} from 'react-native';
 import {Title, Text, Badge, Divider, List} from 'react-native-paper';
 import colors from '../../styles/colors';
 import appStyles from '../../styles/styles';
-import {orderRoute} from '../app.routes';
+import {orderRoute} from './account.routes';
 import appState from '../state/state';
 
 type PropType = {onLogout: () => void; navigation: NavigationProp<any>};
