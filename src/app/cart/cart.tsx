@@ -75,8 +75,9 @@ export default class extends React.Component<PropType, any> {
             <Text style={s.textMuted}>Your cart is empty</Text>
             <Button
               style={s.mt8}
-              onPress={() => this.props.navigation.navigate('Search')}>
-              Add Something <Icon name="arrow-right" size={14} />
+              onPress={() => this.props.navigation.navigate('Search')}
+              icon="plus">
+              Add Something
             </Button>
           </View>
         )}

@@ -6,7 +6,6 @@ import {Button, Card, Divider, ProgressBar} from 'react-native-paper';
 import colors from '../../styles/colors';
 import s from '../../styles/styles';
 import ManageCartActions from '../components/cart/manage-cart-product-actions';
-import Icon from '../components/icon';
 import {ProductType} from '../models/types/product.types';
 import productService from '../services/product.service';
 import appState from '../state/state';
@@ -80,8 +79,11 @@ export default class ProductDetail extends React.Component<
   }
 
   AddToCartAction = () => (
-    <Button mode="contained" color={colors.green} onPress={this.addToCart}>
-      <Icon name="cart-plus" size={16} />
+    <Button
+      mode="contained"
+      color={colors.green}
+      onPress={this.addToCart}
+      icon="cart-plus">
       Add to Cart
     </Button>
   );

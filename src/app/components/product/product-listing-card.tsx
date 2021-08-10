@@ -1,7 +1,6 @@
 import React from 'react';
 import {Image, StyleSheet, View} from 'react-native';
 import {Text, Card, Divider, Button} from 'react-native-paper';
-import Icon from '../icon';
 import appStyle from '../../../styles/styles';
 import Rating from './product-rating';
 import colors from '../../../styles/colors';
@@ -97,9 +96,10 @@ export default class extends React.Component<PropType, StateType> {
           appState.cart.addProduct(product);
           this.setState({});
         }}
-        disabled={product.stock === 0}>
-        <Icon name={product.stock === 0 ? 'cart-off' : 'cart-plus'} size={24} />
-      </Button>
+        disabled={product.stock === 0}
+        icon={product.stock === 0 ? 'cart-off' : 'cart-plus'}
+        children=""
+      />
     );
   };
 }

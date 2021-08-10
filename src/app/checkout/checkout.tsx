@@ -64,9 +64,9 @@ export default class Checkout extends React.Component<any, StateType> {
       style={[s.m4, s.mtAuto]}
       disabled={!this.state.address || this.state.placing}
       loading={this.state.placing}
-      onPress={this.placeOrder}>
-      Place Order&nbsp;
-      <Icon name="arrow-right" size={14} />
+      onPress={this.placeOrder}
+      icon="receipt">
+      Place Order
     </Button>
   );
 
