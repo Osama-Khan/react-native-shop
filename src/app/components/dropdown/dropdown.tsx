@@ -33,7 +33,7 @@ export default class DropDown extends React.Component<PropType, StateType> {
         }
         onDismiss={() => this.setState({...this.state, visible: false})}
         visible={this.state.visible}>
-        {this.props.options.map(o => (
+        {this.props.options.map((o, i) => (
           <Menu.Item
             title={o.name}
             onPress={() => {
@@ -42,7 +42,7 @@ export default class DropDown extends React.Component<PropType, StateType> {
             }}
             disabled={o.disabled}
             icon={o.icon}
-            key={o.key}
+            key={o.key || i}
           />
         ))}
       </Menu>
