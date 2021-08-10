@@ -1,30 +1,177 @@
 import React from 'react';
-import {BottomNavigation} from 'react-native-paper';
+import {View} from 'react-native';
+import {
+  Surface,
+  Divider,
+  Caption,
+  Button,
+  Title,
+  FAB,
+  ToggleButton,
+} from 'react-native-paper';
+import s from '../../styles/styles';
+import DropDown from '../components/dropdown/dropdown';
+import Modal from '../components/modal/modal';
+import Criteria from '../models/criteria';
+import {OrderType} from '../models/types/order.types';
+import appState from '../state/state';
 import OrderList from './order-list';
 import orderRoutes from './order.routes';
+import colors from '../../styles/colors';
 
-type FilterType = 'progress' | 'done' | 'failed';
-const navIndexFilters: FilterType[] = ['progress', 'done', 'failed'];
+type StateType = {
+  navIndex: number;
+  criteria: Criteria<OrderType>;
+  showFilters: boolean;
+};
+type FilterType = {
+  orderBy: keyof OrderType;
+  orderDir: 'ASC' | 'DESC';
+};
 
-export default class extends React.Component<any, any> {
+export default class extends React.Component<any, StateType> {
+  filters: FilterType = {
+    orderBy: 'updatedAt',
+    orderDir: 'DESC',
+  };
+
   constructor(props: any) {
     super(props);
-    this.state = {navIndex: 0};
+    this.state = {
+      navIndex: 0,
+      criteria: this.generateCriteria(),
+      showFilters: false,
+    };
+    this.props.navigation.setOptions({title: 'Orders In Progress'});
+  }
+
+  componentDidUpdate(_: any, prevState: StateType) {
+    if (this.state.navIndex !== prevState.navIndex) {
+      this.props.navigation.setOptions({
+        title: 'Orders ' + orderRoutes[this.state.navIndex].title,
+      });
+    }
   }
 
   render() {
     return (
-      <BottomNavigation
-        navigationState={{
-          index: this.state.navIndex,
-          routes: orderRoutes,
-        }}
-        shifting={true}
-        renderScene={() => (
-          <OrderList filter={navIndexFilters[this.state.navIndex]} />
-        )}
-        onIndexChange={navIndex => this.setState({...this.state, navIndex})}
-      />
+      <>
+        <View style={s.flex}>
+          <OrderList criteria={this.state.criteria} />
+          <FAB
+            icon="filter"
+            style={[s.bottomRight, s.m8]}
+            disabled={this.state.showFilters}
+            onPress={() => this.setState({...this.state, showFilters: true})}
+          />
+        </View>
+        <Surface style={s.row}>
+          {orderRoutes.map((o, i) => {
+            const selected = this.state.navIndex === i;
+            return (
+              <ToggleButton
+                style={[s.flex, s.center]}
+                color={selected ? colors.white : colors.gray}
+                icon={o.icon}
+                key={o.key}
+                status={selected ? 'checked' : 'unchecked'}
+                onPress={() =>
+                  this.setState({
+                    ...this.state,
+                    navIndex: i,
+                    criteria: this.generateCriteria(i),
+                  })
+                }
+              />
+            );
+          })}
+        </Surface>
+        <this.FiltersModal />
+      </>
     );
   }
+
+  FiltersModal = () => (
+    <Modal
+      visible={this.state.showFilters}
+      onDismiss={() => {
+        this.setState({...this.state, showFilters: false});
+      }}>
+      <View style={s.m8}>
+        <Title style={s.textBold}>Filters</Title>
+        <Divider />
+        <View style={[s.row, s.py8]}>
+          <Caption style={s.alignCenter}>Sort By: </Caption>
+          <View style={[s.row, s.mlAuto]}>
+            <DropDown
+              options={[
+                {
+                  name: 'Updated on',
+                  value: 'updatedAt',
+                  selected: this.filters.orderBy === 'updatedAt',
+                },
+                {
+                  name: 'Placed on',
+                  value: 'createdAt',
+                  selected: this.filters.orderBy === 'createdAt',
+                },
+              ]}
+              onSelect={option => {
+                this.filters.orderBy = option.value as keyof OrderType;
+              }}
+            />
+            <DropDown
+              options={[
+                {
+                  name: 'Latest First',
+                  value: 'DESC',
+                  selected: this.filters.orderDir === 'DESC',
+                },
+                {
+                  name: 'Oldest First',
+                  value: 'ASC',
+                  selected: this.filters.orderDir === 'ASC',
+                },
+              ]}
+              onSelect={option => {
+                this.filters.orderDir = option.value as 'ASC' | 'DESC';
+              }}
+            />
+          </View>
+        </View>
+        <Divider />
+        <Button
+          mode="contained"
+          style={[s.mlAuto, s.mt8]}
+          icon="check"
+          onPress={() => {
+            this.setState({
+              ...this.state,
+              showFilters: false,
+              criteria: this.generateCriteria(),
+            });
+          }}>
+          Apply
+        </Button>
+      </View>
+    </Modal>
+  );
+
+  /** Regenerates criteria based on selected filters and navIndex */
+  private generateCriteria = (navIndex?: number) => {
+    const ind = navIndex !== undefined ? navIndex : this.state?.navIndex || 0;
+    const criteria = new Criteria<OrderType>();
+    if (ind === 0) {
+      criteria.addFilter('orderState', 2, '<');
+    } else {
+      const id = ind + 1;
+      criteria.addFilter('orderState', id, '=');
+    }
+    criteria.addRelation('orderProducts');
+    criteria.addRelation('orderState');
+    criteria.addFilter('user', appState.user.id!);
+    criteria.setOrderBy(this.filters.orderBy);
+    criteria.setOrderDir(this.filters.orderDir);
+    return criteria;
+  };
 }

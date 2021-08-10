@@ -53,7 +53,7 @@ export default class extends React.Component<PropType, StateType> {
                 <>
                   <Caption style={s.textBold}>Products</Caption>
                   {this.state.orderProducts!.map(op => (
-                    <View style={s.row}>
+                    <View style={s.row} key={op.id}>
                       <Text style={s.mx4}>{op.quantity}&times;</Text>
                       <Text style={s.mx4}>{op.product!.title}</Text>
                     </View>
