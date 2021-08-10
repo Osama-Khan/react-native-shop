@@ -9,6 +9,9 @@ import ProductList from '../components/product/product-list';
 import Icon from '../components/icon';
 import colors from '../../styles/colors';
 import {createRef} from 'react';
+import ListingComponent from '../components/listing/listing';
+import ProductListingCard from '../components/product/product-listing-card';
+import productService from '../services/product.service';
 
 type PropType = {navigation: NavigationProp<any>};
 type StateType = {criteria?: Criteria<ProductType>; query: string};
@@ -37,7 +40,24 @@ export default class Search extends React.Component<PropType, StateType> {
           ref={this.searchBarRef}
         />
         {this.state.criteria ? (
-          <ProductList criteria={this.state.criteria} {...this.props} />
+          <ListingComponent
+            criteria={this.state.criteria}
+            container={p => (
+              <ProductListingCard
+                product={p}
+                key={p.id}
+                navigation={this.props.navigation}
+              />
+            )}
+            fetchMethod={c => productService.fetchProducts(c)}
+            noResultsView={() => (
+              <View style={[s.flex, s.center]}>
+                <Icon name="emoticon-sad" size={48} color={colors.gray} />
+                <Text style={[s.textMuted, s.mt12]}>No Products Found</Text>
+                <Text style={[s.textMuted]}>Try changing the filters</Text>
+              </View>
+            )}
+          />
         ) : (
           <View style={[s.flex, s.myAuto, s.mt24, s.center]}>
             <Icon name="text-box-search" size={48} color={colors.gray} />
@@ -69,6 +89,7 @@ export default class Search extends React.Component<PropType, StateType> {
         : undefined;
       const query = `%${this.state.query}%`;
       criteria?.addFilter('title', query, 'like');
+      criteria?.addRelation('images');
       this.setState({...this.state, criteria});
       this.updateTimeout = undefined;
     }, this.updateDelay);
