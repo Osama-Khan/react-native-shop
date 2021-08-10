@@ -15,9 +15,11 @@ import Modal from '../../components/modal/modal';
 import Criteria from '../../models/criteria';
 import {OrderType} from '../../models/types/order.types';
 import appState from '../../state/state';
-import OrderList from './order-list';
 import orderRoutes from './order.routes';
 import colors from '../../../styles/colors';
+import ListingComponent from '../../components/listing/listing';
+import orderService from '../../services/order.service';
+import OrderCard from './order-card';
 
 type StateType = {
   navIndex: number;
@@ -57,7 +59,11 @@ export default class extends React.Component<any, StateType> {
     return (
       <>
         <View style={s.flex}>
-          <OrderList criteria={this.state.criteria} />
+          <ListingComponent
+            criteria={this.state.criteria}
+            fetchMethod={c => orderService.getOrders(c)}
+            container={o => <OrderCard order={o} key={o.id} />}
+          />
           <FAB
             icon="filter"
             style={[s.bottomRight, s.m8]}
