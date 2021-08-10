@@ -41,24 +41,6 @@ class OrderService extends ApiService {
   }
 
   /**
-   * Sends a request to get the orders of the given user
-   * @param userId ID of the user to fetch orders of
-   * @param criteria filters for the orders
-   * @returns A list of orders
-   */
-  async getOrdersByUser(userId: number, criteria?: Criteria<any>) {
-    if (!criteria) {
-      criteria = new Criteria();
-    }
-    criteria.addRelation('orderProducts');
-    criteria.addRelation('orderState');
-    criteria.addFilter('user', userId);
-    const url = this.endpoint + criteria.getUrlParameters();
-    const res = await axios.get(url);
-    return res;
-  }
-
-  /**
    * Sends a request to get the OrderProduct list of the given user
    * @param orderId ID of the order to fetch detail of
    * @returns a list containing order products along with price and quantity
