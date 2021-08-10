@@ -8,12 +8,12 @@ import {
   Text,
   Title,
 } from 'react-native-paper';
-import colors from '../../styles/colors';
-import s from '../../styles/styles';
-import Icon from '../components/icon';
-import {OrderProductType, OrderType} from '../models/types/order.types';
-import orderService from '../services/order.service';
-import uiService from '../services/ui.service';
+import colors from '../../../styles/colors';
+import s from '../../../styles/styles';
+import Icon from '../../components/icon';
+import {OrderProductType, OrderType} from '../../models/types/order.types';
+import orderService from '../../services/order.service';
+import uiService from '../../services/ui.service';
 
 type PropType = {order: OrderType};
 type StateType = {orderProducts?: OrderProductType[]; loading: boolean};

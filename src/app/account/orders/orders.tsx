@@ -9,15 +9,15 @@ import {
   FAB,
   ToggleButton,
 } from 'react-native-paper';
-import s from '../../styles/styles';
-import DropDown from '../components/dropdown/dropdown';
-import Modal from '../components/modal/modal';
-import Criteria from '../models/criteria';
-import {OrderType} from '../models/types/order.types';
-import appState from '../state/state';
+import s from '../../../styles/styles';
+import DropDown from '../../components/dropdown/dropdown';
+import Modal from '../../components/modal/modal';
+import Criteria from '../../models/criteria';
+import {OrderType} from '../../models/types/order.types';
+import appState from '../../state/state';
 import OrderList from './order-list';
 import orderRoutes from './order.routes';
-import colors from '../../styles/colors';
+import colors from '../../../styles/colors';
 
 type StateType = {
   navIndex: number;

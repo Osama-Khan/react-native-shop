@@ -6,7 +6,7 @@ import Main from './Main';
 import Checkout from './checkout/checkout';
 import ProductDetail from './product/product-detail';
 import Search from './search/search';
-import Orders from './order/orders';
+import Orders from './account/orders/orders';
 
 export const mainRoute = {
   id: 'main',

@@ -1,10 +1,10 @@
 import React from 'react';
 import {NativeScrollEvent, ScrollView} from 'react-native';
 import {Button, ProgressBar} from 'react-native-paper';
-import LoadingSpinner from '../components/loading/loading-spinner';
-import Criteria from '../models/criteria';
-import {OrderType} from '../models/types/order.types';
-import orderService from '../services/order.service';
+import LoadingSpinner from '../../components/loading/loading-spinner';
+import Criteria from '../../models/criteria';
+import {OrderType} from '../../models/types/order.types';
+import orderService from '../../services/order.service';
 import OrderCard from './order-card';
 
 type PropType = {
