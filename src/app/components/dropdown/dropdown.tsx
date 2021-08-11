@@ -10,11 +10,17 @@ type OptionType = {
   disabled?: boolean;
   selected?: boolean;
 };
-type PropType = {options: OptionType[]; onSelect: (option: OptionType) => void};
-type StateType = {visible: boolean; selected: OptionType};
+type PropType<T extends OptionType> = {
+  options: T[];
+  onSelect: (option: T) => void;
+};
+type StateType<T extends OptionType> = {visible: boolean; selected: T};
 
-export default class DropDown extends React.Component<PropType, StateType> {
-  constructor(props: PropType) {
+export default class DropDown<T extends OptionType> extends React.Component<
+  PropType<T>,
+  StateType<T>
+> {
+  constructor(props: PropType<T>) {
     super(props);
     let selected = props.options.findIndex(o => o.selected);
     selected = selected === -1 ? 0 : selected;
