@@ -26,6 +26,7 @@ export type ProductType = EntityType & {
   rating?: number;
   ratings?: RatingType[];
   favorites?: FavoriteType[];
+  favoriteCount?: number;
   category?: CategoryType;
   user?: UserType;
   orderProducts?: OrderProductType[];
