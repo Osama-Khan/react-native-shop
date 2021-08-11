@@ -106,6 +106,7 @@ export default class ListingComponent<ItemType> extends React.PureComponent<
     if (this.page) {
       criteria.setPage(this.page);
     }
+    criteria.addRelation('images');
     this.props.fetchMethod(criteria).then(res => {
       let items = this.state.items || [];
       items = append ? [...items, ...res.data.data] : res.data.data;
