@@ -1,6 +1,6 @@
 import {AxiosResponse} from 'axios';
 import React from 'react';
-import {NativeScrollEvent, ScrollView} from 'react-native';
+import {NativeScrollEvent, ScrollView, View} from 'react-native';
 import {ProgressBar} from 'react-native-paper';
 import Criteria from '../../models/criteria';
 import LoadingSpinner from '../loading/loading-spinner';
@@ -19,6 +19,9 @@ type P<I> = {
 
   /** View shown when no results are found */
   noResultsView?: () => React.ReactElement;
+
+  /** Gaps to show at the top and bottom of the scrollview */
+  padding?: {top?: number; bottom?: number};
 };
 
 type S<I> = {items?: I[]; loading: boolean};
@@ -56,6 +59,9 @@ export default class ListingComponent<ItemType> extends React.PureComponent<
       return <ProgressBar indeterminate={true} />;
     }
 
+    const paddingTop = this.props.padding?.top;
+    const paddingBottom = this.props.padding?.bottom;
+
     return this.state.items!.length > 0 ? (
       <ScrollView
         onScroll={({nativeEvent}) => {
@@ -66,8 +72,10 @@ export default class ListingComponent<ItemType> extends React.PureComponent<
             }
           }
         }}>
+        {paddingTop ? <View style={{paddingTop}} /> : <></>}
         {this.state.items!.map(this.props.container)}
         {this.state.loading ? <LoadingSpinner /> : <></>}
+        {paddingBottom ? <View style={{paddingBottom}} /> : <></>}
       </ScrollView>
     ) : this.props.noResultsView ? (
       <this.props.noResultsView />
