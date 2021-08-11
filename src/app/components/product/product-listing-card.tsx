@@ -1,6 +1,6 @@
 import React from 'react';
 import {Image, StyleSheet, View} from 'react-native';
-import {Text, Card, Divider, Button} from 'react-native-paper';
+import {Text, Card, Divider, Button, Caption} from 'react-native-paper';
 import appStyle from '../../../styles/styles';
 import Rating from './product-rating';
 import colors from '../../../styles/colors';
@@ -9,6 +9,7 @@ import {ProductType} from '../../models/types/product.types';
 import {NavigationProp} from '@react-navigation/native';
 import {productDetailRoute} from '../../app.routes';
 import CartActions from '../cart/manage-cart-product-actions';
+import Icon from '../icon';
 
 type PropType = {
   product: ProductType;
@@ -57,16 +58,22 @@ export default class extends React.Component<PropType, StateType> {
             </Text>
             <Rating rating={product.rating} style={s.my4} />
             <Text numberOfLines={1}>{product.description}</Text>
-            <Text
-              style={[
-                s.mlAuto,
-                s.p4,
-                s.mt8,
-                s.textBadge,
-                outOfStock ? s.textOutOfStock : s.textPrice,
-              ]}>
-              {outOfStock ? 'Out Of Stock' : 'Rs. ' + product.price}
-            </Text>
+            <View style={s.row}>
+              <Caption style={[s.mtAuto]}>
+                <Icon name="heart" />
+                &nbsp;{product.favoriteCount} Likes
+              </Caption>
+              <Text
+                style={[
+                  s.mlAuto,
+                  s.p4,
+                  s.mt8,
+                  s.textBadge,
+                  outOfStock ? s.textOutOfStock : s.textPrice,
+                ]}>
+                {outOfStock ? 'Out Of Stock' : 'Rs. ' + product.price}
+              </Text>
+            </View>
           </View>
         </View>
         <View>
