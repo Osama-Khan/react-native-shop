@@ -33,21 +33,24 @@ export default class ListingComponent<ItemType> extends React.PureComponent<
 > {
   private page = 0;
   private maxPage = 1;
+  private criteria: Criteria<ItemType>;
 
   constructor(props: P<ItemType>) {
     super(props);
     this.state = {loading: false};
+    this.criteria = new Criteria<ItemType>(props.criteria);
   }
 
   componentDidMount() {
     this.fetch();
   }
 
-  componentDidUpdate(prevProps: P<ItemType>) {
+  componentDidUpdate() {
     if (
-      prevProps.criteria?.getUrlParameters() !==
-      this.props.criteria?.getUrlParameters()
+      this.props.criteria?.getUrlParameters() !==
+      this.criteria?.getUrlParameters()
     ) {
+      this.criteria = new Criteria(this.props.criteria);
       this.page = 0;
       this.maxPage = 1;
       this.fetch();
@@ -102,11 +105,12 @@ export default class ListingComponent<ItemType> extends React.PureComponent<
    */
   private fetch = (append = false) => {
     this.setState({...this.state, loading: true});
-    const criteria = this.props.criteria || new Criteria();
+    const criteria = new Criteria(this.criteria);
     if (this.page) {
       criteria.setPage(this.page);
     }
     criteria.addRelation('images');
+    criteria.setLimit(5);
     this.props.fetchMethod(criteria).then(res => {
       let items = this.state.items || [];
       items = append ? [...items, ...res.data.data] : res.data.data;
