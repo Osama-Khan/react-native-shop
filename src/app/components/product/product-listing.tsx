@@ -35,6 +35,7 @@ export default class extends React.Component<PropType> {
             <Text style={[s.textMuted]}>Try changing the filters</Text>
           </View>
         )}
+        padding={{bottom: 68}}
       />
     );
   }
