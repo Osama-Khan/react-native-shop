@@ -18,6 +18,17 @@ export default class Criteria<T extends Object> {
 
   validKeys: string[] = [];
 
+  constructor(from?: Criteria<T>) {
+    if (from) {
+      this.limit = from.limit;
+      this.page = from.page;
+      this.relations = [...from.relations];
+      this.orderBy = from.orderBy;
+      this.orderDir = from.orderDir;
+      this.filters = {...from.filters};
+    }
+  }
+
   getUrlParameters(): string {
     const params: string[] = [];
 
