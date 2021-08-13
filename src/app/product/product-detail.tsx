@@ -10,6 +10,7 @@ import {ProductType} from '../models/types/product.types';
 import productService from '../services/product.service';
 import appState from '../state/state';
 import Info from './product-detail/product-info';
+import ProductLikeAction from './product-detail/product-like-action';
 import Ratings from './product-detail/product-rating';
 import Reviews from './product-detail/product-reviews';
 
@@ -51,6 +52,15 @@ export default class ProductDetail extends React.Component<
               source={{uri: p.images![0].image, height: 240}}
               resizeMode="contain"
             />
+            {appState.user.id ? (
+              <ProductLikeAction
+                style={s.bottomRight}
+                productId={p.id}
+                userId={appState.user.id}
+              />
+            ) : (
+              <></>
+            )}
           </Surface>
           <View style={s.m8}>
             <Info product={p} />
