@@ -6,7 +6,7 @@ import {ProductType} from '../../models/types/product.types';
 import {NavigationProp} from '@react-navigation/core';
 import Criteria from '../../models/criteria';
 import {AxiosResponse} from 'axios';
-import EmptyListView from '../empty-list-view/empty-list-view';
+import IconMessageView from '../icon-message-view/icon-message-view';
 
 type ResponseType = Promise<AxiosResponse<{data: ProductType[]; meta: any}>>;
 type PropType = {
@@ -39,7 +39,7 @@ export default class extends React.Component<PropType> {
         noResultsView={
           this.props.noResultsView ||
           (() => (
-            <EmptyListView
+            <IconMessageView
               icon="emoticon-sad"
               title="No Products"
               caption="No products were found"

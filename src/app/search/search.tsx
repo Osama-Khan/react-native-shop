@@ -10,7 +10,7 @@ import colors from '../../styles/colors';
 import {createRef} from 'react';
 import ProductListing from '../components/product/product-listing';
 import ProductFiltersModal from '../components/product/product-filters-modal/product-filters-modal';
-import EmptyListView from '../components/empty-list-view/empty-list-view';
+import IconMessageView from '../components/icon-message-view/icon-message-view';
 
 type PropType = {navigation: NavigationProp<any>};
 type StateType = {
@@ -49,7 +49,7 @@ export default class Search extends React.Component<PropType, StateType> {
             criteria={this.state.criteria}
             navigation={this.props.navigation}
             noResultsView={() => (
-              <EmptyListView
+              <IconMessageView
                 icon="magnify-close"
                 title="Nothing found"
                 caption="No products matching current filters found"

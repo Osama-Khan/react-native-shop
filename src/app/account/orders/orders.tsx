@@ -20,7 +20,7 @@ import colors from '../../../styles/colors';
 import ListingComponent from '../../components/listing/listing';
 import orderService from '../../services/order.service';
 import OrderCard from './order-card';
-import EmptyListView from '../../components/empty-list-view/empty-list-view';
+import IconMessageView from '../../components/icon-message-view/icon-message-view';
 
 type StateType = {
   navIndex: number;
@@ -65,7 +65,7 @@ export default class extends React.Component<any, StateType> {
             fetchMethod={c => orderService.getOrders(c)}
             container={o => <OrderCard order={o} key={o.id} />}
             noResultsView={() => (
-              <EmptyListView
+              <IconMessageView
                 icon="receipt"
                 title="No Orders"
                 caption="You haven't placed any orders... yet?"

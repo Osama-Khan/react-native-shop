@@ -13,8 +13,8 @@ type PropType = {
   btnProps: ButtonProps;
 };
 
-/** A standard view to show in case no data is found for a list */
-export default class EmptyListView extends React.Component<PropType> {
+/** Component that shows a message with icon and action button */
+export default class IconMessageView extends React.Component<PropType> {
   render() {
     return (
       <View style={[s.flex, s.center]}>

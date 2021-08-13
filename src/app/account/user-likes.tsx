@@ -10,7 +10,7 @@ import {ProductType} from '../models/types/product.types';
 import favoriteService from '../services/favorite.service';
 import appState from '../state/state';
 import colors from '../../styles/colors';
-import EmptyListView from '../components/empty-list-view/empty-list-view';
+import IconMessageView from '../components/icon-message-view/icon-message-view';
 
 type PropType = {navigation: NavigationProp<any>};
 type StateType = {unliked: number[]; unliking: number[]};
@@ -37,7 +37,7 @@ export default class UserLikes extends React.Component<PropType, StateType> {
         }
         criteria={criteria}
         noResultsView={() => (
-          <EmptyListView
+          <IconMessageView
             icon="heart-broken"
             title="No Likes"
             caption="You don't have any liked products"
