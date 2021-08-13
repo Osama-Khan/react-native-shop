@@ -10,6 +10,7 @@ import colors from '../../styles/colors';
 import {createRef} from 'react';
 import ProductListing from '../components/product/product-listing';
 import ProductFiltersModal from '../components/product/product-filters-modal/product-filters-modal';
+import EmptyListView from '../components/empty-list-view/empty-list-view';
 
 type PropType = {navigation: NavigationProp<any>};
 type StateType = {
@@ -47,6 +48,18 @@ export default class Search extends React.Component<PropType, StateType> {
           <ProductListing
             criteria={this.state.criteria}
             navigation={this.props.navigation}
+            noResultsView={() => (
+              <EmptyListView
+                icon="magnify-close"
+                title="Nothing found"
+                caption="No products matching current filters found"
+                btnProps={{
+                  action: () => this.resetFilters(true),
+                  icon: 'reload',
+                  text: 'Reset Filters',
+                }}
+              />
+            )}
           />
         ) : (
           <View style={[s.flex, s.myAuto, s.mt24, s.center]}>
@@ -77,11 +90,7 @@ export default class Search extends React.Component<PropType, StateType> {
             this.addSearchQuery(criteria);
             this.setState({...this.state, criteria, showFilters: false});
           }}
-          onClear={() => {
-            const criteria = new Criteria<ProductType>();
-            this.addSearchQuery(criteria);
-            this.setState({...this.state, criteria, showFilters: false});
-          }}
+          onClear={this.resetFilters}
           onDismiss={() => this.setState({...this.state, showFilters: false})}
         />
       </View>
@@ -111,6 +120,18 @@ export default class Search extends React.Component<PropType, StateType> {
     }, this.updateDelay);
   };
 
+  resetFilters = (clearQuery = false) => {
+    const criteria = new Criteria<ProductType>();
+    if (!clearQuery) {
+      this.addSearchQuery(criteria);
+    }
+    this.setState({
+      ...this.state,
+      criteria,
+      showFilters: false,
+      query: clearQuery ? '' : this.state.query,
+    });
+  };
   addSearchQuery = (criteria?: Criteria<ProductType>) =>
     criteria?.addFilter('title', `%25${this.state.query}%25`, 'like');
 }
