@@ -2,7 +2,7 @@ import {NavigationProp, RouteProp} from '@react-navigation/native';
 import React from 'react';
 import {Image, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
-import {Button, Card, Divider, ProgressBar} from 'react-native-paper';
+import {Button, Card, Divider, ProgressBar, Surface} from 'react-native-paper';
 import colors from '../../styles/colors';
 import s from '../../styles/styles';
 import ManageCartActions from '../components/cart/manage-cart-product-actions';
@@ -46,15 +46,12 @@ export default class ProductDetail extends React.Component<
     return p ? (
       <>
         <ScrollView>
-          <Image
-            source={{uri: p.images![0].image, height: 240}}
-            style={{position: 'absolute', top: 0, width: '100%'}}
-            blurRadius={24}
-          />
-          <Image
-            source={{uri: p.images![0].image, height: 240}}
-            resizeMode="contain"
-          />
+          <Surface>
+            <Image
+              source={{uri: p.images![0].image, height: 240}}
+              resizeMode="contain"
+            />
+          </Surface>
           <View style={s.m8}>
             <Info product={p} />
             <Divider style={s.my4} />
