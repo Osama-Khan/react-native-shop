@@ -1,6 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
-import {Divider, Text, Button, Caption, Headline} from 'react-native-paper';
+import {Divider, Text, Button, Caption, Title} from 'react-native-paper';
 import s from '../../styles/styles';
 import appState from '../state/state';
 import Icon from '../components/icon';
@@ -28,7 +28,7 @@ export default class Checkout extends React.Component<any, StateType> {
     return this.state.order ? (
       <View style={[s.flex, s.center]}>
         <Icon name="check-decagram" size={96} color={colors.green} />
-        <Headline>Success!</Headline>
+        <Title>Success!</Title>
         <Text>Your order has been placed successfully!</Text>
         <Caption>Your order ID is #{this.state.order.id}</Caption>
       </View>
@@ -45,7 +45,7 @@ export default class Checkout extends React.Component<any, StateType> {
     ) : (
       <View style={[s.flex, s.center]}>
         <Icon name="cart" size={96} color={colors.gray} />
-        <Headline>Such Emptiness!</Headline>
+        <Title>Such Emptiness!</Title>
         <Caption>Your cart has no products to checkout with.</Caption>
         <Button
           mode="outlined"

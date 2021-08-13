@@ -1,7 +1,7 @@
 import React from 'react';
 import Icon from '../../components/icon/';
 import {Image, View} from 'react-native';
-import {Button, Card, Headline, ProgressBar, Text} from 'react-native-paper';
+import {Button, Card, ProgressBar, Text, Title} from 'react-native-paper';
 import s from '../../../styles/styles';
 import {ProductType, RatingType} from '../../models/types/product.types';
 import productService from '../../services/product.service';
@@ -34,9 +34,9 @@ export default class extends React.Component<PropType, StateType> {
   render() {
     return (
       <View>
-        <Headline>
+        <Title>
           <Icon name="account-star" size={22} /> User Reviews
-        </Headline>
+        </Title>
         {this.state.reviews ? (
           <>
             {this.state.reviews.map(r => (

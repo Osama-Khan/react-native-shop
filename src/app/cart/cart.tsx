@@ -5,11 +5,12 @@ import {
   Button,
   Card,
   Divider,
-  Headline,
   List,
   Text,
   Surface,
   FAB,
+  Title,
+  Caption,
 } from 'react-native-paper';
 import colors from '../../styles/colors';
 import s from '../../styles/styles';
@@ -19,6 +20,7 @@ import appState from '../state/state';
 import CartActions from '../components/cart/manage-cart-product-actions';
 import {ScrollView} from 'react-native-gesture-handler';
 import {checkoutRoute, productDetailRoute} from '../app.routes';
+import IconMessageView from '../components/icon-message-view/icon-message-view';
 
 type PropType = {navigation: NavigationProp<any>};
 export default class extends React.Component<PropType, any> {
@@ -36,11 +38,11 @@ export default class extends React.Component<PropType, any> {
     return (
       <View style={s.flex}>
         <Surface style={[s.p8, s.row, s.flexWrap, s.center]}>
-          <Headline style={[s.col6, s.textCenter]}>Products</Headline>
-          <Headline style={[s.col6, s.textCenter]}>Total Price</Headline>
-          <Headline style={[s.col6, s.textBold, s.textCenter]}>
+          <Title style={[s.col6, s.textCenter]}>Products</Title>
+          <Title style={[s.col6, s.textCenter]}>Total Price</Title>
+          <Title style={[s.col6, s.textBold, s.textCenter]}>
             {products.length}
-          </Headline>
+          </Title>
           <Text style={[s.col6, s.textBadge, s.textPrice, s.textCenter]}>
             Rs. {appState.cart.getTotalPrice()}
           </Text>
@@ -70,16 +72,16 @@ export default class extends React.Component<PropType, any> {
             />
           </>
         ) : (
-          <View style={[s.center, s.flex]}>
-            <Icon name="cart-outline" color={colors.gray} size={64} />
-            <Text style={s.textMuted}>Your cart is empty</Text>
-            <Button
-              style={s.mt8}
-              onPress={() => this.props.navigation.navigate('Search')}
-              icon="plus">
-              Add Something
-            </Button>
-          </View>
+          <IconMessageView
+            icon="cart-outline"
+            title="Cart Empty"
+            caption="Your cart is empty"
+            btnProps={{
+              action: () => this.props.navigation.navigate('Search'),
+              icon: 'plus',
+              text: 'Add Something',
+            }}
+          />
         )}
       </View>
     );

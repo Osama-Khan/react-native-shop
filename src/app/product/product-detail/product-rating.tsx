@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, Headline, Card} from 'react-native-paper';
+import {Text, Card, Title} from 'react-native-paper';
 import s from '../../../styles/styles';
 import {ProductType, RatingType} from '../../models/types/product.types';
 import Icon from '../../components/icon';
@@ -11,9 +11,9 @@ type PropType = {product: ProductType};
 
 export default ({product}: PropType) => (
   <>
-    <Headline>
+    <Title>
       <Icon name="star" size={22} /> Rating
-    </Headline>
+    </Title>
     <ReviewSummary ratings={product.ratings!} />
   </>
 );
