@@ -20,6 +20,7 @@ import colors from '../../../styles/colors';
 import ListingComponent from '../../components/listing/listing';
 import orderService from '../../services/order.service';
 import OrderCard from './order-card';
+import EmptyListView from '../../components/empty-list-view/empty-list-view';
 
 type StateType = {
   navIndex: number;
@@ -63,6 +64,18 @@ export default class extends React.Component<any, StateType> {
             criteria={this.state.criteria}
             fetchMethod={c => orderService.getOrders(c)}
             container={o => <OrderCard order={o} key={o.id} />}
+            noResultsView={() => (
+              <EmptyListView
+                icon="receipt"
+                title="No Orders"
+                caption="You haven't placed any orders... yet?"
+                btnProps={{
+                  text: 'Order products',
+                  icon: 'receipt',
+                  action: () => this.props.navigation.navigate('Search'),
+                }}
+              />
+            )}
           />
           <FAB
             icon="filter"
