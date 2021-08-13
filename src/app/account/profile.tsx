@@ -1,10 +1,10 @@
 import {NavigationProp} from '@react-navigation/native';
 import React from 'react';
 import {ScrollView, Image, View} from 'react-native';
-import {Title, Text, Badge, Divider, List} from 'react-native-paper';
+import {Title, Text, Divider, List, Card} from 'react-native-paper';
 import colors from '../../styles/colors';
 import appStyles from '../../styles/styles';
-import {orderRoute} from './account.routes';
+import {likesRoute, listingsRoute, orderRoute} from './account.routes';
 import appState from '../state/state';
 
 type PropType = {onLogout: () => void; navigation: NavigationProp<any>};
@@ -23,9 +23,9 @@ export default ({onLogout, navigation}: PropType) => {
           </Title>
           <Text style={styles.textMuted}>{'@' + appState.user.username}</Text>
           <View style={styles.row}>
-            <Badge style={[styles.mt8, {backgroundColor: colors.primary}]}>
-              {appState.user.roles && appState.user.roles[0].name}
-            </Badge>
+            <Card style={[styles.mt4, styles.p4]}>
+              <Text>{appState.user.roles && appState.user.roles[0].name}</Text>
+            </Card>
           </View>
         </View>
       </View>
@@ -34,7 +34,9 @@ export default ({onLogout, navigation}: PropType) => {
         <List.Item
           title="Listings"
           description="Manage your products"
-          onPress={() => {}}
+          onPress={() => {
+            navigation.navigate(listingsRoute.name);
+          }}
           left={() => <List.Icon icon="clipboard-list" />}
         />
         <List.Item
@@ -46,10 +48,12 @@ export default ({onLogout, navigation}: PropType) => {
           left={() => <List.Icon icon="receipt" />}
         />
         <List.Item
-          title="Favorites"
-          description="See your favorite products"
-          onPress={() => {}}
-          left={() => <List.Icon icon="star" />}
+          title="Likes"
+          description="See your likes"
+          onPress={() => {
+            navigation.navigate(likesRoute.name);
+          }}
+          left={() => <List.Icon icon="heart-multiple" />}
         />
       </List.Section>
       <Divider />
@@ -65,6 +69,12 @@ export default ({onLogout, navigation}: PropType) => {
           description="Manage your addresses"
           onPress={() => {}}
           left={() => <List.Icon icon="home-edit" />}
+        />
+        <List.Item
+          title="Reviews"
+          description="Manage your reviews"
+          onPress={() => {}}
+          left={() => <List.Icon icon="star" />}
         />
         <Divider />
       </List.Section>
@@ -94,11 +104,11 @@ export default ({onLogout, navigation}: PropType) => {
             onPress={() => {}}
             left={() => <List.Icon icon="receipt" />}
           />
+          <Divider />
         </List.Section>
       ) : (
         <></>
       )}
-      <Divider />
       <List.Item
         title="Logout"
         titleStyle={{color: colors.red}}
