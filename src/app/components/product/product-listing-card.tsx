@@ -1,6 +1,6 @@
 import React from 'react';
 import {Image, StyleSheet, View} from 'react-native';
-import {Text, Card, Divider, Button, Caption} from 'react-native-paper';
+import {Text, Card, Divider, Caption, IconButton} from 'react-native-paper';
 import appStyle from '../../../styles/styles';
 import Rating from './product-rating';
 import colors from '../../../styles/colors';
@@ -60,7 +60,7 @@ export default class extends React.Component<PropType, StateType> {
             <Text numberOfLines={1}>{product.description}</Text>
             <View style={s.row}>
               <Caption style={[s.mtAuto]}>
-                <Icon name="heart" />
+                <Icon name="heart" color={colors.gray} />
                 &nbsp;{product.favoriteCount} Likes
               </Caption>
               <Text
@@ -96,16 +96,15 @@ export default class extends React.Component<PropType, StateType> {
         }}
       />
     ) : (
-      <Button
+      <IconButton
         style={[s.col12, s.mAuto]}
-        color={colors.green}
+        color={product.stock === 0 ? colors.gray : colors.green}
         onPress={() => {
           appState.cart.addProduct(product);
           this.setState({});
         }}
         disabled={product.stock === 0}
         icon={product.stock === 0 ? 'cart-off' : 'cart-plus'}
-        children=""
       />
     );
   };

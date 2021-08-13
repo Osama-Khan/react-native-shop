@@ -4,8 +4,7 @@ import colors from '../../../styles/colors';
 import s from '../../../styles/styles';
 import appState from '../../state/state';
 import CartProduct from '../../models/product/cart-product';
-import Icon from '../icon';
-import {Button} from 'react-native-paper';
+import {Button, IconButton} from 'react-native-paper';
 
 type PropType = {
   product: CartProduct;
@@ -14,31 +13,31 @@ type PropType = {
 };
 export default ({product, ...props}: PropType) => (
   <View style={s.row}>
-    <Button
+    <IconButton
       color={colors.red}
       style={s.center}
+      icon={product.quantity === 1 ? 'delete' : 'minus'}
       onPress={() => {
         removeFromCart(product.id);
         if (props.onRemove) {
           props.onRemove();
         }
-      }}>
-      <Icon name={product.quantity === 1 ? 'delete' : 'minus'} size={16} />
-    </Button>
-    <Button style={s.flex} disabled={true}>
+      }}
+    />
+    <Button style={[s.flex, s.alignCenter]} disabled={true}>
       {product.quantity} in cart
     </Button>
-    <Button
+    <IconButton
       color={colors.green}
       style={s.center}
+      icon="plus"
       onPress={() => {
         addToCart(product);
         if (props.onAdd) {
           props.onAdd();
         }
-      }}>
-      <Icon name="plus" size={16} />
-    </Button>
+      }}
+    />
   </View>
 );
 
