@@ -12,8 +12,9 @@ export default ({product}: PropType) => (
       <Title style={[s.textBold, s.flex]}>{product.title}</Title>
       <Text
         style={[
-          s.mlAuto,
+          s.m4,
           s.p4,
+          s.alignCenter,
           s.textBadge,
           product.stock === 0 ? s.textOutOfStock : s.textPrice,
         ]}>

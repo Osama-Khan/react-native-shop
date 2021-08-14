@@ -82,7 +82,9 @@ export default class extends React.Component<PropType, StateType> {
         <Button
           mode="contained"
           loading={this.state.loading}
-          disabled={this.state.loading}
+          disabled={
+            this.state.loading || !this.state.username || !this.state.password
+          }
           style={styles.mt8}
           color={colors.primary}
           onPress={this.login}>
