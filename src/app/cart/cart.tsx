@@ -2,7 +2,6 @@ import {NavigationProp} from '@react-navigation/native';
 import React from 'react';
 import {View, Image} from 'react-native';
 import {
-  Button,
   Card,
   Divider,
   List,
@@ -10,12 +9,9 @@ import {
   Surface,
   FAB,
   Title,
-  Caption,
 } from 'react-native-paper';
-import colors from '../../styles/colors';
 import s from '../../styles/styles';
 import CartProduct from '../models/product/cart-product';
-import Icon from '../components/icon';
 import appState from '../state/state';
 import CartActions from '../components/cart/manage-cart-product-actions';
 import {ScrollView} from 'react-native-gesture-handler';

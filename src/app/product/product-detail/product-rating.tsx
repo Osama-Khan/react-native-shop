@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, Card, Title} from 'react-native-paper';
+import {Text, Card, Title, Caption} from 'react-native-paper';
 import s from '../../../styles/styles';
 import {ProductType, RatingType} from '../../models/types/product.types';
 import Icon from '../../components/icon';
@@ -40,6 +40,7 @@ const ReviewSummary = ({ratings}: {ratings: RatingType[]}) => {
       <Text style={[s.textCenter, s.textBold, average ? {} : s.textMuted]}>
         {average ? `${average?.toFixed(1)} Stars` : 'No Reviews'}
       </Text>
+      <Caption>Summary</Caption>
       {stars.map((count, i) => (
         <RatingSummaryStar
           key={'summary-star-' + i}

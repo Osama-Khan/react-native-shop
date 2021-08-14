@@ -11,6 +11,7 @@ import {AddressType} from '../models/types/address.type';
 import {OrderType} from '../models/types/order.types';
 import Shipping from './shipping';
 import uiService from '../services/ui.service';
+import IconMessageView from '../components/icon-message-view/icon-message-view';
 
 type StateType = {
   address?: AddressType;
@@ -43,17 +44,16 @@ export default class Checkout extends React.Component<any, StateType> {
         <this.PlaceOrderButton />
       </View>
     ) : (
-      <View style={[s.flex, s.center]}>
-        <Icon name="cart" size={96} color={colors.gray} />
-        <Title>Such Emptiness!</Title>
-        <Caption>Your cart has no products to checkout with.</Caption>
-        <Button
-          mode="outlined"
-          style={s.mt8}
-          onPress={() => this.props.navigation.navigate('Search')}>
-          Get Products
-        </Button>
-      </View>
+      <IconMessageView
+        icon="cart-outline"
+        title="Such Emptiness!"
+        caption="Your cart has no products to checkout with."
+        btnProps={{
+          action: () => this.props.navigation.navigate('Search'),
+          icon: 'archive',
+          text: 'Get Products',
+        }}
+      />
     );
   }
 
