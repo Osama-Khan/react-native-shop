@@ -90,7 +90,7 @@ export default class extends React.Component<any, StateType> {
             return (
               <ToggleButton
                 style={[s.flex, s.center]}
-                color={selected ? colors.white : colors.gray}
+                color={selected ? undefined : colors.gray}
                 icon={o.icon}
                 key={o.key}
                 status={selected ? 'checked' : 'unchecked'}
