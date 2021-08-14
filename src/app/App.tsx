@@ -15,10 +15,12 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {useColorScheme} from 'react-native';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {DarkTheme, DefaultTheme} from '../styles/themes/themes';
+import initializeInterceptors from './interceptors/interceptor-initializer';
 
 const App = () => {
   const isDark = useColorScheme() === 'dark';
   const Stack = createStackNavigator();
+  initializeInterceptors();
   return (
     <PaperProvider theme={isDark ? DarkTheme : DefaultTheme}>
       <NavigationContainer theme={isDark ? DarkTheme : DefaultTheme}>
