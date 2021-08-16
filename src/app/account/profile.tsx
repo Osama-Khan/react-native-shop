@@ -9,6 +9,8 @@ import appState from '../state/state';
 
 type PropType = {onLogout: () => void; navigation: NavigationProp<any>};
 export default ({onLogout, navigation}: PropType) => {
+  const goto = (name: string, params?: any) =>
+    navigation.navigate(name, params);
   return (
     <ScrollView>
       <View style={[styles.m4, styles.row]}>
@@ -35,7 +37,7 @@ export default ({onLogout, navigation}: PropType) => {
           title="Listings"
           description="Manage your products"
           onPress={() => {
-            navigation.navigate(listingsRoute.name);
+            goto(listingsRoute.name);
           }}
           left={() => <List.Icon icon="clipboard-list" />}
         />
@@ -43,7 +45,7 @@ export default ({onLogout, navigation}: PropType) => {
           title="Orders"
           description="View your orders"
           onPress={() => {
-            navigation.navigate(orderRoute.name);
+            goto(orderRoute.name);
           }}
           left={() => <List.Icon icon="receipt" />}
         />
@@ -51,7 +53,7 @@ export default ({onLogout, navigation}: PropType) => {
           title="Likes"
           description="See your likes"
           onPress={() => {
-            navigation.navigate(likesRoute.name);
+            goto(likesRoute.name);
           }}
           left={() => <List.Icon icon="heart-multiple" />}
         />
