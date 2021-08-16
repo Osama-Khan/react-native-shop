@@ -1,3 +1,4 @@
+import AccountEdit from './edit/account-edit';
 import Orders from './orders/orders';
 import UserLikes from './user-likes';
 import UserProducts from './user-products';
@@ -20,4 +21,10 @@ export const likesRoute = {
   component: UserLikes,
 };
 
-export default [orderRoute, listingsRoute, likesRoute];
+export const accountEditRoute = {
+  id: 'account-edit',
+  name: 'Update Account',
+  component: AccountEdit,
+};
+
+export default [orderRoute, listingsRoute, likesRoute, accountEditRoute];

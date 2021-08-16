@@ -4,7 +4,12 @@ import {ScrollView, Image, View} from 'react-native';
 import {Title, Text, Divider, List, Card} from 'react-native-paper';
 import colors from '../../styles/colors';
 import appStyles from '../../styles/styles';
-import {likesRoute, listingsRoute, orderRoute} from './account.routes';
+import {
+  accountEditRoute,
+  likesRoute,
+  listingsRoute,
+  orderRoute,
+} from './account.routes';
 import appState from '../state/state';
 
 type PropType = {onLogout: () => void; navigation: NavigationProp<any>};
@@ -63,7 +68,9 @@ export default ({onLogout, navigation}: PropType) => {
         <List.Item
           title="Account"
           description="Update your account information"
-          onPress={() => {}}
+          onPress={() => {
+            goto(accountEditRoute.name);
+          }}
           left={() => <List.Icon icon="account-edit" />}
         />
         <List.Item
