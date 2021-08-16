@@ -10,6 +10,7 @@ import {
 } from 'react-native-paper';
 import colors from '../../styles/colors';
 import defaultStyles from '../../styles/styles';
+import uiService from '../services/ui.service';
 import userService from '../services/user.service';
 import appState from '../state/state';
 
@@ -101,11 +102,23 @@ export default class extends React.Component<PropType, StateType> {
       return;
     }
 
-    userService.login(username, password).then(u => {
-      appState.user = u.data;
-      this.setState({...this.state, loading: false});
-      this.props.onLogin();
-    });
+    userService
+      .login(username, password)
+      .then(u => {
+        u.data.dateOfBirth = new Date(u.data.dateOfBirth);
+        appState.user = u.data;
+        this.setState({...this.state, loading: false});
+        this.props.onLogin();
+      })
+      .catch(e => {
+        const rc = e.response.status;
+        uiService.toast(
+          rc === 401
+            ? 'Username and password combination is not valid!'
+            : "We couldn't log you in!",
+        );
+        this.setState({...this.state, loading: false});
+      });
   };
 }
 const styles = StyleSheet.create({
