@@ -64,7 +64,7 @@ export default class ManageReviewCard extends React.Component<
         {updating ? (
           <IconButton
             style={s.topRight}
-            icon="arrow-left"
+            icon="close"
             size={16}
             onPress={() => this.props.onCancelUpdate()}
           />
