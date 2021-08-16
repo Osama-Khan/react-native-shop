@@ -3,7 +3,6 @@ export interface IUser {
   username?: string;
   firstName?: string;
   lastName?: string;
-  img?: string;
   roles?: {id: number; name: string}[];
   dateOfBirth?: Date;
   profileImage?: string;
@@ -14,7 +13,6 @@ export class User implements IUser {
   username?: string;
   firstName?: string;
   lastName?: string;
-  img?: string;
   roles?: {id: number; name: string}[];
   dateOfBirth?: Date;
   profileImage?: string;
@@ -25,7 +23,6 @@ export class User implements IUser {
       this.username = obj.username;
       this.firstName = obj.firstName;
       this.lastName = obj.lastName;
-      this.img = obj.img;
       this.roles = obj.roles;
       this.dateOfBirth = obj.dateOfBirth;
       this.profileImage = obj.profileImage;
