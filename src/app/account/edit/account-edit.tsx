@@ -77,7 +77,7 @@ export default class AccountEdit extends React.Component<any, StateType> {
         </View>
         <Divider />
         <Caption style={[s.m8, s.mt8]}>Personal Information</Caption>
-        <View style={[s.row, {zIndex: 0}]}>
+        <View style={s.row}>
           <TextInput
             style={[s.col6, s.p8]}
             mode="outlined"
@@ -118,7 +118,7 @@ export default class AccountEdit extends React.Component<any, StateType> {
           </Button>
         </View>
         <Caption style={[s.m8, s.mt8]}>Login Credentials</Caption>
-        <View style={{zIndex: 0}}>
+        <View>
           <TextInput
             style={[s.p8]}
             mode="outlined"
