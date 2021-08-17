@@ -10,7 +10,6 @@ import {
   ToggleButton,
 } from 'react-native-paper';
 import s from '../../../styles/styles';
-import DropDown from '../../components/dropdown/dropdown';
 import Modal from '../../components/modal/modal';
 import Criteria from '../../models/criteria';
 import {OrderType} from '../../models/types/order.types';
@@ -21,6 +20,7 @@ import ListingComponent from '../../components/listing/listing';
 import orderService from '../../services/order.service';
 import OrderCard from './order-card';
 import IconMessageView from '../../components/icon-message-view/icon-message-view';
+import ListSelect from '../../components/list-select';
 
 type StateType = {
   navIndex: number;
@@ -122,7 +122,7 @@ export default class extends React.Component<any, StateType> {
         <View style={[s.row, s.py8]}>
           <Caption style={s.alignCenter}>Sort By: </Caption>
           <View style={[s.row, s.mlAuto]}>
-            <DropDown
+            <ListSelect
               options={[
                 {
                   name: 'Updated on',
@@ -139,7 +139,7 @@ export default class extends React.Component<any, StateType> {
                 this.filters.orderBy = option.value as keyof OrderType;
               }}
             />
-            <DropDown
+            <ListSelect
               options={[
                 {
                   name: 'Latest First',

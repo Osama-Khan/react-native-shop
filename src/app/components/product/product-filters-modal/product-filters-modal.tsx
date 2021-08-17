@@ -12,8 +12,8 @@ import {
 import colors from '../../../../styles/colors';
 import s from '../../../../styles/styles';
 import {ProductType} from '../../../models/types/product.types';
-import DropDown from '../../dropdown/dropdown';
-import Modal from '../../modal/modal';
+import ListSelect from '../../list-select';
+import Modal from '../../modal';
 
 type PropType = {
   onApply: (filters: StateType) => void;
@@ -92,13 +92,13 @@ export default class ProductFiltersModal extends React.Component<
       <Text>Sort by</Text>
       <View style={[s.row]}>
         <View style={s.col8}>
-          <DropDown
+          <ListSelect
             options={sortOptions}
             onSelect={v => this.setState({...this.state, sortBy: v.value})}
           />
         </View>
         <View style={s.col4}>
-          <DropDown
+          <ListSelect
             options={sortOrderOptions}
             onSelect={v => this.setState({...this.state, sortByOrder: v.value})}
           />
