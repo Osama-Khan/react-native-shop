@@ -1,21 +1,10 @@
 import React from 'react';
-import {Modal as M, Surface} from 'react-native-paper';
-import s from '../../../styles/styles';
+import ModalBase from './modal-base';
+import {ModalPropType} from './modal-prop-type';
 
-type Props = {
-  dismissable?: boolean;
-  onDismiss?: () => void;
-  visible: boolean;
-  children: React.ReactNode;
-};
-
-export default function Modal(props: Props) {
-  const {children, ...otherProps} = props;
-  return (
-    <M {...otherProps} contentContainerStyle={style}>
-      <Surface>{children}</Surface>
-    </M>
-  );
+/** Shows a modal with given children when visible prop is set to true */
+export default class Modal extends React.Component<ModalPropType> {
+  render() {
+    return <ModalBase {...this.props} animationType="fade" />;
+  }
 }
-
-const style = [s.m16, s.overflowHidden, s.rounded];
