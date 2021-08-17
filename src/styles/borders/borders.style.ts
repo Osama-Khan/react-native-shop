@@ -11,4 +11,32 @@ export default StyleSheet.create({
   roundedFull: {
     borderRadius: 10000,
   },
+  roundedTop: {
+    borderTopLeftRadius: variables.borderRadius,
+    borderTopRightRadius: variables.borderRadius,
+  },
+  roundedBottom: {
+    borderBottomLeftRadius: variables.borderRadius,
+    borderBottomRightRadius: variables.borderRadius,
+  },
+  roundedLeft: {
+    borderTopLeftRadius: variables.borderRadius,
+    borderBottomLeftRadius: variables.borderRadius,
+  },
+  roundedRight: {
+    borderTopRightRadius: variables.borderRadius,
+    borderBottomRightRadius: variables.borderRadius,
+  },
+  roundedTopRight: {
+    borderTopRightRadius: variables.borderRadius,
+  },
+  roundedTopLeft: {
+    borderTopLeftRadius: variables.borderRadius,
+  },
+  roundedBottomRight: {
+    borderBottomRightRadius: variables.borderRadius,
+  },
+  roundedBottomLeft: {
+    borderBottomLeftRadius: variables.borderRadius,
+  },
 });
