@@ -82,7 +82,7 @@ class ProductService extends ApiService {
    * @param criteria used for filtering ratings
    * @returns list of ratings
    */
-  async getRatings(criteria: Criteria<any>) {
+  async getRatings(criteria?: Criteria<any>) {
     const url = `${this.domain}/ratings${criteria?.getUrlParameters() || ''}`;
     const ret = await axios.get(url);
     return ret;

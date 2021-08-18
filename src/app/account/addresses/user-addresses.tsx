@@ -15,7 +15,6 @@ import settingService from '../../services/setting.service';
 
 type S = {
   defaultId?: number;
-  loading: boolean;
   addVisible: boolean;
   manageVisible: boolean;
   updateCount: number;
@@ -31,7 +30,6 @@ export default class UserAddresses extends React.Component<{}, S> {
     this.criteria = new Criteria<AddressType>();
     this.criteria.addFilter('user', appState.user.id!);
     this.state = {
-      loading: true,
       addVisible: false,
       manageVisible: false,
       updateCount: 0,

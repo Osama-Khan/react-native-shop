@@ -42,25 +42,19 @@ export default ({onLogout, navigation}: PropType) => {
         <List.Item
           title="Listings"
           description="Manage your products"
-          onPress={() => {
-            goto(listingsRoute.name);
-          }}
+          onPress={() => goto(listingsRoute.name)}
           left={() => <List.Icon icon="clipboard-list" />}
         />
         <List.Item
           title="Orders"
           description="View your orders"
-          onPress={() => {
-            goto(orderRoute.name);
-          }}
+          onPress={() => goto(orderRoute.name)}
           left={() => <List.Icon icon="receipt" />}
         />
         <List.Item
           title="Likes"
           description="See your likes"
-          onPress={() => {
-            goto(likesRoute.name);
-          }}
+          onPress={() => goto(likesRoute.name)}
           left={() => <List.Icon icon="heart-multiple" />}
         />
       </List.Section>
@@ -69,17 +63,13 @@ export default ({onLogout, navigation}: PropType) => {
         <List.Item
           title="Account"
           description="Update your account information"
-          onPress={() => {
-            goto(accountEditRoute.name);
-          }}
+          onPress={() => goto(accountEditRoute.name)}
           left={() => <List.Icon icon="account-edit" />}
         />
         <List.Item
           title="Addresses"
           description="Manage your addresses"
-          onPress={() => {
-            goto(addressesRoute.name);
-          }}
+          onPress={() => goto(addressesRoute.name)}
           left={() => <List.Icon icon="home-edit" />}
         />
         <List.Item
