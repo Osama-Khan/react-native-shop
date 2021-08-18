@@ -1,5 +1,6 @@
 import AccountEdit from './edit/account-edit';
 import Orders from './orders/orders';
+import UserAddresses from './addresses/user-addresses';
 import UserLikes from './user-likes';
 import UserProducts from './user-products';
 
@@ -27,4 +28,16 @@ export const accountEditRoute = {
   component: AccountEdit,
 };
 
-export default [orderRoute, listingsRoute, likesRoute, accountEditRoute];
+export const addressesRoute = {
+  id: 'addresses',
+  name: 'Manage Addresses',
+  component: UserAddresses,
+};
+
+export default [
+  orderRoute,
+  listingsRoute,
+  likesRoute,
+  accountEditRoute,
+  addressesRoute,
+];

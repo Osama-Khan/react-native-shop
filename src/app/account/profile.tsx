@@ -6,6 +6,7 @@ import colors from '../../styles/colors';
 import appStyles from '../../styles/styles';
 import {
   accountEditRoute,
+  addressesRoute,
   likesRoute,
   listingsRoute,
   orderRoute,
@@ -76,7 +77,9 @@ export default ({onLogout, navigation}: PropType) => {
         <List.Item
           title="Addresses"
           description="Manage your addresses"
-          onPress={() => {}}
+          onPress={() => {
+            goto(addressesRoute.name);
+          }}
           left={() => <List.Icon icon="home-edit" />}
         />
         <List.Item
