@@ -22,6 +22,10 @@ type P<I> = {
 
   /** Gaps to show at the top and bottom of the scrollview */
   padding?: {top?: number; bottom?: number};
+
+  /** Can be incremented to force a data update. Should be linked with
+   * a state property to allow multiple updates */
+  updateCount?: number;
 };
 
 type S<I> = {items?: I[]; loading: boolean};
@@ -34,6 +38,7 @@ export default class ListingComponent<ItemType> extends React.PureComponent<
   private page = 0;
   private maxPage = 1;
   private criteria: Criteria<ItemType>;
+  private currentUpdate = 0;
 
   constructor(props: P<ItemType>) {
     super(props);
@@ -49,13 +54,18 @@ export default class ListingComponent<ItemType> extends React.PureComponent<
     if (!this.props.criteria) {
       return;
     }
-    if (
+    let shouldUpdate =
       this.props.criteria?.getUrlParameters() !==
-      this.criteria?.getUrlParameters()
-    ) {
+      this.criteria?.getUrlParameters();
+    if (this.props.updateCount) {
+      shouldUpdate =
+        shouldUpdate || this.props.updateCount > this.currentUpdate;
+    }
+    if (shouldUpdate) {
       this.criteria = new Criteria(this.props.criteria);
       this.page = 0;
       this.maxPage = 1;
+      this.currentUpdate++;
       this.fetch();
     }
   }
