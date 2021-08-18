@@ -10,6 +10,7 @@ import {
   likesRoute,
   listingsRoute,
   orderRoute,
+  reviewsRoute,
 } from './account.routes';
 import appState from '../state/state';
 
@@ -74,8 +75,8 @@ export default ({onLogout, navigation}: PropType) => {
         />
         <List.Item
           title="Reviews"
-          description="Manage your reviews"
-          onPress={() => {}}
+          description="See your reviews on different products"
+          onPress={() => goto(reviewsRoute.name)}
           left={() => <List.Icon icon="star" />}
         />
         <Divider />

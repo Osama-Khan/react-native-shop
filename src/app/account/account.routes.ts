@@ -3,6 +3,7 @@ import Orders from './orders/orders';
 import UserAddresses from './addresses/user-addresses';
 import UserLikes from './user-likes';
 import UserProducts from './user-products';
+import UserReviews from './reviews/user-reviews';
 
 export const listingsRoute = {
   id: 'listings',
@@ -34,10 +35,17 @@ export const addressesRoute = {
   component: UserAddresses,
 };
 
+export const reviewsRoute = {
+  id: 'reviews',
+  name: 'Manage Reviews',
+  component: UserReviews,
+};
+
 export default [
   orderRoute,
   listingsRoute,
   likesRoute,
   accountEditRoute,
   addressesRoute,
+  reviewsRoute,
 ];
