@@ -8,7 +8,7 @@ class SettingService extends ApiService {
    * Gets default address of user
    * @param userId ID of the user to fetch address of
    */
-  async getDefaultAddress(userId: string) {
+  async getDefaultAddress(userId: number) {
     const endpoint = `${this.endpoint}/${userId}`;
     const res = await axios.get(endpoint);
     return res.data ? {...res, data: res.data.defaultAddress} : res;

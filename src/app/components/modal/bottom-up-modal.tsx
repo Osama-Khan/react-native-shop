@@ -1,4 +1,5 @@
 import React from 'react';
+import {ScrollView} from 'react-native-gesture-handler';
 import Svg, {Defs, LinearGradient, Rect, Stop} from 'react-native-svg';
 import colors from '../../../styles/colors';
 import s from '../../../styles/styles';
@@ -13,11 +14,11 @@ export default function BottomUpModal(props: ModalPropType) {
       {...other}
       position="bottom"
       animationType="slide"
-      modalStyle={[s.roundedTop]}
+      modalStyle={[s.roundedTop, modalStyle]}
       backgroundColor="#0000"
       backgroundChildren={bgGradient}>
       <Icon name="minus" color={colors.gray} size={16} style={s.alignCenter} />
-      {children}
+      <ScrollView>{children}</ScrollView>
     </ModalBase>
   );
 }
@@ -33,3 +34,5 @@ const bgGradient = (
     <Rect width="100%" height="100%" x="0" y="0" fill="url(#grad)" />
   </Svg>
 );
+
+const modalStyle = {maxHeight: '80%'};

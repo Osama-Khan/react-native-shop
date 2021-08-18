@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {StyleProp, ViewStyle} from 'react-native';
 import {Card, List, Text} from 'react-native-paper';
 import s from '../../../styles/styles';
 import Icon from '../icon';
@@ -15,6 +16,7 @@ type OptionType = {
 
 type P<T extends OptionType> = {
   options: T[];
+  style?: StyleProp<ViewStyle>;
   onSelect: (option: T) => void;
 };
 type S<T extends OptionType> = {visible: boolean; selected: T};
@@ -36,7 +38,7 @@ export default class ListSelect<T extends OptionType> extends Component<
     return (
       <>
         <Card
-          style={cardStyle}
+          style={[cardStyle, ...[this.props.style]]}
           onPress={() => this.setState({...this.state, visible: true})}>
           <Text>{this.state.selected.name}</Text>
         </Card>
@@ -53,7 +55,11 @@ export default class ListSelect<T extends OptionType> extends Component<
               disabled={o.disabled}
               left={() => (o.icon ? <List.Icon icon={o.icon} /> : <></>)}
               right={() =>
-                o === this.state.selected ? <List.Icon icon="check" /> : <></>
+                o.value === this.state.selected.value && !o.disabled ? (
+                  <List.Icon icon="check-bold" />
+                ) : (
+                  <></>
+                )
               }
               key={o.key || i}
             />

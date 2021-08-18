@@ -31,7 +31,7 @@ class FavoriteService extends ApiService {
    * @param criteria Filters for the list
    */
   getFavoritesOfUser(userId: number, criteria?: Criteria<any>) {
-    if (!criteria) criteria = new Criteria<any>();
+    criteria = new Criteria(criteria);
     criteria.addFilter('user', userId);
     criteria.addRelation('product');
     const url = this.endpoint + criteria.getUrlParameters();
