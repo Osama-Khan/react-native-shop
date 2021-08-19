@@ -1,4 +1,5 @@
 import React from 'react';
+import {StyleProp, ViewStyle} from 'react-native';
 import {Card, Menu, Text} from 'react-native-paper';
 import s from '../../../styles/styles';
 
@@ -13,6 +14,7 @@ type OptionType = {
 type PropType<T extends OptionType> = {
   options: T[];
   onSelect: (option: T) => void;
+  style?: StyleProp<ViewStyle>;
 };
 type StateType<T extends OptionType> = {visible: boolean; selected: T};
 
@@ -32,7 +34,7 @@ export default class DropDown<T extends OptionType> extends React.Component<
       <Menu
         anchor={
           <Card
-            style={cardStyle}
+            style={[cardStyle, ...[this.props.style]]}
             onPress={() => this.setState({...this.state, visible: true})}>
             <Text>{this.state.selected.name}</Text>
           </Card>

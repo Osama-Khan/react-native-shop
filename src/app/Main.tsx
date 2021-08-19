@@ -2,6 +2,7 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import routes from './app.routes';
 import Icon from './components/icon';
+import styles from '../styles/styles';
 
 export default function Main(props: any) {
   const BottomTab = createBottomTabNavigator();
@@ -18,6 +19,7 @@ export default function Main(props: any) {
           {...props}
           options={{
             tabBarIcon: p => <Icon name={r.icon} {...p} />,
+            tabBarLabelStyle: styles.mb4,
           }}
         />
       ))}

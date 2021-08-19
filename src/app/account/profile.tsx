@@ -44,7 +44,7 @@ export default ({onLogout, navigation}: PropType) => {
           title="Listings"
           description="Manage your products"
           onPress={() => goto(listingsRoute.name)}
-          left={() => <List.Icon icon="clipboard-list" />}
+          left={() => <List.Icon icon="archive" />}
         />
         <List.Item
           title="Orders"
@@ -65,13 +65,13 @@ export default ({onLogout, navigation}: PropType) => {
           title="Account"
           description="Update your account information"
           onPress={() => goto(accountEditRoute.name)}
-          left={() => <List.Icon icon="account-edit" />}
+          left={() => <List.Icon icon="card-account-details" />}
         />
         <List.Item
           title="Addresses"
           description="Manage your addresses"
           onPress={() => goto(addressesRoute.name)}
-          left={() => <List.Icon icon="home-edit" />}
+          left={() => <List.Icon icon="home-group" />}
         />
         <List.Item
           title="Reviews"
