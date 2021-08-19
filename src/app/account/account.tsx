@@ -3,6 +3,7 @@ import appState from '../state/state';
 import Profile from './profile';
 import UserState from '../state/user-state';
 import Login from './login';
+import storageService from '../services/storage.service';
 
 export default class Account extends React.Component<any, any> {
   passwordRef: any;
@@ -17,6 +18,7 @@ export default class Account extends React.Component<any, any> {
       <Profile
         onLogout={() => {
           appState.user = new UserState();
+          storageService.clearUserToken();
           this.setState({...this.state});
         }}
         navigation={this.props.navigation}

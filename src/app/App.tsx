@@ -1,13 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
 import React from 'react';
 import routes from './app.routes';
 import {NavigationContainer} from '@react-navigation/native';
@@ -16,11 +6,13 @@ import {useColorScheme} from 'react-native';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {DarkTheme, DefaultTheme} from '../styles/themes/themes';
 import initializeInterceptors from './interceptors/interceptor-initializer';
+import restoreSession from './session/restore-session';
 
 const App = () => {
   const isDark = useColorScheme() === 'dark';
   const Stack = createStackNavigator();
   initializeInterceptors();
+  restoreSession();
   return (
     <PaperProvider theme={isDark ? DarkTheme : DefaultTheme}>
       <NavigationContainer theme={isDark ? DarkTheme : DefaultTheme}>

@@ -10,9 +10,11 @@ import {
 } from 'react-native-paper';
 import colors from '../../styles/colors';
 import defaultStyles from '../../styles/styles';
+import storageService from '../services/storage.service';
 import uiService from '../services/ui.service';
 import userService from '../services/user.service';
 import appState from '../state/state';
+import UserState from '../state/user-state';
 
 type PropType = {onLogin: () => void};
 type StateType = {
@@ -104,9 +106,11 @@ export default class extends React.Component<PropType, StateType> {
 
     userService
       .login(username, password)
-      .then(u => {
-        u.data.dateOfBirth = new Date(u.data.dateOfBirth);
-        appState.user = u.data;
+      .then(res => {
+        appState.user = UserState.fromJson(res.data);
+        if (this.state.remember) {
+          storageService.saveUserToken(res.data.token);
+        }
         this.setState({...this.state, loading: false});
         this.props.onLogin();
       })
