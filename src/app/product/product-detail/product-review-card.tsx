@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Image} from 'react-native';
-import {Caption, Card, IconButton, Text} from 'react-native-paper';
+import {Caption, Card, IconButton, Surface, Text} from 'react-native-paper';
+import colors from '../../../styles/colors';
 import s from '../../../styles/styles';
 import ProductRating from '../../components/product/product-rating';
 import {RatingType} from '../../models/types/product.types';
@@ -13,12 +14,25 @@ type PropType = {
   onEdit?: () => void;
 };
 
+type StateType = {
+  expanded: boolean;
+};
+
 /** Card used to display user reviews on products */
-export default class extends React.Component<PropType> {
+export default class extends React.Component<PropType, StateType> {
+  constructor(props: PropType) {
+    super(props);
+    this.state = {expanded: false};
+  }
+
   render() {
     const review = this.props.review;
     return (
-      <Card style={[s.m8]}>
+      <Card
+        style={[s.m8, s.overflowHidden]}
+        onPress={() =>
+          this.setState({...this.state, expanded: !this.state.expanded})
+        }>
         {this.props.onEdit ? (
           <IconButton
             icon="pencil"
@@ -29,8 +43,8 @@ export default class extends React.Component<PropType> {
         ) : (
           <></>
         )}
-        <View style={[s.row, s.m8]}>
-          <View style={[s.col3, s.center]}>
+        <View style={s.row}>
+          <Surface style={[s.col3, s.center, s.p8]}>
             <Image
               source={{
                 uri: review.user!.profileImage,
@@ -39,9 +53,9 @@ export default class extends React.Component<PropType> {
               }}
               style={s.rounded}
             />
-            <Text>@{review.user!.username}</Text>
-          </View>
-          <View style={[s.col9, s.p4]}>
+            <Caption>@{review.user!.username}</Caption>
+          </Surface>
+          <View style={[s.col9, s.p8]}>
             <ProductRating rating={review.stars} />
             {review.title ? (
               <Text style={s.textBold}>{review.title}</Text>
@@ -49,7 +63,11 @@ export default class extends React.Component<PropType> {
               <Caption style={s.textBold}>No Title</Caption>
             )}
             {review.description ? (
-              <Text>{review.description}</Text>
+              <Text
+                numberOfLines={this.state.expanded ? undefined : 3}
+                style={this.state.expanded ? {} : {color: colors.gray}}>
+                {review.description}
+              </Text>
             ) : (
               <Caption>No Description</Caption>
             )}
