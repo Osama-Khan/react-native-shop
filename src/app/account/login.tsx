@@ -10,7 +10,6 @@ import {
 } from 'react-native-paper';
 import colors from '../../styles/colors';
 import defaultStyles from '../../styles/styles';
-import storageService from '../services/storage.service';
 import uiService from '../services/ui.service';
 import userService from '../services/user.service';
 import appState from '../state/state';
@@ -98,19 +97,16 @@ export default class extends React.Component<PropType, StateType> {
   }
   login = () => {
     this.setState({...this.state, loading: true});
-    const {username, password} = this.state;
+    const {username, password, remember} = this.state;
     if (!username || !password) {
       ToastAndroid.show('Please fill in both fields.', ToastAndroid.SHORT);
       return;
     }
 
     userService
-      .login(username, password)
+      .login(username, password, remember)
       .then(res => {
         appState.user = UserState.fromJson(res.data);
-        if (this.state.remember) {
-          storageService.saveUserToken(res.data.token);
-        }
         this.setState({...this.state, loading: false});
         this.props.onLogin();
       })

@@ -28,7 +28,9 @@ class UserService extends ApiService {
       headers: {'Content-type': 'application/json'},
     });
     const user = res.data;
-    if (remember) storageService.saveUserToken(user.token);
+    if (remember) {
+      storageService.saveUserToken(user.token);
+    }
     return res;
   }
 
