@@ -108,7 +108,12 @@ export default class ManageReviewCard extends React.Component<
         <Button
           mode="contained"
           style={s.my8}
-          onPress={() => onPost(reviewData)}
+          onPress={() => {
+            reviewData.title = reviewData.title || review.title;
+            reviewData.description =
+              reviewData.description || review.description;
+            onPost(reviewData);
+          }}
           loading={loading}
           disabled={loading || !reviewData.stars}>
           {updating ? 'Update' : 'Post'}
