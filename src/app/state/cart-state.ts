@@ -1,5 +1,6 @@
 import CartProduct from '../models/product/cart-product';
 import {ProductType} from '../models/types/product.types';
+import storageService from '../services/storage.service';
 
 export default class CartState {
   /** The list of items in the cart */
@@ -32,6 +33,7 @@ export default class CartState {
     if (!exists) {
       this.products.push(new CartProduct(p, q));
     }
+    storageService.updateCart(this);
   };
 
   /**
@@ -43,6 +45,7 @@ export default class CartState {
     const p = this.products.filter(p => p.id !== id);
     if (p.length !== this.products.length) {
       this.products = p;
+      storageService.updateCart(this);
       return true;
     }
     return false;
@@ -53,6 +56,7 @@ export default class CartState {
    */
   clearCart = () => {
     this.products = [];
+    storageService.clearCart();
   };
 
   /**
@@ -66,6 +70,7 @@ export default class CartState {
       this.products.some((p, i) => {
         if (p.id === id) {
           this.products[i].quantity = quantity;
+          storageService.updateCart(this);
           return true;
         }
         return false;

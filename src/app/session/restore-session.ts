@@ -8,7 +8,8 @@ import appState from '../state/state';
 import UserState from '../state/user-state';
 
 export default function restoreSession() {
-  restoreUser().then(() => restoreCart());
+  restoreUser();
+  restoreCart();
 }
 
 async function restoreUser() {
@@ -30,29 +31,26 @@ async function restoreCart() {
     return;
   }
   const cart = new CartState();
-  oldCartItems.forEach(cp => {
-    promises.push(
-      productService.fetchProduct(cp.id).then(res => {
-        const product = res.data;
-        if (product.stock === 0) {
-          removedProducts.push(product);
-          return;
-        }
-        if (product.stock < cp.quantity) {
-          readjustedProducts.push(product);
-          cp.quantity = product.stock;
-        }
-        cart.addProduct(product, cp.quantity);
-      }),
-    );
-  });
-  return Promise.all(promises).then(() => {
-    if (removedProducts.length > 0 || readjustedProducts.length > 0) {
-      uiService.toast(
-        'The availability of products has changed and your cart has been readjusted accordingly.',
-        false,
-      );
+  for (const i in oldCartItems) {
+    const cp = oldCartItems[i];
+    const res = await productService.fetchProduct(cp.id);
+    const product = res.data;
+    if (product.stock === 0) {
+      removedProducts.push(product);
+      continue;
     }
-    return cart;
-  });
+    if (product.stock < cp.quantity) {
+      readjustedProducts.push(product);
+      cp.quantity = product.stock;
+    }
+    cart.addProduct(product, cp.quantity);
+  }
+  await Promise.all(promises);
+  if (removedProducts.length > 0 || readjustedProducts.length > 0) {
+    uiService.toast(
+      'The availability of products has changed and your cart has been readjusted accordingly.',
+      false,
+    );
+  }
+  appState.cart = cart;
 }
