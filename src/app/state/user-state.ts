@@ -1,6 +1,6 @@
 import {User} from '../models/user';
 
-interface IUserState extends User {
+export interface IUserState extends User {
   restoringState: boolean;
   token?: string;
 }
