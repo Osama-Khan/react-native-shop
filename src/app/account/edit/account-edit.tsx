@@ -27,6 +27,8 @@ type StateType = {
 const minimumAge = 8;
 
 export default class AccountEdit extends React.Component<any, StateType> {
+  modifiedDate: Date;
+
   constructor(props: any) {
     super(props);
     const u = appState.user;
@@ -42,6 +44,7 @@ export default class AccountEdit extends React.Component<any, StateType> {
         password: '',
       },
     };
+    this.modifiedDate = u.dateOfBirth!;
   }
 
   render() {
@@ -49,20 +52,36 @@ export default class AccountEdit extends React.Component<any, StateType> {
     const DateModal = () => (
       <Modal
         visible={this.state.dobModalShown}
-        onDismiss={() => this.setState({...this.state, dobModalShown: false})}>
-        <DatePicker
-          date={data.dateOfBirth}
-          androidVariant="nativeAndroid"
-          maximumDate={this.getMaxDate()}
-          style={s.alignCenter}
-          onDateChange={dateOfBirth =>
-            this.setState({
-              ...this.state,
-              data: {...this.state.data, dateOfBirth},
-            })
-          }
-          mode="date"
-        />
+        onDismiss={() => {
+          this.setState({
+            ...this.state,
+            dobModalShown: false,
+          });
+        }}>
+        <>
+          <DatePicker
+            date={data.dateOfBirth}
+            androidVariant="nativeAndroid"
+            maximumDate={this.getMaxDate()}
+            style={s.alignCenter}
+            onDateChange={dateOfBirth => {
+              this.modifiedDate = dateOfBirth;
+            }}
+            mode="date"
+          />
+          <Divider style={s.my8} />
+          <Button
+            style={[s.mlAuto, s.m4]}
+            onPress={() =>
+              this.setState({
+                ...this.state,
+                dobModalShown: false,
+                data: {...data, dateOfBirth: this.modifiedDate},
+              })
+            }>
+            Apply
+          </Button>
+        </>
       </Modal>
     );
     return (
