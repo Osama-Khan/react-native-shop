@@ -4,6 +4,7 @@ import UserAddresses from './addresses/user-addresses';
 import UserLikes from './user-likes';
 import UserProducts from './user-products';
 import UserReviews from './reviews/user-reviews';
+import Settings from './settings/settings';
 
 export const listingsRoute = {
   id: 'listings',
@@ -41,6 +42,12 @@ export const reviewsRoute = {
   component: UserReviews,
 };
 
+export const settingsRoute = {
+  id: 'settings',
+  name: 'Settings',
+  component: Settings,
+};
+
 export default [
   orderRoute,
   listingsRoute,
@@ -48,4 +55,5 @@ export default [
   accountEditRoute,
   addressesRoute,
   reviewsRoute,
+  settingsRoute,
 ];

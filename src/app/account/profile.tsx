@@ -11,6 +11,7 @@ import {
   listingsRoute,
   orderRoute,
   reviewsRoute,
+  settingsRoute,
 } from './account.routes';
 import appState from '../state/state';
 
@@ -81,43 +82,19 @@ export default ({onLogout, navigation}: PropType) => {
         />
         <Divider />
       </List.Section>
-      {appState.user.roles?.some(r => r.name === 'admin') ? (
-        <List.Section title="Admin Panel">
-          <List.Item
-            title="Users"
-            description="Manage Users"
-            onPress={() => {}}
-            left={() => <List.Icon icon="account-group" />}
-          />
-          <List.Item
-            title="Products"
-            description="Manage Products"
-            onPress={() => {}}
-            left={() => <List.Icon icon="archive" />}
-          />
-          <List.Item
-            title="Categories"
-            description="Manage Categories"
-            onPress={() => {}}
-            left={() => <List.Icon icon="shape" />}
-          />
-          <List.Item
-            title="Orders"
-            description="Manage Orders"
-            onPress={() => {}}
-            left={() => <List.Icon icon="receipt" />}
-          />
-          <Divider />
-        </List.Section>
-      ) : (
-        <></>
-      )}
-      <List.Item
-        title="Logout"
-        titleStyle={{color: colors.red}}
-        onPress={onLogout}
-        left={() => <List.Icon icon="power" color={colors.red} />}
-      />
+      <List.Section title="Settings">
+        <List.Item
+          title="Settings"
+          onPress={() => goto(settingsRoute.name)}
+          left={() => <List.Icon icon="cog" />}
+        />
+        <List.Item
+          title="Logout"
+          titleStyle={{color: colors.red}}
+          onPress={onLogout}
+          left={() => <List.Icon icon="power" color={colors.red} />}
+        />
+      </List.Section>
     </ScrollView>
   );
 };
