@@ -4,7 +4,11 @@ import storageService from '../services/storage.service';
 
 export default class CartState {
   /** The list of items in the cart */
-  products: CartProduct[] = [];
+  products: CartProduct[];
+
+  constructor(cartState?: CartState) {
+    this.products = cartState?.products || [];
+  }
 
   /**
    * Get total price of all products in cart
