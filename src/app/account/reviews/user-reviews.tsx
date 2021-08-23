@@ -1,7 +1,7 @@
 import React from 'react';
 import ListingComponent from '../../components/listing/listing';
 import Criteria from '../../models/criteria';
-import appState from '../../state/state';
+import {AppStateType} from '../../store/state';
 import IconMessageView from '../../components/icon-message-view/icon-message-view';
 import {RatingType} from '../../models/types/product.types';
 import productService from '../../services/product.service';
@@ -10,18 +10,19 @@ import {List} from 'react-native-paper';
 import ProductRating from '../../components/product/product-rating';
 import s from '../../../styles/styles';
 import {productDetailRoute} from '../../app.routes';
+import {connect} from 'react-redux';
 
-type P = {navigation: NavigationProp<any>};
+type P = {navigation: NavigationProp<any>; readonly userId?: number};
 type S = {updateCount: number};
 
-export default class UserReviews extends React.Component<P, S> {
+class UserReviews extends React.Component<P, S> {
   criteria: Criteria<RatingType>;
 
   constructor(props: P) {
     super(props);
     this.state = {updateCount: -1};
     this.criteria = new Criteria<RatingType>();
-    this.criteria.addFilter('user', appState.user.id!);
+    this.criteria.addFilter('user', this.props.userId!);
     this.criteria.addRelation('product');
     this.criteria.setLimit(20);
   }
@@ -76,3 +77,9 @@ export default class UserReviews extends React.Component<P, S> {
     />
   );
 }
+
+const mapStateToProps = (state: AppStateType) => {
+  return {userId: state.user.id};
+};
+
+export default connect(mapStateToProps)(UserReviews);

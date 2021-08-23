@@ -3,7 +3,6 @@ import {FAB, List} from 'react-native-paper';
 import s from '../../../styles/styles';
 import ListingComponent from '../../components/listing/listing';
 import Criteria from '../../models/criteria';
-import appState from '../../state/state';
 import IconMessageView from '../../components/icon-message-view/icon-message-view';
 import {AddressType} from '../../models/types/address.type';
 import addressService from '../../services/address.service';
@@ -12,6 +11,8 @@ import ManageModal from './manage-modal';
 import AddModal from './add-modal';
 import uiService from '../../services/ui.service';
 import settingService from '../../services/setting.service';
+import {connect} from 'react-redux';
+import {AppStateType} from '../../store/state';
 
 type S = {
   defaultId?: number;
@@ -22,13 +23,13 @@ type S = {
   selectedAddress?: number;
 };
 
-export default class UserAddresses extends React.Component<{}, S> {
+class UserAddresses extends React.Component<any, S> {
   criteria: Criteria<AddressType>;
 
-  constructor(props: {}) {
+  constructor(props: any) {
     super(props);
     this.criteria = new Criteria<AddressType>();
-    this.criteria.addFilter('user', appState.user.id!);
+    this.criteria.addFilter('user', this.props.userId!);
     this.state = {
       addVisible: false,
       manageVisible: false,
@@ -47,7 +48,7 @@ export default class UserAddresses extends React.Component<{}, S> {
           container={address => (
             <this.Item address={address} key={address.id} />
           )}
-          fetchMethod={c => addressService.getAddresses(appState.user.id!, c)}
+          fetchMethod={c => addressService.getAddresses(this.props.userId!, c)}
           criteria={this.criteria}
           padding={{bottom: 64}}
           noResultsView={() => (
@@ -86,7 +87,7 @@ export default class UserAddresses extends React.Component<{}, S> {
           visible={this.state.addVisible}
           onAdd={data => {
             addressService
-              .addAddress({user: appState.user.id!, ...data})
+              .addAddress({user: this.props.userId!, ...data})
               .then(() => {
                 this.triggerUpdate();
                 this.hideAddModal();
@@ -116,7 +117,7 @@ export default class UserAddresses extends React.Component<{}, S> {
 
   fetchDefaultAddress = () => {
     settingService
-      .getDefaultAddress(appState.user.id!)
+      .getDefaultAddress(this.props.userId!)
       .then(res => {
         this.setState({...this.state, defaultId: res.data.id});
       })
@@ -138,3 +139,9 @@ export default class UserAddresses extends React.Component<{}, S> {
     this.setState({...this.state, selectedAddress: forId, manageVisible: true});
   hideManageModal = () => this.setState({...this.state, manageVisible: false});
 }
+
+const mapStateToProps = (state: AppStateType) => {
+  return {userId: state.user.id};
+};
+
+export default connect(mapStateToProps)(UserAddresses);
