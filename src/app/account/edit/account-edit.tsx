@@ -2,14 +2,16 @@ import React from 'react';
 import {View} from 'react-native';
 import {Button, Caption, Divider, TextInput} from 'react-native-paper';
 import s from '../../../styles/styles';
-import appState from '../../state/state';
 import DatePicker from 'react-native-date-picker';
 import Modal from '../../components/modal/modal';
 import colors from '../../../styles/colors';
-import UserState from '../../state/user-state';
+import UserState from '../../store/state/user-state';
 import userService from '../../services/user.service';
 import uiService from '../../services/ui.service';
 import ImageEditor from './account-edit-image';
+import {AppStateType} from '../../store/state';
+import {connect} from 'react-redux';
+import userActions from '../../store/actions/user.actions';
 
 type UserStateEditable = Pick<
   UserState,
@@ -26,12 +28,12 @@ type StateType = {
 
 const minimumAge = 8;
 
-export default class AccountEdit extends React.Component<any, StateType> {
+class AccountEdit extends React.Component<any, StateType> {
   modifiedDate: Date;
 
   constructor(props: any) {
     super(props);
-    const u = appState.user;
+    const u = this.props.user;
     this.state = {
       dobModalShown: false,
       saving: false,
@@ -89,6 +91,7 @@ export default class AccountEdit extends React.Component<any, StateType> {
         <View style={s.center}>
           <ImageEditor
             currentImg={data.profileImage!}
+            userImage={this.props.user.profileImage}
             onPick={profileImage =>
               this.setState({...this.state, data: {...data, profileImage}})
             }
@@ -186,10 +189,10 @@ export default class AccountEdit extends React.Component<any, StateType> {
 
   isDobChanged = () =>
     this.state.data.dateOfBirth?.toDateString() !==
-    appState.user.dateOfBirth?.toDateString();
+    this.props.user.dateOfBirth?.toDateString();
 
   isFieldChanged = (fieldName: keyof UserStateEditable) =>
-    this.state.data[fieldName] !== appState.user[fieldName];
+    this.state.data[fieldName] !== this.props.user[fieldName];
 
   isPassChanged = () => this.state.data.password !== '';
 
@@ -218,10 +221,11 @@ export default class AccountEdit extends React.Component<any, StateType> {
     this.setState({...this.state, saving: true});
     const data = this.submissionData;
     userService
-      .update(appState.user.id!, data)
+      .update(this.props.user.id!, data)
       .then(res => {
-        res.data.dateOfBirth = new Date(res.data.dateOfBirth);
-        appState.user = res.data;
+        const user = UserState.fromJson(res.data);
+        user.token = this.props.user.token!;
+        this.props.dispatch(userActions.setUser(user));
       })
       .catch(() => {
         uiService.toast('Failed to save changes!');
@@ -229,3 +233,9 @@ export default class AccountEdit extends React.Component<any, StateType> {
       .finally(() => this.setState({...this.state, saving: false}));
   };
 }
+
+const mapStateToProps = (state: AppStateType) => {
+  return {user: state.user};
+};
+
+export default connect(mapStateToProps)(AccountEdit);

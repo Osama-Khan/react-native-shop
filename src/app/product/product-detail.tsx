@@ -3,12 +3,14 @@ import React from 'react';
 import {Image, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {Button, Card, Divider, ProgressBar, Surface} from 'react-native-paper';
+import {connect} from 'react-redux';
 import colors from '../../styles/colors';
 import s from '../../styles/styles';
 import ManageCartActions from '../components/cart/manage-cart-product-actions';
 import {ProductType} from '../models/types/product.types';
 import productService from '../services/product.service';
-import appState from '../state/state';
+import cartActions from '../store/actions/cart.actions';
+import {AppStateType} from '../store/state';
 import Info from './product-detail/product-info';
 import ProductLikeAction from './product-detail/product-like-action';
 import Ratings from './product-detail/product-rating';
@@ -16,18 +18,17 @@ import Reviews from './product-detail/product-reviews';
 
 type PropType = {
   id: number;
-  route: RouteProp<any, any>;
-  navigation: NavigationProp<any, any, any, any, any>;
+  route: RouteProp<any>;
+  navigation: NavigationProp<any>;
+  readonly state: AppStateType;
+  readonly dispatch: (...params: any) => any;
 };
 
 type StateType = {
   product?: ProductType;
 };
 
-export default class ProductDetail extends React.Component<
-  PropType,
-  StateType
-> {
+class ProductDetail extends React.Component<PropType, StateType> {
   constructor(props: PropType) {
     super(props);
     this.state = {product: undefined};
@@ -42,7 +43,7 @@ export default class ProductDetail extends React.Component<
 
   render() {
     const p = this.state.product;
-    const cp = p ? appState.cart.getProduct(p.id) : undefined;
+    const cp = p ? this.props.state.cart.getProduct(p.id) : undefined;
     const update = () => this.setState({...this.state});
     return p ? (
       <>
@@ -52,11 +53,11 @@ export default class ProductDetail extends React.Component<
               source={{uri: p.images![0].image, height: 240}}
               resizeMode="contain"
             />
-            {appState.user.id ? (
+            {this.props.state.user.id ? (
               <ProductLikeAction
                 style={s.bottomRight}
                 productId={p.id}
-                userId={appState.user.id}
+                userId={this.props.state.user.id}
               />
             ) : (
               <></>
@@ -98,7 +99,12 @@ export default class ProductDetail extends React.Component<
   OutOfStockAction = () => <Button color={colors.red}>Out of Stock </Button>;
 
   addToCart = () => {
-    appState.cart.addProduct(this.state.product!);
-    this.setState({...this.state});
+    this.props.dispatch(cartActions.addProduct({product: this.state.product!}));
   };
 }
+
+const mapStateToProps = (state: AppStateType) => {
+  return {state};
+};
+
+export default connect(mapStateToProps)(ProductDetail);

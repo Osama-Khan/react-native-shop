@@ -1,11 +1,12 @@
 import React from 'react';
-import appState from '../state/state';
 import Profile from './profile';
-import UserState from '../state/user-state';
 import Login from './login';
 import storageService from '../services/storage.service';
+import {AppStateType} from '../store/state';
+import {connect} from 'react-redux';
+import userActions from '../store/actions/user.actions';
 
-export default class Account extends React.Component<any, any> {
+class Account extends React.Component<any, any> {
   passwordRef: any;
 
   constructor(props: any) {
@@ -14,12 +15,11 @@ export default class Account extends React.Component<any, any> {
   }
 
   render() {
-    return appState.user.token ? (
+    return this.props.user.token ? (
       <Profile
         onLogout={() => {
-          appState.user = new UserState();
+          this.props.dispatch(userActions.clearUser());
           storageService.clearUserToken();
-          this.setState({...this.state});
         }}
         navigation={this.props.navigation}
       />
@@ -28,3 +28,9 @@ export default class Account extends React.Component<any, any> {
     );
   }
 }
+
+function mapStateToProps(state: AppStateType) {
+  return {user: state.user};
+}
+
+export default connect(mapStateToProps)(Account);

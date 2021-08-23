@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, ToastAndroid, View} from 'react-native';
+import {ToastAndroid, View} from 'react-native';
 import {
   Title,
   Text,
@@ -8,14 +8,15 @@ import {
   Switch,
   Button,
 } from 'react-native-paper';
+import {connect} from 'react-redux';
 import colors from '../../styles/colors';
-import defaultStyles from '../../styles/styles';
+import s from '../../styles/styles';
 import uiService from '../services/ui.service';
 import userService from '../services/user.service';
-import appState from '../state/state';
-import UserState from '../state/user-state';
+import userActions from '../store/actions/user.actions';
+import UserState from '../store/state/user-state';
 
-type PropType = {onLogin: () => void};
+type PropType = {onLogin: () => void; dispatch: any};
 type StateType = {
   username: string;
   password: string;
@@ -23,7 +24,7 @@ type StateType = {
   loading: boolean;
 };
 
-export default class extends React.Component<PropType, StateType> {
+class Login extends React.Component<PropType, StateType> {
   passwordRef: any;
 
   constructor(props: PropType) {
@@ -34,15 +35,15 @@ export default class extends React.Component<PropType, StateType> {
 
   render() {
     return (
-      <View style={styles.loginForm}>
-        <Title style={styles.textCenter}>Login</Title>
-        <Text style={[styles.textCenter, styles.textMuted]}>
+      <View style={[s.m8, s.flex, {justifyContent: 'center'}]}>
+        <Title style={s.textCenter}>Login</Title>
+        <Text style={[s.textCenter, s.textMuted]}>
           Please enter your account details.
         </Text>
-        <Divider style={styles.mt8} />
+        <Divider style={s.mt8} />
         <TextInput
           label="Username"
-          style={styles.mt8}
+          style={s.mt8}
           value={this.state.username}
           mode="outlined"
           onSubmitEditing={() => this.passwordRef.current.focus()}
@@ -55,7 +56,7 @@ export default class extends React.Component<PropType, StateType> {
         />
         <TextInput
           label="Password"
-          style={styles.mt8}
+          style={s.mt8}
           value={this.state.password}
           mode="outlined"
           secureTextEntry={true}
@@ -68,8 +69,8 @@ export default class extends React.Component<PropType, StateType> {
             })
           }
         />
-        <View style={[styles.m4, styles.row]}>
-          <Text style={[styles.m4, styles.mlAuto]}>Remember me</Text>
+        <View style={[s.m4, s.row]}>
+          <Text style={[s.m4, s.mlAuto]}>Remember me</Text>
           <Switch
             value={this.state.remember}
             onValueChange={remember =>
@@ -80,14 +81,14 @@ export default class extends React.Component<PropType, StateType> {
             }
           />
         </View>
-        <Button style={styles.mlAuto}>Forgot Password?</Button>
+        <Button style={s.mlAuto}>Forgot Password?</Button>
         <Button
           mode="contained"
           loading={this.state.loading}
           disabled={
             this.state.loading || !this.state.username || !this.state.password
           }
-          style={styles.mt8}
+          style={s.mt8}
           color={colors.primary}
           onPress={this.login}>
           Login
@@ -106,7 +107,8 @@ export default class extends React.Component<PropType, StateType> {
     userService
       .login(username, password, remember)
       .then(res => {
-        appState.user = UserState.fromJson(res.data);
+        const user = UserState.fromJson(res.data);
+        this.props.dispatch(userActions.setUser(user));
         this.setState({...this.state, loading: false});
         this.props.onLogin();
       })
@@ -121,11 +123,5 @@ export default class extends React.Component<PropType, StateType> {
       });
   };
 }
-const styles = StyleSheet.create({
-  ...defaultStyles,
-  loginForm: {
-    margin: 8,
-    flex: 1,
-    justifyContent: 'center',
-  },
-});
+
+export default connect()(Login);

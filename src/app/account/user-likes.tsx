@@ -7,22 +7,23 @@ import ListingComponent from '../components/listing/listing';
 import Criteria from '../models/criteria';
 import {ProductType} from '../models/types/product.types';
 import favoriteService from '../services/favorite.service';
-import appState from '../state/state';
 import colors from '../../styles/colors';
 import IconMessageView from '../components/icon-message-view/icon-message-view';
 import {FavoriteType} from '../models/types/favorite.type';
+import {connect} from 'react-redux';
+import {AppStateType} from '../store/state';
 
-type PropType = {navigation: NavigationProp<any>};
+type PropType = {navigation: NavigationProp<any>; readonly userId?: number};
 type StateType = {unliked: number[]; unliking: number[]};
 
-export default class UserLikes extends React.Component<PropType, StateType> {
+class UserLikes extends React.Component<PropType, StateType> {
   constructor(props: PropType) {
     super(props);
     this.state = {unliked: [], unliking: []};
   }
   render() {
     const criteria = new Criteria<FavoriteType>();
-    criteria.addFilter('user', appState.user.id!);
+    criteria.addFilter('user', this.props.userId);
     return (
       <ListingComponent
         container={product =>
@@ -38,7 +39,7 @@ export default class UserLikes extends React.Component<PropType, StateType> {
           )
         }
         fetchMethod={c =>
-          favoriteService.getFavoritesOfUser(appState.user.id!, c)
+          favoriteService.getFavoritesOfUser(this.props.userId!, c)
         }
         criteria={criteria}
         noResultsView={() => (
@@ -77,7 +78,7 @@ export default class UserLikes extends React.Component<PropType, StateType> {
             const unliking = [...this.state.unliking, product.id];
             this.setState({...this.state, unliking});
             favoriteService
-              .unsetFavorite(appState.user.id!, product.id)
+              .unsetFavorite(this.props.userId!, product.id)
               .then(() => {
                 const unliked = [...this.state.unliked, product.id];
                 this.setState({...this.state, unliked});
@@ -88,3 +89,8 @@ export default class UserLikes extends React.Component<PropType, StateType> {
     />
   );
 }
+
+const mapStateToProps = (state: AppStateType) => {
+  return {userId: state.user.id};
+};
+export default connect(mapStateToProps)(UserLikes);

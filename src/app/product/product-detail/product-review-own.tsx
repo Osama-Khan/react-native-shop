@@ -8,11 +8,10 @@ import {RatingType} from '../../models/types/product.types';
 import orderService from '../../services/order.service';
 import productService from '../../services/product.service';
 import uiService from '../../services/ui.service';
-import appState from '../../state/state';
 import ManageReviewCard from './manage-review-card';
 import ReviewCard from './product-review-card';
 
-type PropType = {productId: number};
+type PropType = {productId: number; userId: number};
 
 type StateType = {
   loading: boolean;
@@ -91,7 +90,7 @@ export default class OwnReview extends React.Component<PropType, StateType> {
   /** Attempts to fetch user review. If no review is found, fetches orderState. */
   fetch = () => {
     const criteria = new Criteria<RatingType>();
-    criteria.addFilter('user', appState.user.id!);
+    criteria.addFilter('user', this.props.userId);
     criteria.addFilter('product', this.props.productId);
     criteria.addRelation('user');
     productService.getRatings(criteria).then(res => {
@@ -101,7 +100,7 @@ export default class OwnReview extends React.Component<PropType, StateType> {
         return;
       }
       orderService
-        .getUserProduct(appState.user.id!, this.props.productId)
+        .getUserProduct(this.props.userId, this.props.productId)
         .then(oRes => {
           this.setState({
             ...this.state,
@@ -117,7 +116,7 @@ export default class OwnReview extends React.Component<PropType, StateType> {
     this.setState({...this.state, posting: true});
     const rating = reviewData;
     rating.product = this.props.productId;
-    rating.user = appState.user!.id;
+    rating.user = this.props.userId;
     const method = this.state.updating
       ? () => productService.editRating(this.state.review!.id, rating)
       : () => productService.addRating(rating);

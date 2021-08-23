@@ -5,7 +5,6 @@ import {BottomUpModal as Modal} from '../../components/modal';
 import addressService from '../../services/address.service';
 import settingService from '../../services/setting.service';
 import uiService from '../../services/ui.service';
-import appState from '../../state/state';
 
 type PropType = {
   visible: boolean;
@@ -20,10 +19,13 @@ type PropType = {
 
   /** ID of the address being managed */
   addressId?: number;
+
+  /** ID of the user currently logged in. Auto fetched from store. */
+  readonly userId?: number;
 };
 
 /** Modal for managing addresses */
-export default class ManageModal extends React.Component<PropType> {
+class ManageModal extends React.Component<PropType> {
   render() {
     if (!this.props.addressId) {
       return <></>;
@@ -51,7 +53,7 @@ export default class ManageModal extends React.Component<PropType> {
 
   onDefault = () => {
     settingService
-      .setDefaultAddress(appState.user.id!, this.props.addressId!)
+      .setDefaultAddress(this.props.userId!, this.props.addressId!)
       .then(() => this.props.onDefault(this.props.addressId!))
       .catch(() => uiService.toast('Could not set default address!'));
   };
@@ -62,3 +64,5 @@ export default class ManageModal extends React.Component<PropType> {
       .catch(() => uiService.toast('Could not delete address!'));
   };
 }
+
+export default ManageModal;

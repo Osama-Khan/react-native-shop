@@ -1,17 +1,21 @@
 import React from 'react';
 import s from '../../../styles/styles';
-import appState from '../../state/state';
 import colors from '../../../styles/colors';
 import Icon from '../../components/icon';
 import {View} from 'react-native';
 import ImagePicker from '../../components/image-picker/image-picker';
 
-type PropType = {currentImg: string; onPick: (img: string) => void};
-export default ({currentImg, onPick}: PropType) => {
+type PropType = {
+  currentImg: string;
+  onPick: (img: string) => void;
+  userImage: string;
+};
+
+export default ({currentImg, onPick, userImage}: PropType) => {
   return (
     <>
       <ImagePicker thumb={currentImg} onPick={onPick} />
-      {currentImg !== appState.user.profileImage ? (
+      {currentImg !== userImage ? (
         <View
           style={[
             s.topRight,

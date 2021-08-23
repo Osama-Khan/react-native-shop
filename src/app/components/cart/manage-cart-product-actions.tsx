@@ -2,67 +2,87 @@ import React from 'react';
 import {ToastAndroid, View} from 'react-native';
 import colors from '../../../styles/colors';
 import s from '../../../styles/styles';
-import appState from '../../state/state';
 import CartProduct from '../../models/product/cart-product';
 import {Button, IconButton} from 'react-native-paper';
+import {AppStateType} from '../../store/state';
+import {connect} from 'react-redux';
+import cartActions from '../../store/actions/cart.actions';
+import CartState from '../../store/state/cart-state';
 
 type PropType = {
   product: CartProduct;
   onAdd?: () => void;
   onRemove?: () => void;
+  readonly cart: CartState;
+  readonly dispatch: any;
 };
-export default ({product, ...props}: PropType) => (
-  <View style={s.row}>
-    <IconButton
-      color={colors.red}
-      style={s.center}
-      icon={product.quantity === 1 ? 'delete' : 'minus'}
-      onPress={() => {
-        removeFromCart(product.id);
-        if (props.onRemove) {
-          props.onRemove();
-        }
-      }}
-    />
-    <Button style={[s.flex, s.alignCenter]} disabled={true}>
-      {product.quantity} in cart
-    </Button>
-    <IconButton
-      color={colors.green}
-      style={s.center}
-      icon="plus"
-      onPress={() => {
-        addToCart(product);
-        if (props.onAdd) {
-          props.onAdd();
-        }
-      }}
-    />
-  </View>
-);
 
-const addToCart = (product: CartProduct) => {
-  const qty = getCartQuantity(product.id);
-  if (qty <= product.stock) {
-    appState.cart.setProductQuantity(product.id, qty + 1);
-    return;
+class ManageCartProductActions extends React.Component<PropType, any> {
+  render() {
+    const {product, onRemove, onAdd} = this.props;
+    return (
+      <View style={s.row}>
+        <IconButton
+          color={colors.red}
+          style={s.center}
+          icon={product.quantity === 1 ? 'delete' : 'minus'}
+          onPress={() => {
+            this.removeFromCart(product.id);
+            if (onRemove) {
+              onRemove();
+            }
+          }}
+        />
+        <Button style={[s.flex, s.alignCenter]} disabled={true}>
+          {product.quantity} in cart
+        </Button>
+        <IconButton
+          color={colors.green}
+          style={s.center}
+          icon="plus"
+          onPress={() => {
+            this.addToCart(product);
+            if (onAdd) {
+              onAdd();
+            }
+          }}
+        />
+      </View>
+    );
   }
-  ToastAndroid.show(
-    'No more stock available for this product!',
-    ToastAndroid.SHORT,
-  );
+
+  addToCart = (product: CartProduct) => {
+    let quantity = this.getCartQuantity(product.id);
+    if (quantity <= product.stock) {
+      quantity++;
+      const {id} = product;
+      this.props.dispatch(cartActions.setProductQuantity({id, quantity}));
+      return;
+    }
+    ToastAndroid.show(
+      'No more stock available for this product!',
+      ToastAndroid.SHORT,
+    );
+  };
+
+  removeFromCart = (id: number) => {
+    let quantity = this.getCartQuantity(id);
+    if (quantity <= 1) {
+      this.props.dispatch(cartActions.removeProduct(id));
+    } else {
+      quantity--;
+      this.props.dispatch(cartActions.setProductQuantity({id, quantity}));
+    }
+  };
+
+  getCartQuantity = (id: number): number => {
+    const prod = this.props.cart.getProduct(id);
+    return prod ? prod.quantity : 0;
+  };
+}
+
+const mapStateToProps = (state: AppStateType) => {
+  return {cart: state.cart};
 };
 
-const removeFromCart = (id: number) => {
-  const qty = getCartQuantity(id);
-  if (qty <= 1) {
-    appState.cart.removeProduct(id);
-  } else {
-    appState.cart.setProductQuantity(id, qty - 1);
-  }
-};
-
-const getCartQuantity = (id: number) => {
-  const prod = appState.cart.getProduct(id);
-  return prod ? prod.quantity : 0;
-};
+export default connect(mapStateToProps)(ManageCartProductActions);

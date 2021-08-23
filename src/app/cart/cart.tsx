@@ -1,4 +1,3 @@
-import {NavigationProp} from '@react-navigation/native';
 import React from 'react';
 import {View, Image} from 'react-native';
 import {
@@ -12,25 +11,18 @@ import {
 } from 'react-native-paper';
 import s from '../../styles/styles';
 import CartProduct from '../models/product/cart-product';
-import appState from '../state/state';
 import CartActions from '../components/cart/manage-cart-product-actions';
 import {ScrollView} from 'react-native-gesture-handler';
 import {checkoutRoute, productDetailRoute} from '../app.routes';
 import IconMessageView from '../components/icon-message-view/icon-message-view';
+import {connect} from 'react-redux';
+import {AppStateType} from '../store/state';
 
-type PropType = {navigation: NavigationProp<any>};
-export default class extends React.Component<PropType, any> {
-  constructor(props: PropType) {
-    super(props);
-    this.state = {};
-
-    // Forces update on focus
-    this.props.navigation.addListener('focus', () => this.setState({}));
-  }
-
+class Cart extends React.Component<any, any> {
   render() {
-    const products = appState.cart.products;
-    const isLoggedIn = appState.user.token;
+    const state = this.props.state as AppStateType;
+    const products = state.cart.products;
+    const isLoggedIn = state.user.token;
     return (
       <View style={s.flex}>
         <Surface style={[s.p8, s.row, s.flexWrap, s.center]}>
@@ -40,7 +32,7 @@ export default class extends React.Component<PropType, any> {
             {products.length}
           </Title>
           <Text style={[s.col6, s.textBadge, s.textPrice, s.textCenter]}>
-            Rs. {appState.cart.getTotalPrice()}
+            Rs. {state.cart.getTotalPrice()}
           </Text>
         </Surface>
         <Divider />
@@ -116,3 +108,9 @@ export default class extends React.Component<PropType, any> {
     </Card>
   );
 }
+
+function mapStateToProps(state: AppStateType) {
+  return {state};
+}
+
+export default connect(mapStateToProps)(Cart);

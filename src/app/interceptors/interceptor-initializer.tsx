@@ -1,25 +1,27 @@
-import React from 'react';
 import axios from 'axios';
 import attachTokenInterceptor from './attach-token.interceptor';
-import appState from '../state/state';
+import store from '../store';
 
 let requestInterceptors: number[] = [];
 let responseInterceptors: number[] = [];
+let listener = {unsubscribe: () => {}};
 
 /**
  * Adds the interceptors for axios request and response
  */
 export default function initializeInterceptors() {
-  resetInterceptors();
+  listener.unsubscribe();
+  listener.unsubscribe = store.subscribe(() => {
+    resetInterceptors();
+    const {token} = store.getState().user;
 
-  // Attach bearer token to header for every request if user is logged in
-  if (appState.user?.token) {
-    requestInterceptors.push(
-      axios.interceptors.request.use(
-        attachTokenInterceptor(appState.user.token),
-      ),
-    );
-  }
+    // Attach bearer token to header for every request if user is logged in
+    if (token) {
+      requestInterceptors.push(
+        axios.interceptors.request.use(attachTokenInterceptor(token)),
+      );
+    }
+  });
 }
 
 /** Clears any previously set interceptors */

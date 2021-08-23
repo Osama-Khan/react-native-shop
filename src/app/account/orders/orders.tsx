@@ -13,7 +13,6 @@ import s from '../../../styles/styles';
 import Modal from '../../components/modal/modal';
 import Criteria from '../../models/criteria';
 import {OrderType} from '../../models/types/order.types';
-import appState from '../../state/state';
 import orderRoutes from './order.routes';
 import colors from '../../../styles/colors';
 import ListingComponent from '../../components/listing/listing';
@@ -21,6 +20,8 @@ import orderService from '../../services/order.service';
 import OrderCard from './order-card';
 import IconMessageView from '../../components/icon-message-view/icon-message-view';
 import ListSelect from '../../components/list-select';
+import {connect} from 'react-redux';
+import {AppStateType} from '../../store/state';
 
 type StateType = {
   navIndex: number;
@@ -32,7 +33,7 @@ type FilterType = {
   orderDir: 'ASC' | 'DESC';
 };
 
-export default class extends React.Component<any, StateType> {
+class Orders extends React.Component<any, StateType> {
   filters: FilterType = {
     orderBy: 'updatedAt',
     orderDir: 'DESC',
@@ -188,9 +189,15 @@ export default class extends React.Component<any, StateType> {
     }
     criteria.addRelation('orderProducts');
     criteria.addRelation('orderState');
-    criteria.addFilter('user', appState.user.id!);
+    criteria.addFilter('user', this.props.userId!);
     criteria.setOrderBy(this.filters.orderBy);
     criteria.setOrderDir(this.filters.orderDir);
     return criteria;
   };
 }
+
+const mapStateToProps = (state: AppStateType) => {
+  return {userId: state.user.id};
+};
+
+export default connect(mapStateToProps)(Orders);

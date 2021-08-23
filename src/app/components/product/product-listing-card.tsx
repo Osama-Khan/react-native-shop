@@ -4,31 +4,24 @@ import {Text, Card, Divider, Caption, IconButton} from 'react-native-paper';
 import appStyle from '../../../styles/styles';
 import Rating from './product-rating';
 import colors from '../../../styles/colors';
-import appState from '../../state/state';
 import {ProductType} from '../../models/types/product.types';
 import {NavigationProp} from '@react-navigation/native';
 import {productDetailRoute} from '../../app.routes';
 import CartActions from '../cart/manage-cart-product-actions';
 import Icon from '../icon';
+import {connect} from 'react-redux';
+import CartState from '../../store/state/cart-state';
+import cartActions from '../../store/actions/cart.actions';
+import {AppStateType} from '../../store/state';
 
 type PropType = {
   product: ProductType;
   navigation: NavigationProp<any>;
+  readonly cart: CartState;
+  readonly dispatch: (...params: any) => any;
 };
-type StateType = {};
 
-export default class extends React.Component<PropType, StateType> {
-  constructor(props: PropType) {
-    super(props);
-    this.state = {};
-
-    // Add listener to update state when component gets focus
-    this.props.navigation.addListener('focus', () => {
-      const cp = appState.cart.getProduct(props.product.id);
-      this.setState({inCart: cp ? cp.quantity : 0});
-    });
-  }
-
+class ProductListingCard extends React.Component<PropType> {
   render() {
     const product = this.props.product;
     const outOfStock = product.stock === 0;
@@ -52,7 +45,7 @@ export default class extends React.Component<PropType, StateType> {
             style={s.img}
             resizeMode="contain"
           />
-          <View style={s.content}>
+          <View style={[s.p8, s.col9]}>
             <Text numberOfLines={2} style={s.textBold}>
               {product.title}
             </Text>
@@ -86,7 +79,7 @@ export default class extends React.Component<PropType, StateType> {
 
   CartAction = () => {
     const product = this.props.product;
-    const cp = appState.cart.getProduct(product.id);
+    const cp = this.props.cart.getProduct(product.id);
     return cp ? (
       <CartActions
         product={cp}
@@ -100,8 +93,7 @@ export default class extends React.Component<PropType, StateType> {
         style={[s.col12, s.mAuto]}
         color={product.stock === 0 ? colors.gray : colors.green}
         onPress={() => {
-          appState.cart.addProduct(product);
-          this.setState({});
+          this.props.dispatch(cartActions.addProduct({product}));
         }}
         disabled={product.stock === 0}
         icon={product.stock === 0 ? 'cart-off' : 'cart-plus'}
@@ -114,5 +106,9 @@ const s = StyleSheet.create({
   ...appStyle,
   imgBg: {width: '25%', height: '100%', position: 'absolute', left: 0},
   img: {width: '25%', minHeight: 64},
-  content: {padding: 8, width: '75%'},
 });
+
+const mapStateToProps = (state: AppStateType) => {
+  return {cart: state.cart};
+};
+export default connect(mapStateToProps)(ProductListingCard);

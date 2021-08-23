@@ -1,4 +1,4 @@
-import CartState from '../../state/cart-state';
+import {CartState} from '../state';
 import {ActionType} from '../actions/action.type';
 
 const initialState = new CartState();
