@@ -27,9 +27,6 @@ export default class Search extends React.Component<PropType, StateType> {
     super(props);
     this.state = {query: '', showFilters: false};
     this.searchBarRef = createRef();
-    props.navigation.addListener('focus', () => {
-      this.searchBarRef.current?.focus();
-    });
   }
 
   render() {

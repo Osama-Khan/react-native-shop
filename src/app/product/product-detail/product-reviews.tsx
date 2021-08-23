@@ -6,11 +6,13 @@ import s from '../../../styles/styles';
 import {ProductType, RatingType} from '../../models/types/product.types';
 import productService from '../../services/product.service';
 import Criteria from '../../models/criteria';
-import appState from '../../state/state';
 import OwnReview from './product-review-own';
 import ReviewCard from './product-review-card';
+import {AppStateType} from '../../store/state';
+import {connect} from 'react-redux';
+import UserState from '../../store/state/user-state';
 
-type PropType = {product: ProductType};
+type PropType = {product: ProductType; readonly user: UserState};
 type StateType = {
   reviews?: RatingType[];
   meta?: any;
@@ -18,7 +20,7 @@ type StateType = {
   loading?: boolean;
 };
 
-export default class extends React.Component<PropType, StateType> {
+class ProductReviews extends React.Component<PropType, StateType> {
   page = 1;
   constructor(props: PropType) {
     super(props);
@@ -38,10 +40,13 @@ export default class extends React.Component<PropType, StateType> {
         <Title>
           <Icon name="account-star" size={22} /> User Reviews
         </Title>
-        {appState.user.token ? (
+        {this.props.user.token ? (
           <>
             <Caption>Your review</Caption>
-            <OwnReview productId={this.props.product.id} />
+            <OwnReview
+              productId={this.props.product.id}
+              userId={this.props.user.id!}
+            />
             <Caption>Other reviews</Caption>
           </>
         ) : (
@@ -84,7 +89,7 @@ export default class extends React.Component<PropType, StateType> {
   fetchReviews = () => {
     this.setState({...this.state, loading: true});
     // Filter out own review
-    this.state.criteria.addFilter('user', appState.user.id, '!=');
+    this.state.criteria.addFilter('user', this.props.user.id, '!=');
     productService.getRatings(this.state.criteria).then(res => {
       let reviews = this.state.reviews || [];
       reviews = reviews.concat(res.data.data);
@@ -97,3 +102,9 @@ export default class extends React.Component<PropType, StateType> {
     });
   };
 }
+
+const mapStateToProps = (state: AppStateType) => {
+  return {user: state.user};
+};
+
+export default connect(mapStateToProps)(ProductReviews);
