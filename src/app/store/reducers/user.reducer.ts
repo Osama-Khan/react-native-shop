@@ -1,4 +1,4 @@
-import UserState from '../../state/user-state';
+import {UserState} from '../state';
 import {ActionType} from '../actions/action.type';
 
 const initialState = new UserState();

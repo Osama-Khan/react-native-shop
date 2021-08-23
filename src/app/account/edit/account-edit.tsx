@@ -6,7 +6,7 @@ import appState from '../../state/state';
 import DatePicker from 'react-native-date-picker';
 import Modal from '../../components/modal/modal';
 import colors from '../../../styles/colors';
-import UserState from '../../state/user-state';
+import UserState from '../../store/state/user-state';
 import userService from '../../services/user.service';
 import uiService from '../../services/ui.service';
 import ImageEditor from './account-edit-image';

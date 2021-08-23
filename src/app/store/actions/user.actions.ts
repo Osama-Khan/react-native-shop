@@ -1,4 +1,4 @@
-import {IUserState} from '../../state/user-state';
+import {IUserState} from '../state/user-state';
 import {ActionType} from './action.type';
 
 type SetUserPayloadType = IUserState;

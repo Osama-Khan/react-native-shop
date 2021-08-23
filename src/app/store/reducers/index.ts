@@ -1,5 +1,4 @@
-import CartState from '../../state/cart-state';
-import UserState from '../../state/user-state';
+import {CartState, UserState} from '../state';
 import {ActionType} from '../actions/action.type';
 import CartReducer from './cart.reducer';
 import UserReducer from './user.reducer';

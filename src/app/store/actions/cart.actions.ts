@@ -1,5 +1,5 @@
 import {ProductType} from '../../models/types/product.types';
-import CartState from '../../state/cart-state';
+import CartState from '../state/cart-state';
 import {ActionType} from './action.type';
 
 type SetPayloadType = CartState;

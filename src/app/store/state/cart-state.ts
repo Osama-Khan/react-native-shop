@@ -1,6 +1,6 @@
-import CartProduct from '../models/product/cart-product';
-import {ProductType} from '../models/types/product.types';
-import storageService from '../services/storage.service';
+import CartProduct from '../../models/product/cart-product';
+import {ProductType} from '../../models/types/product.types';
+import storageService from '../../services/storage.service';
 
 export default class CartState {
   /** The list of items in the cart */
