@@ -1,14 +1,16 @@
 import React from 'react';
 import {createRef} from 'react';
 import {List, Menu, ProgressBar} from 'react-native-paper';
+import {connect} from 'react-redux';
 import {AddressType} from '../models/types/address.type';
 import addressService from '../services/address.service';
 import settingService from '../services/setting.service';
 import uiService from '../services/ui.service';
-import appState from '../state/state';
+import {AppStateType} from '../store/state';
 
 type PropType = {
   onSelectAddress: (address: AddressType) => void;
+  readonly userId?: number;
 };
 
 type StateType = {
@@ -18,7 +20,7 @@ type StateType = {
   menuOpen: boolean;
 };
 
-export default class extends React.Component<PropType, StateType> {
+class Shipping extends React.Component<PropType, StateType> {
   editAddressRef: any;
 
   constructor(props: PropType) {
@@ -27,10 +29,10 @@ export default class extends React.Component<PropType, StateType> {
     this.editAddressRef = createRef();
   }
   componentDidMount() {
-    const user = appState.user.id;
+    const user = this.props.userId;
     if (user) {
       settingService
-        .getDefaultAddress(user.toString())
+        .getDefaultAddress(user)
         .then(setRes => {
           this.changeAddress(setRes.data);
         })
@@ -97,3 +99,9 @@ export default class extends React.Component<PropType, StateType> {
       .catch(() => uiService.toast('Failed to fetch address'));
   };
 }
+
+const mapStateToProps = (state: AppStateType) => {
+  return {userId: state.user.id};
+};
+
+export default connect(mapStateToProps)(Shipping);
