@@ -14,6 +14,7 @@ import settingService from '../../services/setting.service';
 import {connect} from 'react-redux';
 import {AppStateType} from '../../store/state';
 
+type P = {readonly userId?: number};
 type S = {
   defaultId?: number;
   addVisible: boolean;
@@ -23,7 +24,7 @@ type S = {
   selectedAddress?: number;
 };
 
-class UserAddresses extends React.Component<any, S> {
+class UserAddresses extends React.Component<P, S> {
   criteria: Criteria<AddressType>;
 
   constructor(props: any) {
@@ -82,6 +83,7 @@ class UserAddresses extends React.Component<any, S> {
             this.hideManageModal();
           }}
           addressId={this.state.selectedAddress}
+          userId={this.props.userId}
         />
         <AddModal
           visible={this.state.addVisible}
