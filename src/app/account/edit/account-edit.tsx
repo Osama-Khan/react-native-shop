@@ -222,9 +222,8 @@ class AccountEdit extends React.Component<any, StateType> {
     const data = this.submissionData;
     userService
       .update(this.props.user.id!, data)
-      .then(res => {
-        const user = UserState.fromJson(res.data);
-        user.token = this.props.user.token!;
+      .then(() => {
+        const user = {...this.props.user, ...data};
         this.props.dispatch(userActions.setUser(user));
       })
       .catch(() => {
