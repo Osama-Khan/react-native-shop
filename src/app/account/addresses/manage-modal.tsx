@@ -20,8 +20,8 @@ type PropType = {
   /** ID of the address being managed */
   addressId?: number;
 
-  /** ID of the user currently logged in. Auto fetched from store. */
-  readonly userId?: number;
+  /** ID of the user currently logged in */
+  userId?: number;
 };
 
 /** Modal for managing addresses */
