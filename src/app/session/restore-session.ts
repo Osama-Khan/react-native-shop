@@ -3,9 +3,11 @@ import productService from '../services/product.service';
 import storageService from '../services/storage.service';
 import uiService from '../services/ui.service';
 import userService from '../services/user.service';
-import CartState from '../state/cart-state';
-import appState from '../state/state';
-import UserState from '../state/user-state';
+import CartState from '../store/state/cart-state';
+import UserState from '../store/state/user-state';
+import store from '../store';
+import cartActions from '../store/actions/cart.actions';
+import userActions from '../store/actions/user.actions';
 
 export default function restoreSession() {
   restoreUser();
@@ -16,8 +18,9 @@ async function restoreUser() {
   const token = await storageService.loadUserToken();
   if (token) {
     const res = await userService.loginWithToken(token);
-    appState.user = UserState.fromJson(res.data);
-    appState.user.token = token;
+    const user = UserState.fromJson(res.data);
+    user.token = token;
+    store.dispatch(userActions.setUser(UserState.fromJson(user)));
   }
 }
 
@@ -52,5 +55,5 @@ async function restoreCart() {
       false,
     );
   }
-  appState.cart = cart;
+  store.dispatch(cartActions.setCart(cart));
 }
