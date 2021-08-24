@@ -1,9 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CartState from '../store/state/cart-state';
+import themeService from './theme.service';
 
 class StorageService {
   tokenKey = 'user-token';
   cartKey = 'cart';
+  themeKey = 'theme';
 
   /**
    * Saves the given token in localStorage
@@ -52,6 +54,20 @@ class StorageService {
       });
     }
     return [];
+  };
+
+  /** Gets currently set theme. null if device theme. */
+  getUserTheme = async () =>
+    (await AsyncStorage.getItem(this.themeKey)) as 'light' | 'dark' | null;
+
+  /** Sets current theme to light or dark */
+  setUserTheme = async (theme: 'light' | 'dark') => {
+    await AsyncStorage.setItem(this.themeKey, theme);
+  };
+
+  /** Clears currently set theme */
+  clearUserTheme = async () => {
+    await AsyncStorage.removeItem(this.themeKey);
   };
 }
 
