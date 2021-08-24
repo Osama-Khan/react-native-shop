@@ -26,7 +26,7 @@ export default function BottomUpModal(props: ModalPropType) {
 const bgGradient = (
   <Svg width="100%" height="100%">
     <Defs>
-      <LinearGradient id="grad" x1="0.2" y1="1" x2="0.5" y2="-0.5">
+      <LinearGradient id="grad" x1="0" y1="1" x2="0" y2="0">
         <Stop offset="0" stopColor="#000" stopOpacity="1" />
         <Stop offset="1" stopColor="#0000" stopOpacity="0" />
       </LinearGradient>
