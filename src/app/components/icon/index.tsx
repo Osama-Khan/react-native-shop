@@ -5,7 +5,7 @@ import colors from '../../../styles/colors';
 import themeService from '../../services/theme.service';
 
 export default (props: IconProps) => {
-  const theme = themeService.getCurrentTheme();
+  const theme = themeService.currentTheme;
   const color = theme === 'dark' ? colors.white : colors.dark;
   return <Icon {...props} color={props.color || color} />;
 };
