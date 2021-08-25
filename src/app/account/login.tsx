@@ -108,9 +108,9 @@ class Login extends React.Component<PropType, StateType> {
       .login(username, password, remember)
       .then(res => {
         const user = UserState.fromJson(res.data);
-        this.props.dispatch(userActions.setUser(user));
         this.setState({...this.state, loading: false});
         this.props.onLogin();
+        this.props.dispatch(userActions.setUser(user));
       })
       .catch(e => {
         const rc = e.response.status;
