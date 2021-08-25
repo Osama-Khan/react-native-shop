@@ -12,6 +12,7 @@ import ImageEditor from './account-edit-image';
 import {AppStateType} from '../../store/state';
 import {connect} from 'react-redux';
 import userActions from '../../store/actions/user.actions';
+import themeService from '../../services/theme.service';
 
 type UserStateEditable = Pick<
   UserState,
@@ -63,7 +64,11 @@ class AccountEdit extends React.Component<any, StateType> {
         <>
           <DatePicker
             date={data.dateOfBirth}
-            androidVariant="nativeAndroid"
+            androidVariant={
+              themeService.currentTheme === 'dark'
+                ? 'nativeAndroid'
+                : 'iosClone'
+            }
             maximumDate={this.getMaxDate()}
             style={s.alignCenter}
             onDateChange={dateOfBirth => {
