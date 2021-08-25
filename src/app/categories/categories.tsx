@@ -2,6 +2,7 @@ import React from 'react';
 import {ScrollView} from 'react-native';
 import {ProgressBar, List} from 'react-native-paper';
 import styles from '../../styles/styles';
+import {categoryProductRoute} from '../app.routes';
 import Criteria from '../models/criteria';
 import {CategoryType} from '../models/types/category.type';
 import categoryService from '../services/category.service';
@@ -54,7 +55,11 @@ export default class Categories extends React.Component<any, any> {
               title={c.name}
               key={c.id}
               left={icon}
-              onPress={() => {}}
+              onPress={() => {
+                this.props.navigation.navigate(categoryProductRoute.name, {
+                  category: c,
+                });
+              }}
             />
           );
         })}

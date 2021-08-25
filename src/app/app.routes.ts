@@ -7,12 +7,19 @@ import Checkout from './checkout/checkout';
 import ProductDetail from './product/product-detail';
 import Search from './search/search';
 import accountRoutes from './account/account.routes';
+import CategoryProducts from './categories/category-products';
 
 export const mainRoute = {
   id: 'main',
   name: 'Main',
   component: Main,
   options: {headerShown: false},
+};
+
+export const categoryProductRoute = {
+  id: 'category-product',
+  name: 'Category Product',
+  component: CategoryProducts,
 };
 
 export const productDetailRoute = {
@@ -60,7 +67,13 @@ const routes = {
       component: Account,
     },
   ],
-  stackNav: [mainRoute, productDetailRoute, checkoutRoute, ...accountRoutes],
+  stackNav: [
+    mainRoute,
+    productDetailRoute,
+    checkoutRoute,
+    ...accountRoutes,
+    categoryProductRoute,
+  ],
 };
 
 export default routes;

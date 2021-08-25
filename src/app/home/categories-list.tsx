@@ -7,6 +7,7 @@ import {CategoryType} from '../models/types/category.type';
 import categoryService from '../services/category.service';
 import Icon from '../components/icon';
 import {icons} from '../categories/categories.helper';
+import {categoryProductRoute} from '../app.routes';
 
 type P = {navigation: NavigationProp<any>};
 type S = {categories?: CategoryType[]};
@@ -33,6 +34,9 @@ export default class CategoriesList extends React.Component<P, S> {
             {this.state.categories.map(c => (
               <this.CategoryCard
                 key={c.id}
+                onPress={() =>
+                  navigate(categoryProductRoute.name, {category: c})
+                }
                 name={c.name}
                 icon={icons[c.name.toLowerCase()]}
               />
