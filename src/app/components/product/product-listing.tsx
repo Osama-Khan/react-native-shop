@@ -15,7 +15,7 @@ type PropType = {
   fetchMethod?: (criteria?: Criteria<ProductType>) => ResponseType;
   noResultsView?: () => React.ReactElement;
 };
-export default class extends React.Component<PropType> {
+export default class ProductListing extends React.Component<PropType> {
   render() {
     return (
       <ListingComponent

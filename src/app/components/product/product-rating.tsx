@@ -6,7 +6,7 @@ import s from '../../../styles/styles';
 import Icon from '../icon';
 
 type PropType = ViewProps & {rating?: number; iconSize?: number};
-export default ({rating, iconSize, ...props}: PropType) => {
+export default function ProductRating({rating, iconSize, ...props}: PropType) {
   const starsEl = [];
   const color = rating ? colors.yellow : colors.gray;
   const iProps = {color, size: iconSize};
@@ -37,4 +37,4 @@ export default ({rating, iconSize, ...props}: PropType) => {
       {starsEl}
     </View>
   );
-};
+}

@@ -3,6 +3,7 @@ import {ScrollView} from 'react-native';
 import {ProgressBar, List} from 'react-native-paper';
 import styles from '../../styles/styles';
 import Criteria from '../models/criteria';
+import {CategoryType} from '../models/types/category.type';
 import categoryService from '../services/category.service';
 import {getChildrenOf, icons} from './categories.helper';
 
@@ -35,7 +36,7 @@ export default class Categories extends React.Component<any, any> {
     );
   }
 
-  CategoryList = ({categories, level = 0}) => {
+  CategoryList = ({categories}: {categories: CategoryType[]}) => {
     return (
       <List.AccordionGroup>
         {categories.map((c: any) => {
@@ -45,7 +46,7 @@ export default class Categories extends React.Component<any, any> {
           return c.childCategories?.length > 0 ? (
             <List.Accordion id={c.id} key={c.id} title={c.name} left={icon}>
               {this.CategoryList({
-                categories: getChildrenOf(c, this.state.categories),
+                categories: getChildrenOf(c.id, this.state.categories),
               })}
             </List.Accordion>
           ) : (
@@ -61,6 +62,6 @@ export default class Categories extends React.Component<any, any> {
     );
   };
 
-  getRootCategories = (categories: any[]) =>
+  getRootCategories = (categories: CategoryType[]) =>
     categories?.filter(c => !c.parentCategory);
 }
