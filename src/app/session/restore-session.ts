@@ -17,7 +17,21 @@ export default function restoreSession() {
 async function restoreUser() {
   const token = await storageService.loadUserToken();
   if (token) {
-    const res = await userService.loginWithToken(token);
+    let res;
+    try {
+      res = await userService.loginWithToken(token);
+    } catch (e) {
+      const code = e.response.code;
+      if (code === 401) {
+        uiService.toast('Your session has expired. Please login again.');
+      } else {
+        uiService.toast(
+          "We couldn't restore your session. Please login again.",
+        );
+      }
+      storageService.clearUserToken();
+      return;
+    }
     const user = UserState.fromJson(res.data);
     user.token = token;
     store.dispatch(userActions.setUser(UserState.fromJson(user)));
