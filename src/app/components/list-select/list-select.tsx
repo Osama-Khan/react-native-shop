@@ -5,10 +5,9 @@ import s from '../../../styles/styles';
 import Icon from '../icon';
 import BottomUpModal from '../modal/bottom-up-modal';
 
-type OptionType = {
+export type OptionType = {
   name: string;
   value: string;
-  key?: string;
   icon?: string;
   disabled?: boolean;
   selected?: boolean;
@@ -61,7 +60,7 @@ export default class ListSelect<T extends OptionType> extends Component<
                   <></>
                 )
               }
-              key={o.key || i}
+              key={o.value || i}
             />
           ))}
         </BottomUpModal>
