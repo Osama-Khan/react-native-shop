@@ -2,8 +2,16 @@ import {NavigationProp, RouteProp} from '@react-navigation/native';
 import React from 'react';
 import {Image, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
-import {Button, Card, Divider, ProgressBar, Surface} from 'react-native-paper';
+import {
+  Button,
+  Card,
+  Divider,
+  IconButton,
+  ProgressBar,
+  Surface,
+} from 'react-native-paper';
 import {connect} from 'react-redux';
+import Icon from '../components/icon';
 import colors from '../../styles/colors';
 import s from '../../styles/styles';
 import ManageCartActions from '../components/cart/manage-cart-product-actions';
@@ -26,12 +34,15 @@ type PropType = {
 
 type StateType = {
   product?: ProductType;
+
+  /** Index of the currently active image in the slideshow */
+  activeIndex: number;
 };
 
 class ProductDetail extends React.Component<PropType, StateType> {
   constructor(props: PropType) {
     super(props);
-    this.state = {product: undefined};
+    this.state = {activeIndex: 0};
   }
 
   componentDidMount() {
@@ -50,9 +61,54 @@ class ProductDetail extends React.Component<PropType, StateType> {
         <ScrollView>
           <Surface>
             <Image
-              source={{uri: p.images![0].image, height: 240}}
+              source={{
+                uri: p.images![this.state.activeIndex].image,
+                height: 240,
+              }}
               resizeMode="contain"
             />
+
+            <IconButton
+              style={[s.left, {marginTop: 100}]}
+              onPress={() => {
+                let activeIndex = this.state.activeIndex;
+                if (--activeIndex < 0) {
+                  activeIndex = p.images!.length - 1;
+                }
+                this.setState({...this.state, activeIndex});
+              }}
+              icon="arrow-left-circle"
+            />
+            <IconButton
+              style={[s.right, {marginTop: 100}]}
+              onPress={() => {
+                let activeIndex = this.state.activeIndex;
+                if (++activeIndex >= p.images!.length) {
+                  activeIndex = 0;
+                }
+                this.setState({...this.state, activeIndex});
+              }}
+              icon="arrow-right-circle"
+            />
+            <View
+              style={[
+                s.bottom,
+                s.row,
+                s.center,
+                s.col12,
+                {backgroundColor: colors.blackTransparent},
+              ]}>
+              {p.images?.map((img, i) => (
+                <Icon
+                  key={img.id}
+                  name={
+                    this.state.activeIndex === i ? 'circle' : 'circle-outline'
+                  }
+                  onPress={() => this.setState({...this.state, activeIndex: i})}
+                />
+              ))}
+            </View>
+
             {this.props.state.user.id ? (
               <ProductLikeAction
                 style={s.bottomRight}
