@@ -37,6 +37,10 @@ export default class Categories extends React.Component<any, any> {
     );
   }
 
+  /** Navigates to Category Products with the given category as navigation param */
+  navigateTo = (category: CategoryType) =>
+    this.props.navigation.navigate(categoryProductRoute.name, {category});
+
   CategoryList = ({categories}: {categories: CategoryType[]}) => {
     return (
       <List.AccordionGroup>
@@ -45,7 +49,12 @@ export default class Categories extends React.Component<any, any> {
             <List.Icon icon={icons[c.name.toLowerCase()]} style={styles.m0} />
           );
           return c.childCategories?.length > 0 ? (
-            <List.Accordion id={c.id} key={c.id} title={c.name} left={icon}>
+            <List.Accordion
+              id={c.id}
+              key={c.id}
+              title={c.name}
+              left={icon}
+              onLongPress={() => this.navigateTo(c)}>
               {this.CategoryList({
                 categories: getChildrenOf(c.id, this.state.categories),
               })}
@@ -55,11 +64,7 @@ export default class Categories extends React.Component<any, any> {
               title={c.name}
               key={c.id}
               left={icon}
-              onPress={() => {
-                this.props.navigation.navigate(categoryProductRoute.name, {
-                  category: c,
-                });
-              }}
+              onPress={() => this.navigateTo(c)}
             />
           );
         })}
