@@ -10,6 +10,7 @@ import {Provider as ReduxProvider} from 'react-redux';
 import store from './store';
 import themeService from './services/theme.service';
 import colors from '../styles/colors';
+import {StatusBar} from 'react-native';
 
 class App extends React.Component<any, any> {
   constructor(props: any) {
@@ -28,6 +29,9 @@ class App extends React.Component<any, any> {
     restoreSession();
     return (
       <ReduxProvider store={store}>
+        <StatusBar
+          backgroundColor={isDark ? colors.black : colors.primaryDark}
+        />
         <PaperProvider theme={isDark ? DarkTheme : DefaultTheme}>
           <NavigationContainer theme={isDark ? DarkTheme : DefaultTheme}>
             <Stack.Navigator screenOptions={this.screenOptions}>
