@@ -1,6 +1,13 @@
 import React from 'react';
 import {Image, StyleSheet, View} from 'react-native';
-import {Text, Card, Divider, Caption, IconButton} from 'react-native-paper';
+import {
+  Text,
+  Card,
+  Divider,
+  Caption,
+  IconButton,
+  Surface,
+} from 'react-native-paper';
 import appStyle from '../../../styles/styles';
 import Rating from './product-rating';
 import colors from '../../../styles/colors';
@@ -35,11 +42,7 @@ class ProductListingCard extends React.Component<PropType> {
         }
         {...this.props}>
         <View style={s.row}>
-          <Image
-            source={{uri: product.images![0].image}}
-            style={s.imgBg}
-            blurRadius={12}
-          />
+          <View style={[s.img, s.imgBg]} />
           <Image
             source={{uri: product.images![0].image}}
             style={s.img}
@@ -104,7 +107,12 @@ class ProductListingCard extends React.Component<PropType> {
 
 const s = StyleSheet.create({
   ...appStyle,
-  imgBg: {width: '25%', height: '100%', position: 'absolute', left: 0},
+  imgBg: {
+    height: '100%',
+    position: 'absolute',
+    left: 0,
+    backgroundColor: '#fff',
+  },
   img: {width: '25%', minHeight: 64},
 });
 
