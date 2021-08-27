@@ -1,17 +1,9 @@
 import {NavigationProp, RouteProp} from '@react-navigation/native';
 import React from 'react';
-import {Image, View} from 'react-native';
+import {View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
-import {
-  Button,
-  Card,
-  Divider,
-  IconButton,
-  ProgressBar,
-  Surface,
-} from 'react-native-paper';
+import {Button, Divider, ProgressBar, Surface} from 'react-native-paper';
 import {connect} from 'react-redux';
-import Icon from '../components/icon';
 import colors from '../../styles/colors';
 import s from '../../styles/styles';
 import ManageCartActions from '../components/cart/manage-cart-product-actions';
@@ -20,9 +12,9 @@ import productService from '../services/product.service';
 import cartActions from '../store/actions/cart.actions';
 import {AppStateType} from '../store/state';
 import Info from './product-detail/product-info';
-import ProductLikeAction from './product-detail/product-like-action';
 import Ratings from './product-detail/product-rating';
 import Reviews from './product-detail/product-reviews';
+import ProductImageSlideshow from './product-detail/product-image-slideshow';
 
 type PropType = {
   id: number;
@@ -34,16 +26,10 @@ type PropType = {
 
 type StateType = {
   product?: ProductType;
-
-  /** Index of the currently active image in the slideshow */
-  activeIndex: number;
 };
 
 class ProductDetail extends React.Component<PropType, StateType> {
-  constructor(props: PropType) {
-    super(props);
-    this.state = {activeIndex: 0};
-  }
+  state: StateType = {};
 
   componentDidMount() {
     productService.fetchProduct(this.props.route.params!.id).then(res => {
@@ -60,64 +46,10 @@ class ProductDetail extends React.Component<PropType, StateType> {
       <>
         <ScrollView>
           <Surface>
-            <Image
-              source={{
-                uri: p.images![this.state.activeIndex].image,
-                height: 240,
-              }}
-              resizeMode="contain"
+            <ProductImageSlideshow
+              product={p}
+              userId={this.props.state.user.id!}
             />
-
-            <IconButton
-              style={[s.left, {marginTop: 100}]}
-              onPress={() => {
-                let activeIndex = this.state.activeIndex;
-                if (--activeIndex < 0) {
-                  activeIndex = p.images!.length - 1;
-                }
-                this.setState({...this.state, activeIndex});
-              }}
-              icon="arrow-left-circle"
-            />
-            <IconButton
-              style={[s.right, {marginTop: 100}]}
-              onPress={() => {
-                let activeIndex = this.state.activeIndex;
-                if (++activeIndex >= p.images!.length) {
-                  activeIndex = 0;
-                }
-                this.setState({...this.state, activeIndex});
-              }}
-              icon="arrow-right-circle"
-            />
-            <View
-              style={[
-                s.bottom,
-                s.row,
-                s.center,
-                s.col12,
-                {backgroundColor: colors.blackTransparent},
-              ]}>
-              {p.images?.map((img, i) => (
-                <Icon
-                  key={img.id}
-                  name={
-                    this.state.activeIndex === i ? 'circle' : 'circle-outline'
-                  }
-                  onPress={() => this.setState({...this.state, activeIndex: i})}
-                />
-              ))}
-            </View>
-
-            {this.props.state.user.id ? (
-              <ProductLikeAction
-                style={s.bottomRight}
-                productId={p.id}
-                userId={this.props.state.user.id}
-              />
-            ) : (
-              <></>
-            )}
           </Surface>
           <View style={s.m8}>
             <Info product={p} />
