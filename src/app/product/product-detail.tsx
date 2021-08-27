@@ -76,7 +76,6 @@ class ProductDetail extends React.Component<PropType, StateType> {
     <Button
       style={s.roundedNone}
       mode="contained"
-      color={colors.green}
       onPress={this.addToCart}
       icon="cart-plus">
       Add to Cart
