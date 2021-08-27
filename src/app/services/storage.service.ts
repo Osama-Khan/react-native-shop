@@ -63,13 +63,11 @@ class StorageService {
   /** Sets current theme to light or dark */
   setUserTheme = async (theme: 'light' | 'dark') => {
     await AsyncStorage.setItem(this.themeKey, theme);
-    themeService.setTheme(theme);
   };
 
   /** Clears currently set theme */
   clearUserTheme = async () => {
     await AsyncStorage.removeItem(this.themeKey);
-    themeService.setTheme(null);
   };
 }
 
