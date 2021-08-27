@@ -9,6 +9,7 @@ import restoreSession from './session/restore-session';
 import {Provider as ReduxProvider} from 'react-redux';
 import store from './store';
 import themeService from './services/theme.service';
+import colors from '../styles/colors';
 
 class App extends React.Component<any, any> {
   constructor(props: any) {
@@ -29,7 +30,7 @@ class App extends React.Component<any, any> {
       <ReduxProvider store={store}>
         <PaperProvider theme={isDark ? DarkTheme : DefaultTheme}>
           <NavigationContainer theme={isDark ? DarkTheme : DefaultTheme}>
-            <Stack.Navigator>
+            <Stack.Navigator screenOptions={this.screenOptions}>
               {routes.stackNav.map(r => (
                 <Stack.Screen
                   name={r.name}
@@ -43,6 +44,15 @@ class App extends React.Component<any, any> {
         </PaperProvider>
       </ReduxProvider>
     );
+  }
+
+  get screenOptions() {
+    return themeService.currentTheme === 'light'
+      ? {
+          headerStyle: {backgroundColor: colors.primary},
+          headerTitleStyle: {color: colors.white},
+        }
+      : {};
   }
 }
 
