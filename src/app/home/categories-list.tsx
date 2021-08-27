@@ -56,7 +56,7 @@ export default class CategoriesList extends React.Component<P, S> {
   }
 
   CategoryCard = ({name, icon, onPress}: CategoryCardProps) => (
-    <Card style={[s.m8, s.p8]} onPress={onPress}>
+    <Card style={[s.m8, s.p8]} onPress={onPress} mode="outlined">
       <Icon name={icon} size={32} style={[s.m16, s.alignCenter]} />
       <Text style={[s.textBold, s.textCenter]}>{name}</Text>
     </Card>
