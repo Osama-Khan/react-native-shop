@@ -3,6 +3,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import routes from './app.routes';
 import Icon from './components/icon';
 import styles from '../styles/styles';
+import colors from '../styles/colors';
+import themeService from './services/theme.service';
 
 export default function Main(props: any) {
   const BottomTab = createBottomTabNavigator();
@@ -10,6 +12,7 @@ export default function Main(props: any) {
     <BottomTab.Navigator
       screenOptions={{
         tabBarHideOnKeyboard: true,
+        ...tabBarColorOptions,
       }}>
       {routes.bottomNav.map(r => (
         <BottomTab.Screen
@@ -26,3 +29,15 @@ export default function Main(props: any) {
     </BottomTab.Navigator>
   );
 }
+
+const tabBarColorOptions =
+  themeService.currentTheme === 'dark'
+    ? {
+        tabBarActiveBackgroundColor: colors.primarySubtle,
+      }
+    : {
+        tabBarActiveBackgroundColor: colors.primary,
+        tabBarInactiveBackgroundColor: colors.primary,
+        tabBarActiveTintColor: colors.white,
+        tabBarInactiveTintColor: colors.whiteTransparent,
+      };
