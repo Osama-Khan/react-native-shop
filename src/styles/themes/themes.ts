@@ -32,6 +32,7 @@ const DefaultTheme: ThemeType = {
     ...NavDefault.colors,
     primary: colors.primary,
     accent: colors.primaryLight,
+    text: colors.dark,
   },
 };
 
