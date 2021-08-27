@@ -59,15 +59,13 @@ class ProductDetail extends React.Component<PropType, StateType> {
             <Reviews product={p} />
           </View>
         </ScrollView>
-        <Card>
-          {cp ? (
-            <ManageCartActions product={cp} onAdd={update} onRemove={update} />
-          ) : p.stock > 0 ? (
-            <this.AddToCartAction />
-          ) : (
-            <this.OutOfStockAction />
-          )}
-        </Card>
+        {cp ? (
+          <ManageCartActions product={cp} onAdd={update} onRemove={update} />
+        ) : p.stock > 0 ? (
+          <this.AddToCartAction />
+        ) : (
+          <this.OutOfStockAction />
+        )}
       </>
     ) : (
       <ProgressBar indeterminate={true} />
@@ -76,6 +74,7 @@ class ProductDetail extends React.Component<PropType, StateType> {
 
   AddToCartAction = () => (
     <Button
+      style={s.roundedNone}
       mode="contained"
       color={colors.green}
       onPress={this.addToCart}
