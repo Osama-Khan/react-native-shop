@@ -9,32 +9,48 @@ import Search from './search/search';
 import accountRoutes from './account/account.routes';
 import CategoryProducts from './categories/category-products';
 
-export const mainRoute = {
+type RouteType = {
+  id: string;
+  name: string;
+  component: React.ComponentType<any>;
+  options?: any;
+}
+
+type BottomNavRouteType = RouteType & {
+  icon: string;
+}
+
+type RoutesType = {
+  bottomNav: BottomNavRouteType[];
+  stackNav: RouteType[];
+}
+
+export const mainRoute: RouteType = {
   id: 'main',
   name: 'Main',
   component: Main,
   options: {headerShown: false},
 };
 
-export const categoryProductRoute = {
+export const categoryProductRoute: RouteType = {
   id: 'category-product',
   name: 'Category Product',
   component: CategoryProducts,
 };
 
-export const productDetailRoute = {
+export const productDetailRoute: RouteType = {
   id: 'detail',
   name: 'Detail',
   component: ProductDetail,
 };
 
-export const checkoutRoute = {
+export const checkoutRoute: RouteType = {
   id: 'checkout',
   name: 'Checkout',
   component: Checkout,
 };
 
-const routes = {
+const routes: RoutesType = {
   bottomNav: [
     {
       id: 'home',
