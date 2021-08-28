@@ -5,6 +5,7 @@ import Icon from './components/icon';
 import styles from '../styles/styles';
 import colors from '../styles/colors';
 import themeService from './services/theme.service';
+import {screenOptions} from './App';
 
 export default function Main(props: any) {
   const BottomTab = createBottomTabNavigator();
@@ -30,14 +31,6 @@ export default function Main(props: any) {
     </BottomTab.Navigator>
   );
 }
-
-const screenOptions = () =>
-  themeService.currentTheme === 'light'
-    ? {
-        headerStyle: {backgroundColor: colors.primary},
-        headerTitleStyle: {color: colors.white},
-      }
-    : {};
 
 const tabBarColorOptions = () =>
   themeService.currentTheme === 'dark'

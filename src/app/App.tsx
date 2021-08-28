@@ -34,7 +34,7 @@ class App extends React.Component<any, any> {
         />
         <PaperProvider theme={isDark ? DarkTheme : DefaultTheme}>
           <NavigationContainer theme={isDark ? DarkTheme : DefaultTheme}>
-            <Stack.Navigator screenOptions={this.screenOptions}>
+            <Stack.Navigator screenOptions={screenOptions()}>
               {routes.stackNav.map(r => (
                 <Stack.Screen
                   name={r.name}
@@ -49,15 +49,14 @@ class App extends React.Component<any, any> {
       </ReduxProvider>
     );
   }
-
-  get screenOptions() {
-    return themeService.currentTheme === 'light'
-      ? {
-          headerStyle: {backgroundColor: colors.primary},
-          headerTitleStyle: {color: colors.white},
-        }
-      : {};
-  }
 }
+
+export const screenOptions = () =>
+  themeService.currentTheme === 'light'
+    ? {
+        headerStyle: {backgroundColor: colors.primary},
+        headerTitleStyle: {color: colors.white},
+      }
+    : {};
 
 export default App;
