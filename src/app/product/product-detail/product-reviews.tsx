@@ -1,7 +1,6 @@
 import React from 'react';
-import Icon from '../../components/icon/';
 import {View} from 'react-native';
-import {Button, Caption, ProgressBar, Title} from 'react-native-paper';
+import {Button, Caption, ProgressBar} from 'react-native-paper';
 import s from '../../../styles/styles';
 import {ProductType, RatingType} from '../../models/types/product.types';
 import productService from '../../services/product.service';
@@ -37,9 +36,6 @@ class ProductReviews extends React.Component<PropType, StateType> {
   render() {
     return (
       <View>
-        <Title>
-          <Icon name="account-star" size={22} /> User Reviews
-        </Title>
         {this.props.user.token ? (
           <>
             <Caption>Your review</Caption>

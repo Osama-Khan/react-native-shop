@@ -10,12 +10,7 @@ import c from '../../../styles/colors';
 type PropType = {product: ProductType};
 
 export default ({product}: PropType) => (
-  <>
-    <Title>
-      <Icon name="star" size={22} /> Rating
-    </Title>
-    <ReviewSummary ratings={product.ratings!} />
-  </>
+  <ReviewSummary ratings={product.ratings!} />
 );
 
 const ReviewSummary = ({ratings}: {ratings: RatingType[]}) => {
