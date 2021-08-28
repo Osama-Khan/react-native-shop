@@ -14,6 +14,7 @@ export default class ProductImageSlideshow extends React.Component<P, S> {
   state = {activeIndex: 0};
   render() {
     const p = this.props.product;
+    const showControls = p.images!.length > 1;
     return (
       <View style={{backgroundColor: colors.white}}>
         <Image
@@ -23,40 +24,48 @@ export default class ProductImageSlideshow extends React.Component<P, S> {
           }}
           resizeMode="contain"
         />
-        <IconButton
-          style={[s.left, {marginTop: 100}]}
-          onPress={() => {
-            let activeIndex = this.state.activeIndex;
-            if (--activeIndex < 0) {
-              activeIndex = p.images!.length - 1;
-            }
-            this.setState({...this.state, activeIndex});
-          }}
-          icon="arrow-left-circle"
-          color={colors.dark}
-        />
-        <IconButton
-          style={[s.right, {marginTop: 100}]}
-          onPress={() => {
-            let activeIndex = this.state.activeIndex;
-            if (++activeIndex >= p.images!.length) {
-              activeIndex = 0;
-            }
-            this.setState({...this.state, activeIndex});
-          }}
-          icon="arrow-right-circle"
-          color={colors.dark}
-        />
-        <View style={[s.bottom, s.row, s.center, s.col12]}>
-          {p.images?.map((img, i) => (
-            <Icon
-              key={img.id}
-              name={this.state.activeIndex === i ? 'circle' : 'circle-outline'}
-              onPress={() => this.setState({...this.state, activeIndex: i})}
+        {showControls ? (
+          <>
+            <IconButton
+              style={[s.left, {marginTop: 100}]}
+              onPress={() => {
+                let activeIndex = this.state.activeIndex;
+                if (--activeIndex < 0) {
+                  activeIndex = p.images!.length - 1;
+                }
+                this.setState({...this.state, activeIndex});
+              }}
+              icon="arrow-left-circle"
               color={colors.dark}
             />
-          ))}
-        </View>
+            <IconButton
+              style={[s.right, {marginTop: 100}]}
+              onPress={() => {
+                let activeIndex = this.state.activeIndex;
+                if (++activeIndex >= p.images!.length) {
+                  activeIndex = 0;
+                }
+                this.setState({...this.state, activeIndex});
+              }}
+              icon="arrow-right-circle"
+              color={colors.dark}
+            />
+            <View style={[s.bottom, s.row, s.center, s.col12]}>
+              {p.images?.map((img, i) => (
+                <Icon
+                  key={img.id}
+                  name={
+                    this.state.activeIndex === i ? 'circle' : 'circle-outline'
+                  }
+                  onPress={() => this.setState({...this.state, activeIndex: i})}
+                  color={colors.dark}
+                />
+              ))}
+            </View>
+          </>
+        ) : (
+          <></>
+        )}
 
         {this.props.userId ? (
           <ProductLikeAction
