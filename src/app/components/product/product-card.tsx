@@ -1,11 +1,12 @@
 import React from 'react';
 import {NavigationProp} from '@react-navigation/native';
 import {ProductType} from '../../models/types/product.types';
-import {Caption, Card, Surface, Text} from 'react-native-paper';
+import {Caption, Card, Text} from 'react-native-paper';
 import {Image, View} from 'react-native';
 import {productDetailRoute} from '../../app.routes';
 import s from '../../../styles/styles';
 import ProductRating from './product-rating';
+import LinearGradient from '../gradient/linear-gradient';
 
 type P = {product: ProductType; navigation: NavigationProp<any>};
 
@@ -27,7 +28,10 @@ export default function ProductCard({product, navigation}: P) {
         }}
         resizeMode="cover"
       />
-      <Card style={[s.bottom, s.col12]}>
+      <View style={[s.bottom, s.col12, {height: 80}]}>
+        <LinearGradient start="bottom" end="top" />
+      </View>
+      <Card style={[s.bottom, s.col12, s.roundedNone]}>
         <Caption numberOfLines={1} style={[s.m8, s.mt8]}>
           {product.title}
         </Caption>
