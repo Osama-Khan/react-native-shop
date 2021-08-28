@@ -24,7 +24,7 @@ class Account extends React.Component<any, any> {
         navigation={this.props.navigation}
       />
     ) : (
-      <Login onLogin={() => this.setState({})} />
+      <Login navigation={this.props.navigation} />
     );
   }
 }

@@ -1,3 +1,4 @@
+import {NavigationProp} from '@react-navigation/native';
 import React from 'react';
 import {ToastAndroid, View} from 'react-native';
 import {
@@ -7,6 +8,7 @@ import {
   TextInput,
   Switch,
   Button,
+  FAB,
 } from 'react-native-paper';
 import {connect} from 'react-redux';
 import colors from '../../styles/colors';
@@ -15,8 +17,12 @@ import uiService from '../services/ui.service';
 import userService from '../services/user.service';
 import userActions from '../store/actions/user.actions';
 import UserState from '../store/state/user-state';
+import {settingsRoute} from './account.routes';
 
-type PropType = {onLogin: () => void; dispatch: any};
+type PropType = {
+  dispatch: any;
+  navigation: NavigationProp<any>;
+};
 type StateType = {
   username: string;
   password: string;
@@ -93,6 +99,11 @@ class Login extends React.Component<PropType, StateType> {
           onPress={this.login}>
           Login
         </Button>
+        <FAB
+          icon="cog"
+          style={s.bottomRight}
+          onPress={() => this.props.navigation.navigate(settingsRoute.name)}
+        />
       </View>
     );
   }
@@ -109,7 +120,6 @@ class Login extends React.Component<PropType, StateType> {
       .then(res => {
         const user = UserState.fromJson(res.data);
         this.setState({...this.state, loading: false});
-        this.props.onLogin();
         this.props.dispatch(userActions.setUser(user));
       })
       .catch(e => {
