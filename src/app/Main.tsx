@@ -12,8 +12,8 @@ export default function Main(props: any) {
     <BottomTab.Navigator
       screenOptions={{
         tabBarHideOnKeyboard: true,
-        ...screenOptions,
-        ...tabBarColorOptions,
+        ...screenOptions(),
+        ...tabBarColorOptions(),
       }}>
       {routes.bottomNav.map(r => (
         <BottomTab.Screen
@@ -31,7 +31,7 @@ export default function Main(props: any) {
   );
 }
 
-const screenOptions =
+const screenOptions = () =>
   themeService.currentTheme === 'light'
     ? {
         headerStyle: {backgroundColor: colors.primary},
@@ -39,7 +39,7 @@ const screenOptions =
       }
     : {};
 
-const tabBarColorOptions =
+const tabBarColorOptions = () =>
   themeService.currentTheme === 'dark'
     ? {
         tabBarActiveBackgroundColor: colors.primarySubtle,
