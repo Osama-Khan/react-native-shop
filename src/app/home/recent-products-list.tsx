@@ -30,7 +30,10 @@ export default class RecentProductsList extends React.Component<P, S> {
     return (
       <View>
         {this.state.recent ? (
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            snapToInterval={248}>
             {this.state.recent.map(p => (
               <ProductCard
                 product={p}
