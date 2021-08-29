@@ -52,10 +52,10 @@ class Shipping extends React.Component<PropType, StateType> {
     }
     const adr = this.state.address;
     const noAddr = !adr && this.state.loaded;
-    const title = noAddr
-      ? 'No default address'
-      : `Order will be shipped to ${adr?.tag}`;
-    const desc = noAddr ? 'Tap to choose one' : `${adr?.address}, ${adr?.city}`;
+    const title = noAddr ? 'No default address' : `Shipping to ${adr?.tag}`;
+    const desc = noAddr
+      ? 'Tap to select shipping address'
+      : `${adr?.address}, ${adr?.city}`;
     return (
       <List.Section title="Shipping">
         <List.Item

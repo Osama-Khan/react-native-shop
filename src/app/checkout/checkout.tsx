@@ -15,6 +15,7 @@ import {connect} from 'react-redux';
 import CartState from '../store/state/cart-state';
 import cartActions from '../store/actions/cart.actions';
 import {AppStateType} from '../store/state';
+import {ScrollView} from 'react-native-gesture-handler';
 
 type StateType = {
   address?: AddressType;
@@ -38,7 +39,7 @@ class Checkout extends React.Component<any, StateType> {
         <Caption>Your order ID is #{this.state.order.id}</Caption>
       </View>
     ) : cart.products?.length > 0 ? (
-      <View style={s.flex}>
+      <ScrollView>
         <CostSummary cart={cart} />
         <Divider />
         <Shipping
@@ -46,7 +47,7 @@ class Checkout extends React.Component<any, StateType> {
         />
         <Divider />
         <this.PlaceOrderButton />
-      </View>
+      </ScrollView>
     ) : (
       <IconMessageView
         icon="cart-outline"
@@ -65,7 +66,7 @@ class Checkout extends React.Component<any, StateType> {
     <Button
       mode="contained"
       color={colors.green}
-      style={[s.m4, s.mtAuto]}
+      style={[s.m4, s.mt16]}
       disabled={!this.state.address || this.state.placing}
       loading={this.state.placing}
       onPress={this.placeOrder}
