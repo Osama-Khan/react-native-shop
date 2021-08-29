@@ -1,6 +1,5 @@
 import React from 'react';
 import {ScrollView} from 'react-native-gesture-handler';
-import Svg, {Defs, Rect, Stop} from 'react-native-svg';
 import colors from '../../../styles/colors';
 import s from '../../../styles/styles';
 import LinearGradient from '../gradient/linear-gradient';
