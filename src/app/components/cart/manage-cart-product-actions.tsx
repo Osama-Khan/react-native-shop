@@ -53,7 +53,7 @@ class ManageCartProductActions extends React.Component<PropType, any> {
 
   addToCart = (product: CartProduct) => {
     let quantity = this.getCartQuantity(product.id);
-    if (quantity <= product.stock) {
+    if (quantity < product.stock) {
       quantity++;
       const {id} = product;
       this.props.dispatch(cartActions.setProductQuantity({id, quantity}));
