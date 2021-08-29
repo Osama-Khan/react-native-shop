@@ -1,7 +1,9 @@
+import {NavigationProp} from '@react-navigation/native';
 import React from 'react';
 import {createRef} from 'react';
 import {List, Menu, ProgressBar} from 'react-native-paper';
 import {connect} from 'react-redux';
+import {addressesRoute} from '../account/account.routes';
 import {AddressType} from '../models/types/address.type';
 import addressService from '../services/address.service';
 import settingService from '../services/setting.service';
@@ -10,6 +12,7 @@ import {AppStateType} from '../store/state';
 
 type PropType = {
   onSelectAddress: (address: AddressType) => void;
+  navigation: NavigationProp<any>;
   readonly userId?: number;
 };
 
@@ -25,10 +28,15 @@ class Shipping extends React.Component<PropType, StateType> {
 
   constructor(props: PropType) {
     super(props);
+    this.props.navigation.addListener('focus', () => {
+      this.state = {loaded: false, menuOpen: false};
+      this.fetchAddresses();
+    });
     this.state = {loaded: false, menuOpen: false};
     this.editAddressRef = createRef();
   }
-  componentDidMount() {
+
+  fetchAddresses() {
     const user = this.props.userId;
     if (user) {
       settingService
@@ -36,7 +44,10 @@ class Shipping extends React.Component<PropType, StateType> {
         .then(setRes => {
           this.changeAddress(setRes.data);
         })
-        .catch(() => uiService.toast('Failed to fetch default address'));
+        .catch(() => {
+          uiService.toast('Failed to fetch default address');
+          this.setState({...this.state, loaded: true});
+        });
       addressService
         .getAddresses(user)
         .then(res => {
@@ -47,7 +58,7 @@ class Shipping extends React.Component<PropType, StateType> {
   }
 
   render() {
-    if (!this.state.loaded) {
+    if (!this.state.loaded || !this.state.addresses) {
       return <ProgressBar indeterminate={true} />;
     }
     const adr = this.state.address;
@@ -58,14 +69,25 @@ class Shipping extends React.Component<PropType, StateType> {
       : `${adr?.address}, ${adr?.city}`;
     return (
       <List.Section title="Shipping">
-        <List.Item
-          title={title}
-          right={() => <this.AddressSelectionMenu />}
-          description={desc}
-          onPress={() => {
-            this.setState({...this.state, menuOpen: true});
-          }}
-        />
+        {this.state.addresses.length > 0 ? (
+          <List.Item
+            title={title}
+            right={() => <this.AddressSelectionMenu />}
+            description={desc}
+            onPress={() => {
+              this.setState({...this.state, menuOpen: true});
+            }}
+          />
+        ) : (
+          <List.Item
+            title={"You don't have any addresses"}
+            right={() => <List.Icon icon="plus" />}
+            description={'Tap to add an address'}
+            onPress={() => {
+              this.props.navigation.navigate(addressesRoute.name);
+            }}
+          />
+        )}
       </List.Section>
     );
   }

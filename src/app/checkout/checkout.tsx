@@ -43,6 +43,7 @@ class Checkout extends React.Component<any, StateType> {
         <CostSummary cart={cart} />
         <Divider />
         <Shipping
+          navigation={this.props.navigation}
           onSelectAddress={address => this.setState({...this.state, address})}
         />
         <Divider />
