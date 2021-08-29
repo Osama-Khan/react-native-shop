@@ -68,16 +68,20 @@ export default class extends React.Component<PropType, StateType> {
                 style={[s.mlAuto, {color: stateColors[order.orderState!.id]}]}>
                 {order.orderState!.state}
               </Caption>
-              <Text style={[s.mlAuto, s.textBadge, s.textPrice]}>
+              <Text style={[s.mlAuto, s.mtAuto, s.textBadge, s.textPrice]}>
                 Rs. {totalPrice}
               </Text>
             </View>
           </View>
           <Divider style={s.my8} />
-          <Caption>
-            Placed on: {new Date(order.createdAt).toLocaleDateString()} {'\n'}
-            Last updated: {new Date(order.updatedAt).toLocaleDateString()}
-          </Caption>
+          <View style={s.row}>
+            <Caption>
+              Placed on: {new Date(order.createdAt).toLocaleDateString()}
+            </Caption>
+            <Caption style={s.mlAuto}>
+              Last updated: {new Date(order.updatedAt).toLocaleDateString()}
+            </Caption>
+          </View>
         </View>
       </Card>
     );
