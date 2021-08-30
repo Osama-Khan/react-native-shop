@@ -1,6 +1,6 @@
 import React from 'react';
 import {Card, ProgressBar, Text} from 'react-native-paper';
-import {ScrollView, View} from 'react-native';
+import {ScrollView, View, Image} from 'react-native';
 import s from '../../styles/styles';
 import {NavigationProp} from '@react-navigation/native';
 import {CategoryType} from '../models/types/category.type';
@@ -56,9 +56,11 @@ export default class CategoriesList extends React.Component<P, S> {
   }
 
   CategoryCard = ({name, icon, onPress}: CategoryCardProps) => (
-    <Card style={[s.m8, s.p8]} onPress={onPress} mode="outlined">
-      <Icon name={icon} size={32} style={[s.m16, s.alignCenter]} />
+    <View>
+      <Card style={[s.m8, s.roundedFull]} onPress={onPress} elevation={8}>
+        <Icon name={icon} size={32} style={[s.m16, s.alignCenter]} />
+      </Card>
       <Text style={[s.textBold, s.textCenter]}>{name}</Text>
-    </Card>
+    </View>
   );
 }
