@@ -65,7 +65,7 @@ class AccountEdit extends React.Component<any, StateType> {
           <DatePicker
             date={data.dateOfBirth}
             androidVariant={
-              themeService.currentTheme === 'dark'
+              themeService.currentThemeName === 'dark'
                 ? 'nativeAndroid'
                 : 'iosClone'
             }

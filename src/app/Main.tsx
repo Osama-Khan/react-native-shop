@@ -33,7 +33,7 @@ export default function Main(props: any) {
 }
 
 const tabBarColorOptions = () =>
-  themeService.currentTheme === 'dark'
+  themeService.currentThemeName === 'dark'
     ? {
         tabBarActiveBackgroundColor: colors.primarySubtle,
       }

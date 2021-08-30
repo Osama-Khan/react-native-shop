@@ -8,7 +8,7 @@ import themeService from '../../services/theme.service';
 import uiService from '../../services/ui.service';
 
 export default class Settings extends React.Component {
-  initialTheme = themeService.currentTheme;
+  initialTheme = themeService.currentThemeName;
   initiallyDeviceTheme = themeService.isDeviceTheme;
 
   render() {

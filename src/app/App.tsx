@@ -15,9 +15,9 @@ import {StatusBar} from 'react-native';
 class App extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
-    this.state = {theme: themeService.currentTheme};
+    this.state = {theme: themeService.currentThemeName};
     themeService.loadTheme().then(async () => {
-      const theme = await themeService.currentTheme;
+      const theme = await themeService.currentThemeName;
       this.setState({theme});
     });
   }
@@ -52,7 +52,7 @@ class App extends React.Component<any, any> {
 }
 
 export const screenOptions = () =>
-  themeService.currentTheme === 'light'
+  themeService.currentThemeName === 'light'
     ? {
         headerStyle: {backgroundColor: colors.primary},
         headerTintColor: colors.white,

@@ -1,4 +1,5 @@
 import {Appearance} from 'react-native';
+import { DarkTheme, DefaultTheme } from '../../styles/themes/themes';
 import storageService from './storage.service';
 
 class ThemeService {
@@ -15,8 +16,8 @@ class ThemeService {
     this.userTheme = theme;
   };
 
-  /** The currently applied theme, or 'dark' as default */
-  get currentTheme() {
+  /** The currently applied theme name, or 'dark' as default */
+  get currentThemeName() {
     const theme = this.userTheme || Appearance.getColorScheme() || 'dark';
     return theme;
   }
