@@ -22,6 +22,11 @@ class ThemeService {
     return theme;
   }
 
+  /** The currently applied theme */
+  get currentTheme() {
+    return this.currentThemeName === 'dark' ? DarkTheme : DefaultTheme;
+  }
+
   /** Checks if the currently applied theme is device theme */
   get isDeviceTheme() {
     return !this.userTheme;
