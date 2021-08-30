@@ -6,7 +6,7 @@ import {Image, View} from 'react-native';
 import {productDetailRoute} from '../../app.routes';
 import s from '../../../styles/styles';
 import ProductRating from './product-rating';
-import LinearGradient from '../gradient/linear-gradient';
+import LinearGradient from '../svg/gradient/linear-gradient';
 
 type P = {product: ProductType; navigation: NavigationProp<any>};
 

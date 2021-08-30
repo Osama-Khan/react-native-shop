@@ -2,7 +2,7 @@ import React from 'react';
 import {ScrollView} from 'react-native-gesture-handler';
 import colors from '../../../styles/colors';
 import s from '../../../styles/styles';
-import LinearGradient from '../gradient/linear-gradient';
+import LinearGradient from '../svg/gradient/linear-gradient';
 import Icon from '../icon';
 import ModalBase from './modal-base';
 import {ModalPropType} from './modal-prop-type';
