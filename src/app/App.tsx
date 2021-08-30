@@ -55,6 +55,7 @@ export const screenOptions = () =>
   themeService.currentTheme === 'light'
     ? {
         headerStyle: {backgroundColor: colors.primary},
+        headerTintColor: colors.white,
         headerTitleStyle: {color: colors.white},
       }
     : {};
