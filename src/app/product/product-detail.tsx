@@ -75,6 +75,7 @@ class ProductDetail extends React.Component<PropType, StateType> {
   AddToCartAction = () => (
     <Button
       style={s.roundedNone}
+      contentStyle={{height: 48}}
       mode="contained"
       onPress={this.addToCart}
       icon="cart-plus">
