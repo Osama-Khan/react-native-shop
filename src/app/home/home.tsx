@@ -18,6 +18,7 @@ import {NavigationProp} from '@react-navigation/native';
 import CategoriesList from './categories-list';
 import Wave from '../components/svg/wave';
 import colors from '../../styles/colors';
+import themeService from '../services/theme.service';
 
 type P = {navigation: NavigationProp<any>; readonly user: UserState};
 type S = {searchTerm: string};
@@ -47,7 +48,13 @@ class Home extends React.Component<P, S> {
           source={require('../../assets/images/character/hi.png')}
         />
         <View style={[s.col12, {height: 24}]}>
-          <Wave color={colors.white} />
+          <Wave
+            color={
+              themeService.currentThemeName === 'dark'
+                ? themeService.currentTheme.colors.border
+                : themeService.currentTheme.colors.surface
+            }
+          />
         </View>
         <Surface>
           <Title style={s.m8}>Browse Categories</Title>
