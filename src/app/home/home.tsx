@@ -16,9 +16,8 @@ import NewArrivals from './recent-products-list';
 import {AppStateType, UserState} from '../store/state';
 import {NavigationProp} from '@react-navigation/native';
 import CategoriesList from './categories-list';
-import Wave from '../components/svg/wave';
-import colors from '../../styles/colors';
 import themeService from '../services/theme.service';
+import Triangle from '../components/svg/triangle';
 
 type P = {navigation: NavigationProp<any>; readonly user: UserState};
 type S = {searchTerm: string};
@@ -48,7 +47,7 @@ class Home extends React.Component<P, S> {
           source={require('../../assets/images/character/hi.png')}
         />
         <View style={[s.col12, {height: 24}]}>
-          <Wave
+          <Triangle
             color={
               themeService.currentThemeName === 'dark'
                 ? themeService.currentTheme.colors.border
