@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, ScrollView, Image} from 'react-native';
-import {Caption, Divider, Surface, Title} from 'react-native-paper';
+import {Caption, Divider, IconButton, Surface, Title} from 'react-native-paper';
 import {connect} from 'react-redux';
 import s from '../../styles/styles';
 import NewArrivals from './recent-products-list';
@@ -51,7 +51,30 @@ class Home extends React.Component<P> {
           <Divider style={s.mt16} />
           <Title style={s.m8}>New Arrivals</Title>
           <NewArrivals navigation={this.props.navigation} />
+          <View style={[s.mt16, s.col12, {height: 24}]}>
+            <Triangle color={themeService.currentTheme.colors.background} />
+          </View>
         </Surface>
+        <Image
+          source={require('../../assets/images/box.png')}
+          style={[s.bottomLeft, {width: 114, height: 120}]}
+        />
+        <Title style={s.textCenter}> Get in Touch</Title>
+        <View style={[s.row, s.alignCenter]}>
+          <IconButton icon="facebook" />
+          <IconButton icon="twitter" />
+          <IconButton icon="linkedin" />
+          <IconButton icon="email" />
+        </View>
+        <Divider />
+        <View style={s.center}>
+          <Title> Useful links</Title>
+          <Caption style={{textDecorationLine: 'underline'}}>Support</Caption>
+          <Caption style={{textDecorationLine: 'underline'}}>
+            Privacy Policy
+          </Caption>
+          <Caption style={{textDecorationLine: 'underline'}}>Website</Caption>
+        </View>
       </ScrollView>
     );
   }
