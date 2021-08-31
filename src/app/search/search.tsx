@@ -1,4 +1,4 @@
-import {NavigationProp} from '@react-navigation/native';
+import {NavigationProp, RouteProp} from '@react-navigation/native';
 import React from 'react';
 import {View} from 'react-native';
 import {FAB, Searchbar, Text} from 'react-native-paper';
@@ -12,7 +12,7 @@ import ProductListing from '../components/product/product-listing';
 import ProductFiltersModal from '../components/product/product-filters-modal/product-filters-modal';
 import IconMessageView from '../components/icon-message-view/icon-message-view';
 
-type PropType = {navigation: NavigationProp<any>};
+type PropType = {navigation: NavigationProp<any>; route: RouteProp<any>};
 type StateType = {
   criteria?: Criteria<ProductType>;
   query: string;
@@ -27,6 +27,16 @@ export default class Search extends React.Component<PropType, StateType> {
     super(props);
     this.state = {query: '', showFilters: false};
     this.searchBarRef = createRef();
+  }
+
+  componentDidMount() {
+    this.props.navigation.addListener('focus', () => {
+      const query = this.props.route.params?.withSearch;
+      if (query && query !== this.state.query) {
+        this.setState({...this.state, query});
+        this.setUpdate();
+      }
+    });
   }
 
   render() {

@@ -1,15 +1,6 @@
 import React from 'react';
 import {View, ScrollView, Image} from 'react-native';
-import {
-  Caption,
-  Divider,
-  Surface,
-  Title,
-  TextInput,
-  Button,
-  IconButton,
-  Searchbar,
-} from 'react-native-paper';
+import {Caption, Divider, Surface, Title} from 'react-native-paper';
 import {connect} from 'react-redux';
 import s from '../../styles/styles';
 import NewArrivals from './recent-products-list';
@@ -18,13 +9,11 @@ import {NavigationProp} from '@react-navigation/native';
 import CategoriesList from './categories-list';
 import themeService from '../services/theme.service';
 import Triangle from '../components/svg/triangle';
+import Searchbar from '../components/searchbar';
 
 type P = {navigation: NavigationProp<any>; readonly user: UserState};
-type S = {searchTerm: string};
 
-class Home extends React.Component<P, S> {
-  state = {searchTerm: ''};
-
+class Home extends React.Component<P> {
   render() {
     return (
       <ScrollView>
@@ -35,12 +24,13 @@ class Home extends React.Component<P, S> {
           </Title>
           <Caption>What would you like to Shop today?</Caption>
         </View>
-        <Searchbar
-          style={[s.m4, s.col8, s.roundedFull]}
-          placeholder="Search..."
-          value={this.state.searchTerm}
-          onChangeText={searchTerm => this.setState({searchTerm})}
-        />
+        <View style={[s.ml8, s.col7]}>
+          <Searchbar
+            onSearch={withSearch =>
+              this.props.navigation.navigate('Search', {withSearch})
+            }
+          />
+        </View>
         <View style={s.mt8} />
         <Image
           style={[s.topRight, s.mr24, s.mt4, {width: 84, height: 204}]}
