@@ -35,6 +35,7 @@ class Home extends React.Component<P> {
         <Image
           style={[s.topRight, s.mr24, s.mt4, {width: 84, height: 204}]}
           source={require('../../assets/images/character/hi.png')}
+          resizeMode="contain"
         />
         <View style={[s.col12, {height: 24}]}>
           <Triangle
@@ -63,6 +64,7 @@ class Home extends React.Component<P> {
         <View style={[s.row, s.alignCenter]}>
           <IconButton icon="facebook" />
           <IconButton icon="twitter" />
+          <IconButton icon="instagram" />
           <IconButton icon="linkedin" />
           <IconButton icon="email" />
         </View>
