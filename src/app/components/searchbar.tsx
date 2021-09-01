@@ -1,9 +1,12 @@
 import React from 'react';
 import {TextInput} from 'react-native';
 import {Card, FAB} from 'react-native-paper';
+import {TextInputProps} from 'react-native-paper/lib/typescript/components/TextInput/TextInput';
 import s from '../../styles/styles';
 
-type P = {onSearch: (query: string) => void};
+type P = Partial<TextInputProps> & {
+  onSearch: (query: string) => void;
+};
 type S = {query: string};
 
 export default class Searchbar extends React.Component<P, S> {
@@ -13,10 +16,11 @@ export default class Searchbar extends React.Component<P, S> {
     return (
       <Card style={[s.row, s.roundedFull]}>
         <TextInput
+          {...this.props}
           value={this.state.query}
           style={inputStyle}
           onChangeText={query => this.setState({query})}
-          placeholder="Search..."
+          placeholder={this.props.placeholder || 'Search...'}
         />
         <FAB
           icon="magnify"
