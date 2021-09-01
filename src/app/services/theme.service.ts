@@ -7,7 +7,7 @@ class ThemeService {
 
   /** Loads the theme from storage */
   loadTheme = async () => {
-    this.userTheme = await storageService.getUserTheme();
+    this.userTheme = await storageService.getUserTheme() || this.defaultTheme;
     return this.userTheme;
   };
 
@@ -18,7 +18,7 @@ class ThemeService {
 
   /** The currently applied theme name, or 'dark' as default */
   get currentThemeName() {
-    const theme = this.userTheme || Appearance.getColorScheme() || 'dark';
+    const theme = this.userTheme || this.defaultTheme;
     return theme;
   }
 
@@ -30,6 +30,10 @@ class ThemeService {
   /** Checks if the currently applied theme is device theme */
   get isDeviceTheme() {
     return !this.userTheme;
+  }
+
+  private get defaultTheme() {
+    return Appearance.getColorScheme() || 'dark'
   }
 }
 
