@@ -13,20 +13,23 @@ import colors from '../styles/colors';
 import {StatusBar} from 'react-native';
 
 class App extends React.Component<any, any> {
+  state = {theme: themeService.currentThemeName};
+  Stack: any;
+
   constructor(props: any) {
     super(props);
-    this.state = {theme: themeService.currentThemeName};
     themeService.loadTheme().then(async () => {
       const theme = await themeService.currentThemeName;
       this.setState({theme});
     });
+    initializeInterceptors();
+    restoreSession();
+    this.Stack = createStackNavigator();
   }
 
   render() {
     const isDark = this.state.theme === 'dark';
-    const Stack = createStackNavigator();
-    initializeInterceptors();
-    restoreSession();
+    const {Navigator, Screen} = this.Stack;
     return (
       <ReduxProvider store={store}>
         <StatusBar
@@ -34,16 +37,16 @@ class App extends React.Component<any, any> {
         />
         <PaperProvider theme={isDark ? DarkTheme : DefaultTheme}>
           <NavigationContainer theme={isDark ? DarkTheme : DefaultTheme}>
-            <Stack.Navigator screenOptions={screenOptions()}>
+            <Navigator screenOptions={screenOptions()}>
               {routes.stackNav.map(r => (
-                <Stack.Screen
+                <Screen
                   name={r.name}
                   key={r.id}
                   options={r.options}
                   component={r.component}
                 />
               ))}
-            </Stack.Navigator>
+            </Navigator>
           </NavigationContainer>
         </PaperProvider>
       </ReduxProvider>
