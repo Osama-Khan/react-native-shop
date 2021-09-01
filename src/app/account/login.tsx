@@ -9,6 +9,8 @@ import {
   Switch,
   Button,
   FAB,
+  Surface,
+  Card,
 } from 'react-native-paper';
 import {connect} from 'react-redux';
 import colors from '../../styles/colors';
@@ -42,63 +44,65 @@ class Login extends React.Component<PropType, StateType> {
   render() {
     return (
       <View style={[s.m8, s.flex, {justifyContent: 'center'}]}>
-        <Title style={s.textCenter}>Login</Title>
-        <Text style={[s.textCenter, s.textMuted]}>
-          Please enter your account details.
-        </Text>
-        <Divider style={s.mt8} />
-        <TextInput
-          label="Username"
-          style={s.mt8}
-          value={this.state.username}
-          mode="outlined"
-          onSubmitEditing={() => this.passwordRef.current.focus()}
-          onChangeText={username =>
-            this.setState({
-              ...this.state,
-              username,
-            })
-          }
-        />
-        <TextInput
-          label="Password"
-          style={s.mt8}
-          value={this.state.password}
-          mode="outlined"
-          secureTextEntry={true}
-          onSubmitEditing={this.login}
-          ref={this.passwordRef}
-          onChangeText={password =>
-            this.setState({
-              ...this.state,
-              password,
-            })
-          }
-        />
-        <View style={[s.m4, s.row]}>
-          <Text style={[s.m4, s.mlAuto]}>Remember me</Text>
-          <Switch
-            value={this.state.remember}
-            onValueChange={remember =>
+        <Card style={s.p8} mode="outlined">
+          <Title style={s.textCenter}>Login</Title>
+          <Text style={[s.textCenter, s.textMuted]}>
+            Please enter your account details.
+          </Text>
+          <Divider style={s.mt8} />
+          <TextInput
+            label="Username"
+            style={s.mt8}
+            value={this.state.username}
+            mode="outlined"
+            onSubmitEditing={() => this.passwordRef.current.focus()}
+            onChangeText={username =>
               this.setState({
                 ...this.state,
-                remember,
+                username,
               })
             }
           />
-        </View>
-        <Button style={s.mlAuto}>Forgot Password?</Button>
-        <Button
-          mode="contained"
-          loading={this.state.loading}
-          disabled={
-            this.state.loading || !this.state.username || !this.state.password
-          }
-          style={s.mt8}
-          color={colors.primary}
-          onPress={this.login}>
-          Login
-        </Button>
+          <TextInput
+            label="Password"
+            style={s.mt8}
+            value={this.state.password}
+            mode="outlined"
+            secureTextEntry={true}
+            onSubmitEditing={this.login}
+            ref={this.passwordRef}
+            onChangeText={password =>
+              this.setState({
+                ...this.state,
+                password,
+              })
+            }
+          />
+          <View style={[s.m4, s.row]}>
+            <Text style={[s.m4, s.mlAuto]}>Remember me</Text>
+            <Switch
+              value={this.state.remember}
+              onValueChange={remember =>
+                this.setState({
+                  ...this.state,
+                  remember,
+                })
+              }
+            />
+          </View>
+          <Button style={s.mlAuto}>Forgot Password?</Button>
+          <Button
+            mode="contained"
+            loading={this.state.loading}
+            disabled={
+              this.state.loading || !this.state.username || !this.state.password
+            }
+            style={s.mt8}
+            color={colors.primary}
+            onPress={this.login}>
+            Login
+          </Button>
+        </Card>
         <FAB
           icon="cog"
           style={s.bottomRight}
