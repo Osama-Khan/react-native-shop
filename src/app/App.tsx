@@ -18,17 +18,20 @@ class App extends React.Component<any, any> {
 
   constructor(props: any) {
     super(props);
+    initializeInterceptors();
+    restoreSession();
+  }
+
+  componentDidMount() {
     themeService.loadTheme().then(async () => {
       const theme = await themeService.currentThemeName;
       this.setState({theme});
     });
-    initializeInterceptors();
-    restoreSession();
-    this.Stack = createStackNavigator();
   }
 
   render() {
     const isDark = this.state.theme === 'dark';
+    this.Stack = createStackNavigator();
     const {Navigator, Screen} = this.Stack;
     return (
       <ReduxProvider store={store}>
