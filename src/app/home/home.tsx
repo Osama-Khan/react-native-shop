@@ -9,7 +9,7 @@ import {NavigationProp} from '@react-navigation/native';
 import CategoriesList from './categories-list';
 import themeService from '../services/theme.service';
 import Triangle from '../components/svg/triangle';
-import Searchbar from '../components/searchbar';
+import AnimatedSearchbar from './animated-searchbar';
 
 type P = {navigation: NavigationProp<any>; readonly user: UserState};
 
@@ -24,19 +24,17 @@ class Home extends React.Component<P> {
           </Title>
           <Caption>What would you like to Shop today?</Caption>
         </View>
-        <View style={[s.ml8, s.col7]}>
-          <Searchbar
-            onSearch={withSearch =>
-              this.props.navigation.navigate('Search', {withSearch})
-            }
-          />
-        </View>
-        <View style={s.mt8} />
         <Image
           style={[s.topRight, s.mr24, s.mt4, {width: 84, height: 204}]}
           source={require('../../assets/images/character/hi.png')}
           resizeMode="contain"
         />
+        <AnimatedSearchbar
+          onSearch={withSearch =>
+            this.props.navigation.navigate('Search', {withSearch})
+          }
+        />
+        <View style={s.mt8} />
         <View style={[s.col12, {height: 24}]}>
           <Triangle
             color={
