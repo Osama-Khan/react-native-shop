@@ -5,8 +5,8 @@ import Searchbar from '../components/searchbar';
 
 type P = {
   onSearch: (query: string) => void;
-  onFocus?: () => {};
-  onBlur?: () => {};
+  onFocus?: () => void;
+  onBlur?: () => void;
 };
 
 export default function AnimatedSearchbar({onSearch, onFocus, onBlur}: P) {
