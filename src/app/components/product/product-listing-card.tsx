@@ -35,6 +35,7 @@ class ProductListingCard extends React.Component<PropType> {
     return (
       <Card
         style={s.card}
+        elevation={4}
         onPress={() =>
           this.props.navigation.navigate(productDetailRoute.name, {
             id: product.id,
