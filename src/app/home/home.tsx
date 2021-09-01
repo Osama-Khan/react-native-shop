@@ -10,11 +10,15 @@ import CategoriesList from './categories-list';
 import themeService from '../services/theme.service';
 import Triangle from '../components/svg/triangle';
 import AnimatedSearchbar from './animated-searchbar';
+import {createAnimatableComponent} from 'react-native-animatable';
 
 type P = {navigation: NavigationProp<any>; readonly user: UserState};
 
 class Home extends React.Component<P> {
+  hiGuyImage: any;
+
   render() {
+    const AnimatedImage = createAnimatableComponent(Image);
     return (
       <ScrollView>
         <View style={s.p8}>
@@ -24,15 +28,22 @@ class Home extends React.Component<P> {
           </Title>
           <Caption>What would you like to Shop today?</Caption>
         </View>
-        <Image
+        <AnimatedImage
           style={[s.topRight, s.mr24, s.mt4, {width: 84, height: 204}]}
           source={require('../../assets/images/character/hi.png')}
           resizeMode="contain"
+          ref={ref => (this.hiGuyImage = ref)}
         />
         <AnimatedSearchbar
           onSearch={withSearch =>
             this.props.navigation.navigate('Search', {withSearch})
           }
+          onFocus={() => {
+            this.hiGuyImage.lightSpeedOut(500);
+          }}
+          onBlur={() => {
+            this.hiGuyImage.lightSpeedIn(500);
+          }}
         />
         <View style={s.mt8} />
         <View style={[s.col12, {height: 24}]}>
