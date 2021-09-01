@@ -28,4 +28,4 @@ export default class Searchbar extends React.Component<P, S> {
   }
 }
 
-const inputStyle = {marginLeft: 8, height: 54, marginRight: 64};
+const inputStyle = {marginLeft: 8, height: 54, marginRight: 58};
