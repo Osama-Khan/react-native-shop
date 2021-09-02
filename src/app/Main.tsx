@@ -1,14 +1,19 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import routes from './app.routes';
+import routes, {cartRoute} from './app.routes';
 import Icon from './components/icon';
 import styles from '../styles/styles';
 import colors from '../styles/colors';
 import themeService from './services/theme.service';
 import {screenOptions} from './App';
+import {useSelector} from 'react-redux';
+import {AppStateType} from './store/state';
 
 export default function Main(props: any) {
   const BottomTab = createBottomTabNavigator();
+  const cartItems = useSelector(
+    (state: AppStateType) => state.cart.products.length || undefined,
+  );
   return (
     <BottomTab.Navigator
       screenOptions={{
@@ -25,6 +30,7 @@ export default function Main(props: any) {
           options={{
             tabBarIcon: p => <Icon name={r.icon} {...p} />,
             tabBarLabelStyle: styles.mb4,
+            tabBarBadge: r.name === cartRoute.name ? cartItems : undefined,
           }}
         />
       ))}
