@@ -9,7 +9,7 @@ import {NavigationProp} from '@react-navigation/native';
 import {List} from 'react-native-paper';
 import ProductRating from '../../components/product/product-rating';
 import s from '../../../styles/styles';
-import {productDetailRoute} from '../../app.routes';
+import {productDetailRoute, searchRoute} from '../../app.routes';
 import {connect} from 'react-redux';
 
 type P = {navigation: NavigationProp<any>; readonly userId?: number};
@@ -52,7 +52,7 @@ class UserReviews extends React.Component<P, S> {
               btnProps={{
                 text: 'Add a Review',
                 icon: 'star',
-                action: () => this.props.navigation.navigate('Search'),
+                action: () => this.props.navigation.navigate(searchRoute.name),
               }}
             />
           )}

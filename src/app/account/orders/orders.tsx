@@ -22,6 +22,7 @@ import IconMessageView from '../../components/icon-message-view/icon-message-vie
 import ListSelect from '../../components/list-select';
 import {connect} from 'react-redux';
 import {AppStateType} from '../../store/state';
+import {searchRoute} from '../../app.routes';
 
 type StateType = {
   navIndex: number;
@@ -73,7 +74,8 @@ class Orders extends React.Component<any, StateType> {
                 btnProps={{
                   text: 'Order products',
                   icon: 'receipt',
-                  action: () => this.props.navigation.navigate('Search'),
+                  action: () =>
+                    this.props.navigation.navigate(searchRoute.name),
                 }}
               />
             )}

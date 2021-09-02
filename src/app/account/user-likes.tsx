@@ -2,7 +2,7 @@ import {NavigationProp} from '@react-navigation/native';
 import React from 'react';
 import {IconButton, List} from 'react-native-paper';
 import s from '../../styles/styles';
-import {productDetailRoute} from '../app.routes';
+import {productDetailRoute, searchRoute} from '../app.routes';
 import ListingComponent from '../components/listing/listing';
 import Criteria from '../models/criteria';
 import {ProductType} from '../models/types/product.types';
@@ -50,7 +50,7 @@ class UserLikes extends React.Component<PropType, StateType> {
             btnProps={{
               text: 'Find One',
               icon: 'heart-plus',
-              action: () => this.props.navigation.navigate('Search'),
+              action: () => this.props.navigation.navigate(searchRoute.name),
             }}
           />
         )}

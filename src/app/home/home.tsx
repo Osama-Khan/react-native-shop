@@ -12,6 +12,7 @@ import Triangle from '../components/svg/triangle';
 import AnimatedSearchbar from './animated-searchbar';
 import {createAnimatableComponent} from 'react-native-animatable';
 import SplashScreen from './splash-screen';
+import {searchRoute} from '../app.routes';
 
 type P = {navigation: NavigationProp<any>; readonly user: UserState};
 class Home extends React.Component<P> {
@@ -41,7 +42,7 @@ class Home extends React.Component<P> {
           />
           <AnimatedSearchbar
             onSearch={withSearch =>
-              this.props.navigation.navigate('Search', {withSearch})
+              this.props.navigation.navigate(searchRoute.name, {withSearch})
             }
             onFocus={() => {
               this.hiGuyImage.lightSpeedOut(500);

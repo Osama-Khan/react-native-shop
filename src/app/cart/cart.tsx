@@ -14,7 +14,7 @@ import s from '../../styles/styles';
 import CartProduct from '../models/product/cart-product';
 import CartActions from '../components/cart/manage-cart-product-actions';
 import {ScrollView} from 'react-native-gesture-handler';
-import {checkoutRoute, productDetailRoute} from '../app.routes';
+import {checkoutRoute, productDetailRoute, searchRoute} from '../app.routes';
 import IconMessageView from '../components/icon-message-view/icon-message-view';
 import {connect} from 'react-redux';
 import {AppStateType} from '../store/state';
@@ -91,7 +91,7 @@ class Cart extends React.Component<any, any> {
             title="Cart Empty"
             caption="Your cart is empty"
             btnProps={{
-              action: () => this.props.navigation.navigate('Search'),
+              action: () => this.props.navigation.navigate(searchRoute.name),
               icon: 'plus',
               text: 'Add Something',
             }}

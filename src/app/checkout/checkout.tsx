@@ -16,6 +16,7 @@ import CartState from '../store/state/cart-state';
 import cartActions from '../store/actions/cart.actions';
 import {AppStateType} from '../store/state';
 import {ScrollView} from 'react-native-gesture-handler';
+import {searchRoute} from '../app.routes';
 
 type StateType = {
   address?: AddressType;
@@ -55,7 +56,7 @@ class Checkout extends React.Component<any, StateType> {
         title="Such Emptiness!"
         caption="Your cart has no products to checkout with."
         btnProps={{
-          action: () => this.props.navigation.navigate('Search'),
+          action: () => this.props.navigation.navigate(searchRoute.name),
           icon: 'archive',
           text: 'Get Products',
         }}

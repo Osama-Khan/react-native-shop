@@ -7,6 +7,7 @@ import {NavigationProp} from '@react-navigation/core';
 import Criteria from '../../models/criteria';
 import {AxiosResponse} from 'axios';
 import IconMessageView from '../icon-message-view/icon-message-view';
+import {searchRoute} from '../../app.routes';
 
 type ResponseType = Promise<AxiosResponse<{data: ProductType[]; meta: any}>>;
 type PropType = {
@@ -46,7 +47,7 @@ export default class ProductListing extends React.Component<PropType> {
               btnProps={{
                 text: 'Go to Search',
                 icon: 'magnify',
-                action: () => this.props.navigation.navigate('Search'),
+                action: () => this.props.navigation.navigate(searchRoute.name),
               }}
             />
           ))
