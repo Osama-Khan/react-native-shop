@@ -13,6 +13,7 @@ import {AppStateType} from '../../store/state';
 import {connect} from 'react-redux';
 import userActions from '../../store/actions/user.actions';
 import themeService from '../../services/theme.service';
+import {ScrollView} from 'react-native-gesture-handler';
 
 type UserStateEditable = Pick<
   UserState,
@@ -93,94 +94,98 @@ class AccountEdit extends React.Component<any, StateType> {
     );
     return (
       <>
-        <View style={s.center}>
-          <ImageEditor
-            currentImg={data.profileImage!}
-            userImage={this.props.user.profileImage}
-            onPick={profileImage =>
-              this.setState({...this.state, data: {...data, profileImage}})
-            }
-          />
-        </View>
-        <Divider />
-        <Caption style={[s.m8, s.mt8]}>Personal Information</Caption>
-        <View style={s.row}>
-          <TextInput
-            style={[s.col6, s.p8]}
-            mode="outlined"
-            label="First Name"
-            value={data.firstName}
-            outlineColor={
-              this.isFieldChanged('firstName') ? colors.green : undefined
-            }
-            onChangeText={firstName =>
-              this.setState({...this.state, data: {...data, firstName}})
-            }
-            dense
-          />
-          <TextInput
-            style={[s.col6, s.p8]}
-            mode="outlined"
-            label="Last Name"
-            value={data.lastName}
-            outlineColor={
-              this.isFieldChanged('lastName') ? colors.green : undefined
-            }
-            onChangeText={lastName =>
-              this.setState({...this.state, data: {...data, lastName}})
-            }
-            dense
-          />
-        </View>
-        <View style={[s.row, s.center]}>
-          <Caption style={[s.m8, s.alignCenter]}>Date of Birth: </Caption>
+        <ScrollView>
+          <View style={s.center}>
+            <ImageEditor
+              currentImg={data.profileImage!}
+              userImage={this.props.user.profileImage}
+              onPick={profileImage =>
+                this.setState({...this.state, data: {...data, profileImage}})
+              }
+            />
+          </View>
+          <Divider />
+          <Caption style={[s.m8, s.mt8]}>Personal Information</Caption>
+          <View style={s.row}>
+            <TextInput
+              style={[s.col6, s.p8]}
+              mode="outlined"
+              label="First Name"
+              value={data.firstName}
+              outlineColor={
+                this.isFieldChanged('firstName') ? colors.green : undefined
+              }
+              onChangeText={firstName =>
+                this.setState({...this.state, data: {...data, firstName}})
+              }
+              dense
+            />
+            <TextInput
+              style={[s.col6, s.p8]}
+              mode="outlined"
+              label="Last Name"
+              value={data.lastName}
+              outlineColor={
+                this.isFieldChanged('lastName') ? colors.green : undefined
+              }
+              onChangeText={lastName =>
+                this.setState({...this.state, data: {...data, lastName}})
+              }
+              dense
+            />
+          </View>
+          <View style={[s.row, s.center]}>
+            <Caption style={[s.m8, s.alignCenter]}>Date of Birth: </Caption>
+            <Button
+              mode="outlined"
+              color={this.isDobChanged() ? colors.green : colors.gray}
+              compact
+              style={s.m8}
+              uppercase={false}
+              onPress={() =>
+                this.setState({...this.state, dobModalShown: true})
+              }>
+              {data.dateOfBirth!.toDateString()}
+            </Button>
+          </View>
+          <Caption style={[s.m8, s.mt8]}>Login Credentials</Caption>
+          <View>
+            <TextInput
+              style={[s.p8]}
+              mode="outlined"
+              label="Username"
+              value={data.username}
+              outlineColor={
+                this.isFieldChanged('username') ? colors.green : undefined
+              }
+              onChangeText={username =>
+                this.setState({...this.state, data: {...data, username}})
+              }
+            />
+            <TextInput
+              style={s.p8}
+              mode="outlined"
+              label="New Password"
+              value={data.password}
+              outlineColor={this.isPassChanged() ? colors.green : undefined}
+              onChangeText={password =>
+                this.setState({...this.state, data: {...data, password}})
+              }
+              secureTextEntry
+            />
+          </View>
           <Button
-            mode="outlined"
-            color={this.isDobChanged() ? colors.green : colors.gray}
-            compact
+            mode="contained"
+            icon="check"
             style={s.m8}
-            uppercase={false}
-            onPress={() => this.setState({...this.state, dobModalShown: true})}>
-            {data.dateOfBirth!.toDateString()}
+            disabled={
+              this.state.saving || Object.keys(this.submissionData).length === 0
+            }
+            loading={this.state.saving}
+            onPress={this.update}>
+            Save
           </Button>
-        </View>
-        <Caption style={[s.m8, s.mt8]}>Login Credentials</Caption>
-        <View>
-          <TextInput
-            style={[s.p8]}
-            mode="outlined"
-            label="Username"
-            value={data.username}
-            outlineColor={
-              this.isFieldChanged('username') ? colors.green : undefined
-            }
-            onChangeText={username =>
-              this.setState({...this.state, data: {...data, username}})
-            }
-          />
-          <TextInput
-            style={s.p8}
-            mode="outlined"
-            label="New Password"
-            value={data.password}
-            outlineColor={this.isPassChanged() ? colors.green : undefined}
-            onChangeText={password =>
-              this.setState({...this.state, data: {...data, password}})
-            }
-            secureTextEntry
-          />
-        </View>
-        <Button
-          mode="contained"
-          icon="check"
-          style={s.m8}
-          disabled={
-            this.state.saving || Object.keys(this.submissionData).length === 0
-          }
-          loading={this.state.saving}
-          onPress={this.update}>
-          Save
-        </Button>
+        </ScrollView>
         <DateModal />
       </>
     );
