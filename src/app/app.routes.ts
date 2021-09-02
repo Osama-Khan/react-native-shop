@@ -9,22 +9,24 @@ import Search from './search/search';
 import accountRoutes from './account/account.routes';
 import CategoryProducts from './categories/category-products';
 
+// TYPES
 type RouteType = {
   id: string;
   name: string;
   component: React.ComponentType<any>;
   options?: any;
-}
+};
 
 type BottomNavRouteType = RouteType & {
   icon: string;
-}
+};
 
 type RoutesType = {
   bottomNav: BottomNavRouteType[];
   stackNav: RouteType[];
-}
+};
 
+// STACK NAV ROUTES
 export const mainRoute: RouteType = {
   id: 'main',
   name: 'Main',
@@ -50,39 +52,44 @@ export const checkoutRoute: RouteType = {
   component: Checkout,
 };
 
+// BOTTOM NAV ROUTES
+export const homeRoute: BottomNavRouteType = {
+  id: 'home',
+  name: 'Home',
+  icon: 'home',
+  component: Home,
+};
+
+export const categoriesRoute: BottomNavRouteType = {
+  id: 'categories',
+  name: 'Categories',
+  icon: 'shape',
+  component: Categories,
+};
+
+export const searchRoute: BottomNavRouteType = {
+  id: 'search',
+  name: 'Search',
+  icon: 'magnify',
+  component: Search,
+};
+
+export const cartRoute: BottomNavRouteType = {
+  id: 'cart',
+  name: 'Cart',
+  icon: 'cart',
+  component: Cart,
+};
+
+export const accountRoute: BottomNavRouteType = {
+  id: 'account',
+  name: 'Account',
+  icon: 'account',
+  component: Account,
+};
+
 const routes: RoutesType = {
-  bottomNav: [
-    {
-      id: 'home',
-      name: 'Home',
-      icon: 'home',
-      component: Home,
-    },
-    {
-      id: 'categories',
-      name: 'Categories',
-      icon: 'shape',
-      component: Categories,
-    },
-    {
-      id: 'search',
-      name: 'Search',
-      icon: 'magnify',
-      component: Search,
-    },
-    {
-      id: 'cart',
-      name: 'Cart',
-      icon: 'cart',
-      component: Cart,
-    },
-    {
-      id: 'account',
-      name: 'Account',
-      icon: 'account',
-      component: Account,
-    },
-  ],
+  bottomNav: [homeRoute, categoriesRoute, searchRoute, cartRoute, accountRoute],
   stackNav: [
     mainRoute,
     productDetailRoute,
