@@ -14,9 +14,15 @@ export default function AnimatedSearchbar({onSearch, onFocus, onBlur}: P) {
   const shrinkSize = screenW * 0.55;
   const expandSize = screenW * 0.9;
   const width = useRef(new Animated.Value(shrinkSize)).current;
+  const marginBottom = useRef(new Animated.Value(0)).current;
   const expand = () => {
     Animated.timing(width, {
       toValue: expandSize,
+      duration: 500,
+      easing: EasingNode.elastic(),
+    }).start();
+    Animated.timing(marginBottom, {
+      toValue: 16,
       duration: 500,
       easing: EasingNode.elastic(),
     }).start();
@@ -28,10 +34,15 @@ export default function AnimatedSearchbar({onSearch, onFocus, onBlur}: P) {
       duration: 500,
       easing: EasingNode.elastic(),
     }).start();
+    Animated.timing(marginBottom, {
+      toValue: 0,
+      duration: 500,
+      easing: EasingNode.elastic(),
+    }).start();
   };
 
   return (
-    <Animated.View style={[{marginLeft: 8, width}]}>
+    <Animated.View style={[{marginLeft: 8, width, marginBottom}]}>
       <Searchbar
         onSearch={onSearch}
         onFocus={() => {
