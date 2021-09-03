@@ -6,13 +6,11 @@ import s from '../../../styles/styles';
 import {ProductType} from '../../models/types/product.types';
 import ProductLikeAction from './product-like-action';
 
-type S = {activeIndex: number};
 type P = {product: ProductType; userId: number};
 
 const imageHeight = 240;
 
-export default class ProductImageSlideshow extends React.Component<P, S> {
-  state = {activeIndex: 0};
+export default class ProductImageSlideshow extends React.Component<P> {
   render() {
     const p = this.props.product;
     const images = p.images!.map(i => (
