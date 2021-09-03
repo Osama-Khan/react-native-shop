@@ -45,12 +45,10 @@ class ProductDetail extends React.Component<PropType, StateType> {
     return p ? (
       <>
         <ScrollView>
-          <Surface>
-            <ProductImageSlideshow
-              product={p}
-              userId={this.props.state.user.id!}
-            />
-          </Surface>
+          <ProductImageSlideshow
+            product={p}
+            userId={this.props.state.user.id!}
+          />
           <View style={s.m8}>
             <Info product={p} />
             <Divider style={s.my4} />
