@@ -50,7 +50,7 @@ class ProductDetail extends React.Component<PropType, StateType> {
             userId={this.props.state.user.id!}
           />
           <View style={s.m8}>
-            <Info product={p} />
+            <Info product={p} navigation={this.props.navigation} />
             <Divider style={s.my4} />
             <Ratings product={p} />
             <Divider style={s.my4} />
