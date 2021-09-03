@@ -19,4 +19,3 @@ export const icons: {[key: string]: string} = {
 export function getChildrenOf(id: number, list: CategoryType[]) {
   return list.filter(c => c.parentCategory?.id === id);
 }
-

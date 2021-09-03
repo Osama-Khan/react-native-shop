@@ -1,5 +1,5 @@
 import {Appearance} from 'react-native';
-import { DarkTheme, DefaultTheme } from '../../styles/themes/themes';
+import {DarkTheme, DefaultTheme} from '../../styles/themes/themes';
 import storageService from './storage.service';
 
 class ThemeService {
@@ -7,7 +7,7 @@ class ThemeService {
 
   /** Loads the theme from storage */
   loadTheme = async () => {
-    this.userTheme = await storageService.getUserTheme() || this.defaultTheme;
+    this.userTheme = (await storageService.getUserTheme()) || this.defaultTheme;
     return this.userTheme;
   };
 
@@ -33,7 +33,7 @@ class ThemeService {
   }
 
   private get defaultTheme() {
-    return Appearance.getColorScheme() || 'dark'
+    return Appearance.getColorScheme() || 'dark';
   }
 }
 
