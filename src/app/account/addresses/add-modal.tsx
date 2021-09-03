@@ -4,8 +4,8 @@ import {Button, Divider, TextInput} from 'react-native-paper';
 import {Title} from 'react-native-paper';
 import s from '../../../styles/styles';
 import ListSelect from '../../components/list-select';
-import LoadingSpinner from '../../components/loading/loading-spinner';
 import Modal from '../../components/modal';
+import {LoadingCircles} from '../../components/svg/loading';
 import {
   CityType,
   CountryType,
@@ -107,7 +107,7 @@ export default class AddModal extends React.Component<P, S> {
         )}
       />
     ) : (
-      <LoadingSpinner />
+      <LoadingCircles />
     );
 
   StateSelect = () =>
@@ -131,7 +131,7 @@ export default class AddModal extends React.Component<P, S> {
           )}
         />
       ) : (
-        <LoadingSpinner />
+        <LoadingCircles />
       )
     ) : (
       <></>
@@ -153,7 +153,7 @@ export default class AddModal extends React.Component<P, S> {
           )}
         />
       ) : (
-        <LoadingSpinner />
+        <LoadingCircles />
       )
     ) : (
       <></>

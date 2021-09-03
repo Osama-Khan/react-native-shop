@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, ProgressBar, Text} from 'react-native-paper';
+import {Card, Text} from 'react-native-paper';
 import {ScrollView, View, Image} from 'react-native';
 import s from '../../styles/styles';
 import {NavigationProp} from '@react-navigation/native';
@@ -8,6 +8,7 @@ import categoryService from '../services/category.service';
 import Icon from '../components/icon';
 import {icons} from '../categories/categories.helper';
 import {categoryProductRoute} from '../app.routes';
+import {LoadingCircles} from '../components/svg/loading';
 
 type P = {navigation: NavigationProp<any>};
 type S = {categories?: CategoryType[]};
@@ -49,7 +50,7 @@ export default class CategoriesList extends React.Component<P, S> {
             />
           </ScrollView>
         ) : (
-          <ProgressBar />
+          <LoadingCircles />
         )}
       </View>
     );

@@ -1,11 +1,11 @@
 import React from 'react';
-import {ProgressBar} from 'react-native-paper';
 import {ScrollView, View} from 'react-native';
 import {ProductType} from '../models/types/product.types';
 import productService from '../services/product.service';
 import Criteria from '../models/criteria';
 import {NavigationProp} from '@react-navigation/native';
 import ProductCard from '../components/product/product-card';
+import {LoadingCircles} from '../components/svg/loading';
 
 type P = {navigation: NavigationProp<any>};
 type S = {recent?: ProductType[]};
@@ -43,7 +43,7 @@ export default class RecentProductsList extends React.Component<P, S> {
             ))}
           </ScrollView>
         ) : (
-          <ProgressBar />
+          <LoadingCircles />
         )}
       </View>
     );

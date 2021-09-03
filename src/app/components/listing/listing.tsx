@@ -3,7 +3,7 @@ import React from 'react';
 import {NativeScrollEvent, ScrollView, View} from 'react-native';
 import {ProgressBar} from 'react-native-paper';
 import Criteria from '../../models/criteria';
-import LoadingSpinner from '../loading/loading-spinner';
+import {LoadingCircles} from '../svg/loading';
 
 type P<I> = {
   /** Criteria used to filter results */
@@ -90,7 +90,7 @@ export default class ListingComponent<ItemType> extends React.PureComponent<
         }}>
         {paddingTop ? <View style={{paddingTop}} /> : <></>}
         {this.state.items!.map(this.props.container)}
-        {this.state.loading ? <LoadingSpinner /> : <></>}
+        {this.state.loading ? <LoadingCircles /> : <></>}
         {paddingBottom ? <View style={{paddingBottom}} /> : <></>}
       </ScrollView>
     ) : this.props.noResultsView ? (

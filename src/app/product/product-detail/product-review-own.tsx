@@ -1,7 +1,7 @@
 import React from 'react';
 import {Caption, Text} from 'react-native-paper';
 import s from '../../../styles/styles';
-import LoadingSpinner from '../../components/loading/loading-spinner';
+import {LoadingCircles} from '../../components/svg/loading';
 import Criteria from '../../models/criteria';
 import {OrderStateType} from '../../models/types/order.types';
 import {RatingType} from '../../models/types/product.types';
@@ -41,7 +41,7 @@ export default class OwnReview extends React.Component<PropType, StateType> {
   render() {
     const {review, orderState, updating, loading} = this.state;
     return loading ? (
-      <LoadingSpinner />
+      <LoadingCircles />
     ) : updating ? (
       <this.ManageReviewCard />
     ) : review ? (
