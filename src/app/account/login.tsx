@@ -1,6 +1,7 @@
 import {NavigationProp} from '@react-navigation/native';
 import React from 'react';
 import {ToastAndroid, View} from 'react-native';
+import {ScrollView} from 'react-native-gesture-handler';
 import {
   Title,
   Text,
@@ -11,10 +12,12 @@ import {
   FAB,
   Surface,
   Card,
+  Caption,
 } from 'react-native-paper';
 import {connect} from 'react-redux';
 import colors from '../../styles/colors';
 import s from '../../styles/styles';
+import Logo from '../components/svg/logo';
 import uiService from '../services/ui.service';
 import userService from '../services/user.service';
 import userActions from '../store/actions/user.actions';
@@ -42,70 +45,97 @@ class Login extends React.Component<PropType, StateType> {
   }
 
   render() {
+    const logoSize = 92;
     return (
-      <View style={[s.m8, s.flex, {justifyContent: 'center'}]}>
-        <Card style={s.p8} mode="outlined">
-          <Title style={s.textCenter}>Login</Title>
-          <Text style={[s.textCenter, s.textMuted]}>
-            Please enter your account details.
-          </Text>
-          <Divider style={s.mt8} />
-          <TextInput
-            label="Username"
-            style={s.mt8}
-            value={this.state.username}
-            mode="outlined"
-            onSubmitEditing={() => this.passwordRef.current.focus()}
-            onChangeText={username =>
-              this.setState({
-                ...this.state,
-                username,
-              })
-            }
-          />
-          <TextInput
-            label="Password"
-            style={s.mt8}
-            value={this.state.password}
-            mode="outlined"
-            secureTextEntry={true}
-            onSubmitEditing={this.login}
-            ref={this.passwordRef}
-            onChangeText={password =>
-              this.setState({
-                ...this.state,
-                password,
-              })
-            }
-          />
-          <View style={[s.m4, s.row]}>
-            <Text style={[s.m4, s.mlAuto]}>Remember me</Text>
-            <Switch
-              value={this.state.remember}
-              onValueChange={remember =>
+      <View style={s.flex}>
+        <ScrollView
+          style={[s.p8, {minHeight: '100%'}]}
+          contentContainerStyle={{justifyContent: 'center'}}>
+          <Card style={[s.p8, {marginTop: logoSize * 0.8}]} mode="outlined">
+            <Card
+              mode="outlined"
+              style={[
+                s.alignCenter,
+                s.center,
+                s.top,
+                s.p8,
+                s.roundedFull,
+                {
+                  top: -logoSize * 0.84,
+                  width: logoSize * 1.24,
+                  height: logoSize * 1.24,
+                },
+              ]}>
+              <Logo size={logoSize} />
+            </Card>
+            <Title style={[s.textCenter, {marginTop: logoSize * 0.64}]}>
+              Login
+            </Title>
+            <Text style={[s.textCenter, s.textMuted]}>
+              Please enter your account details.
+            </Text>
+            <Divider style={s.mt8} />
+            <TextInput
+              label="Username"
+              style={s.mt8}
+              value={this.state.username}
+              mode="outlined"
+              onSubmitEditing={() => this.passwordRef.current.focus()}
+              onChangeText={username =>
                 this.setState({
                   ...this.state,
-                  remember,
+                  username,
                 })
               }
             />
-          </View>
-          <Button style={s.mlAuto}>Forgot Password?</Button>
-          <Button
-            mode="contained"
-            loading={this.state.loading}
-            disabled={
-              this.state.loading || !this.state.username || !this.state.password
-            }
-            style={s.mt8}
-            color={colors.primary}
-            onPress={this.login}>
-            Login
-          </Button>
-        </Card>
+            <TextInput
+              label="Password"
+              style={s.mt8}
+              value={this.state.password}
+              mode="outlined"
+              secureTextEntry={true}
+              onSubmitEditing={this.login}
+              ref={this.passwordRef}
+              onChangeText={password =>
+                this.setState({
+                  ...this.state,
+                  password,
+                })
+              }
+            />
+            <View style={[s.m4, s.row]}>
+              <Text style={[s.m4]}>Remember me</Text>
+              <Switch
+                value={this.state.remember}
+                onValueChange={remember =>
+                  this.setState({
+                    ...this.state,
+                    remember,
+                  })
+                }
+              />
+              <Caption style={[s.mlAuto, {textDecorationLine: 'underline'}]}>
+                Forgot Password?
+              </Caption>
+            </View>
+            <Button
+              mode="contained"
+              loading={this.state.loading}
+              disabled={
+                this.state.loading ||
+                !this.state.username ||
+                !this.state.password
+              }
+              style={s.mt8}
+              color={colors.primary}
+              onPress={this.login}>
+              Login
+            </Button>
+          </Card>
+        </ScrollView>
         <FAB
           icon="cog"
-          style={s.bottomRight}
+          style={[s.bottomRight, s.m8]}
           onPress={() => this.props.navigation.navigate(settingsRoute.name)}
         />
       </View>
