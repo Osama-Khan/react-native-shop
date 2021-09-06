@@ -32,6 +32,7 @@ export default function Main(props: any) {
             tabBarLabelStyle: styles.mb4,
             tabBarBadge: r.name === cartRoute.name ? cartItems : undefined,
           }}
+          getId={() => r.id}
         />
       ))}
     </BottomTab.Navigator>
