@@ -10,7 +10,6 @@ import {
   Switch,
   Button,
   FAB,
-  Surface,
   Card,
   Caption,
 } from 'react-native-paper';
