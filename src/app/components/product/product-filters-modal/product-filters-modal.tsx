@@ -11,9 +11,11 @@ import {
 } from 'react-native-paper';
 import colors from '../../../../styles/colors';
 import s from '../../../../styles/styles';
+import {CategoryType} from '../../../models/types/category.type';
 import {ProductType} from '../../../models/types/product.types';
 import ListSelect from '../../list-select';
 import Modal from '../../modal';
+import CategorySelect from './category-select';
 
 type PropType = {
   onApply: (filters: StateType) => void;
@@ -21,13 +23,17 @@ type PropType = {
   onDismiss: () => void;
   visible: boolean;
 };
+
 type StateType = {
   sortBy: keyof ProductType;
   sortByOrder: 'ASC' | 'DESC';
   maxPrice: number;
   outOfStock: boolean;
+  category?: CategoryType;
 };
+
 type SortByType = {name: string; value: keyof ProductType; icon: string};
+
 type SortByOrderType = {
   name: string;
   value: 'ASC' | 'DESC';
@@ -56,7 +62,11 @@ export default class ProductFiltersModal extends React.Component<
           <Divider />
           <this.SortFilter />
           <this.PriceRangeFilter />
-          <View style={[s.row, s.mb8]}>
+          <CategorySelect
+            onSelect={category => this.setState({...this.state, category})}
+            selected={this.state.category}
+          />
+          <View style={[s.row, s.my8]}>
             <Text>Show out of stock</Text>
             <Switch
               style={s.mlAuto}
