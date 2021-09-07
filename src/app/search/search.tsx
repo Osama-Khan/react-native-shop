@@ -15,6 +15,7 @@ import IconMessageView from '../components/icon-message-view/icon-message-view';
 type PropType = {navigation: NavigationProp<any>; route: RouteProp<any>};
 type StateType = {
   criteria?: Criteria<ProductType>;
+  category?: string;
   query: string;
   showFilters: boolean;
 };
@@ -55,6 +56,7 @@ export default class Search extends React.Component<PropType, StateType> {
           <ProductListing
             criteria={this.state.criteria}
             navigation={this.props.navigation}
+            categoryName={this.state.category}
             noResultsView={() => (
               <IconMessageView
                 icon="magnify-close"
@@ -95,7 +97,12 @@ export default class Search extends React.Component<PropType, StateType> {
               criteria.addFilter('stock', 0, '>');
             }
             this.addSearchQuery(criteria);
-            this.setState({...this.state, criteria, showFilters: false});
+            this.setState({
+              ...this.state,
+              criteria,
+              showFilters: false,
+              category: state.category?.name,
+            });
           }}
           onClear={this.resetFilters}
           onDismiss={() => this.setState({...this.state, showFilters: false})}
