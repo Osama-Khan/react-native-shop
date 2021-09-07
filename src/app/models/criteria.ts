@@ -76,13 +76,13 @@ export default class Criteria<T extends Object> {
     }
   }
 
-  addRelation(include: string) {
+  addRelation(include: Extract<keyof T, string>) {
     if (!this.relations.includes(include)) {
       this.relations.push(include);
     }
   }
 
-  removeRelation(include: string) {
+  removeRelation(include: Extract<keyof T, string>) {
     this.relations = this.relations.filter((i: string) => i !== include);
   }
 
