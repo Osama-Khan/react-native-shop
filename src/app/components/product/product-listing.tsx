@@ -23,7 +23,7 @@ type S = {
 
 export default class ProductListing extends React.Component<P, S> {
   state = {updateCount: 0};
-  previousCat?: string;
+  previousCat?: string = this.props.categoryName;
 
   componentDidUpdate() {
     if (this.previousCat !== this.props.categoryName) {
