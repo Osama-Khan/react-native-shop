@@ -1,8 +1,7 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import {Text} from 'react-native-paper';
 import Icon from '../icon';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 type BreadCrumbType = {
   /** Text to show */
