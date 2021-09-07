@@ -27,6 +27,7 @@ export default class ProductListing extends React.Component<P, S> {
 
   componentDidUpdate() {
     if (this.previousCat !== this.props.categoryName) {
+      this.previousCat = this.props.categoryName;
       this.setState({
         updateCount: this.state.updateCount + 1,
       });
@@ -52,10 +53,8 @@ export default class ProductListing extends React.Component<P, S> {
             return this.props.fetchMethod(c);
           }
 
-          const cat = this.props.categoryName;
-          if (cat) {
-            this.previousCat = cat;
-            return productService.fetchFromCategory(cat, c);
+          if (this.props.categoryName) {
+            return productService.fetchFromCategory(this.props.categoryName, c);
           }
           return productService.fetchProducts(c);
         }}
