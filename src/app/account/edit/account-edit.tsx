@@ -14,6 +14,7 @@ import {connect} from 'react-redux';
 import userActions from '../../store/actions/user.actions';
 import themeService from '../../services/theme.service';
 import {ScrollView} from 'react-native-gesture-handler';
+import DatePickerModal from '../../components/modal/date-picker.modal';
 
 type UserStateEditable = Pick<
   UserState,
@@ -31,8 +32,6 @@ type StateType = {
 const minimumAge = 8;
 
 class AccountEdit extends React.Component<any, StateType> {
-  modifiedDate: Date;
-
   constructor(props: any) {
     super(props);
     const u = this.props.user;
@@ -48,50 +47,10 @@ class AccountEdit extends React.Component<any, StateType> {
         password: '',
       },
     };
-    this.modifiedDate = u.dateOfBirth!;
   }
 
   render() {
     const data = this.state.data;
-    const DateModal = () => (
-      <Modal
-        visible={this.state.dobModalShown}
-        onDismiss={() => {
-          this.setState({
-            ...this.state,
-            dobModalShown: false,
-          });
-        }}>
-        <>
-          <DatePicker
-            date={data.dateOfBirth}
-            androidVariant={
-              themeService.currentThemeName === 'dark'
-                ? 'nativeAndroid'
-                : 'iosClone'
-            }
-            maximumDate={this.getMaxDate()}
-            style={s.alignCenter}
-            onDateChange={dateOfBirth => {
-              this.modifiedDate = dateOfBirth;
-            }}
-            mode="date"
-          />
-          <Divider style={s.my8} />
-          <Button
-            style={[s.mlAuto, s.m4]}
-            onPress={() =>
-              this.setState({
-                ...this.state,
-                dobModalShown: false,
-                data: {...data, dateOfBirth: this.modifiedDate},
-              })
-            }>
-            Apply
-          </Button>
-        </>
-      </Modal>
-    );
     return (
       <>
         <ScrollView>
@@ -186,7 +145,19 @@ class AccountEdit extends React.Component<any, StateType> {
             Save
           </Button>
         </ScrollView>
-        <DateModal />
+        <DatePickerModal
+          visible={this.state.dobModalShown}
+          onDismiss={() => this.setState({...this.state, dobModalShown: false})}
+          maxDate={this.getMaxDate()}
+          startingDate={data.dateOfBirth}
+          onPick={date =>
+            this.setState({
+              ...this.state,
+              dobModalShown: false,
+              data: {...this.state.data, dateOfBirth: date},
+            })
+          }
+        />
       </>
     );
   }
