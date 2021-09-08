@@ -17,6 +17,7 @@ import {connect} from 'react-redux';
 import colors from '../../styles/colors';
 import s from '../../styles/styles';
 import Logo from '../components/svg/logo';
+import themeService from '../services/theme.service';
 import uiService from '../services/ui.service';
 import userService from '../services/user.service';
 import userActions from '../store/actions/user.actions';
@@ -26,6 +27,7 @@ import {settingsRoute} from './account.routes';
 type PropType = {
   dispatch: any;
   navigation: NavigationProp<any>;
+  createAccount: () => void;
 };
 type StateType = {
   username: string;
@@ -129,6 +131,15 @@ class Login extends React.Component<PropType, StateType> {
               color={colors.primary}
               onPress={this.login}>
               Login
+            </Button>
+            <Button
+              mode="contained"
+              icon="account-plus"
+              color={themeService.currentTheme.colors.border}
+              disabled={this.state.loading}
+              style={s.mt8}
+              onPress={this.props.createAccount}>
+              Create account
             </Button>
           </Card>
         </ScrollView>

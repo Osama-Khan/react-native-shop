@@ -5,14 +5,12 @@ import storageService from '../services/storage.service';
 import {AppStateType} from '../store/state';
 import {connect} from 'react-redux';
 import userActions from '../store/actions/user.actions';
+import Register from './register';
 
-class Account extends React.Component<any, any> {
+type S = {showingLogin: boolean};
+class Account extends React.Component<any, S> {
+  state = {showingLogin: true};
   passwordRef: any;
-
-  constructor(props: any) {
-    super(props);
-    this.state = {};
-  }
 
   render() {
     return this.props.user.token ? (
@@ -23,8 +21,13 @@ class Account extends React.Component<any, any> {
         }}
         navigation={this.props.navigation}
       />
+    ) : this.state.showingLogin ? (
+      <Login
+        navigation={this.props.navigation}
+        createAccount={() => this.setState({showingLogin: false})}
+      />
     ) : (
-      <Login navigation={this.props.navigation} />
+      <Register backToLogin={() => this.setState({showingLogin: true})} />
     );
   }
 }
