@@ -80,7 +80,6 @@ class Login extends React.Component<PropType, StateType> {
               label="Username"
               style={s.mt8}
               value={this.state.username}
-              mode="outlined"
               onSubmitEditing={() => this.passwordRef.current.focus()}
               onChangeText={username =>
                 this.setState({
@@ -93,7 +92,6 @@ class Login extends React.Component<PropType, StateType> {
               label="Password"
               style={s.mt8}
               value={this.state.password}
-              mode="outlined"
               secureTextEntry={true}
               onSubmitEditing={this.login}
               ref={this.passwordRef}
@@ -152,13 +150,13 @@ class Login extends React.Component<PropType, StateType> {
     );
   }
   login = () => {
-    this.setState({...this.state, loading: true});
     const {username, password, remember} = this.state;
     if (!username || !password) {
       ToastAndroid.show('Please fill in both fields.', ToastAndroid.SHORT);
       return;
     }
 
+    this.setState({...this.state, loading: true});
     userService
       .login(username, password, remember)
       .then(res => {
