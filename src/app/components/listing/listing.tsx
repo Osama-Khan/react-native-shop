@@ -1,6 +1,11 @@
 import {AxiosResponse} from 'axios';
 import React from 'react';
-import {NativeScrollEvent, ScrollView, View} from 'react-native';
+import {
+  NativeScrollEvent,
+  RefreshControl,
+  ScrollView,
+  View,
+} from 'react-native';
 import {ProgressBar} from 'react-native-paper';
 import Criteria from '../../models/criteria';
 import {LoadingCircles} from '../svg/loading';
@@ -28,7 +33,7 @@ type P<I> = {
   updateCount?: number;
 };
 
-type S<I> = {items?: I[]; loading: boolean};
+type S<I> = {items?: I[]; loading: boolean; refreshing: boolean};
 
 /** A generic component that can be used to fetch and list items */
 export default class ListingComponent<ItemType> extends React.PureComponent<
@@ -37,14 +42,12 @@ export default class ListingComponent<ItemType> extends React.PureComponent<
 > {
   private page = 0;
   private maxPage = 1;
-  private criteria: Criteria<ItemType>;
+  private criteria: Criteria<ItemType> = new Criteria<ItemType>(
+    this.props.criteria,
+  );
   private currentUpdate = 0;
 
-  constructor(props: P<ItemType>) {
-    super(props);
-    this.state = {loading: false};
-    this.criteria = new Criteria<ItemType>(props.criteria);
-  }
+  state: S<ItemType> = {loading: false, refreshing: false};
 
   componentDidMount() {
     this.fetch();
@@ -87,7 +90,13 @@ export default class ListingComponent<ItemType> extends React.PureComponent<
               this.fetch(true);
             }
           }
-        }}>
+        }}
+        refreshControl={
+          <RefreshControl
+            onRefresh={() => this.fetch(false, true)}
+            refreshing={this.state.refreshing}
+          />
+        }>
         {paddingTop ? <View style={{paddingTop}} /> : <></>}
         {this.state.items!.map(this.props.container)}
         {this.state.loading ? <LoadingCircles /> : <></>}
@@ -116,18 +125,23 @@ export default class ListingComponent<ItemType> extends React.PureComponent<
   /** Fetches data and updates state
    * @param append Appends new data to the end of the current items list if true
    */
-  private fetch = (append = false) => {
-    this.setState({...this.state, loading: true});
+  private fetch = (append = false, refreshing = false) => {
     const criteria = new Criteria(this.criteria);
-    if (this.page) {
-      criteria.setPage(this.page);
+    if (refreshing) {
+      this.setState({...this.state, refreshing: true});
+      criteria.setPage(1);
+    } else {
+      this.setState({...this.state, loading: true});
+      if (this.page) {
+        criteria.setPage(this.page);
+      }
     }
     this.props.fetchMethod(criteria).then(res => {
       let items = this.state.items || [];
       items = append ? [...items, ...res.data.data] : res.data.data;
       this.page = res.data.meta.currentPage;
       this.maxPage = res.data.meta.totalPages;
-      this.setState({items, loading: false});
+      this.setState({items, refreshing: false, loading: false});
     });
   };
 }
