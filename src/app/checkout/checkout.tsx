@@ -1,5 +1,5 @@
 import React from 'react';
-import {View} from 'react-native';
+import {View, ScrollView} from 'react-native';
 import {Divider, Text, Button, Caption, Title} from 'react-native-paper';
 import s from '../../styles/styles';
 import Icon from '../components/icon';
@@ -15,7 +15,6 @@ import {connect} from 'react-redux';
 import CartState from '../store/state/cart-state';
 import cartActions from '../store/actions/cart.actions';
 import {AppStateType} from '../store/state';
-import {ScrollView} from 'react-native-gesture-handler';
 import {searchRoute} from '../app.routes';
 
 type StateType = {

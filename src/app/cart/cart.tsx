@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Image, Alert, AlertButton} from 'react-native';
+import {View, ScrollView, Image, Alert, AlertButton} from 'react-native';
 import {
   Card,
   Divider,
@@ -13,7 +13,6 @@ import {
 import s from '../../styles/styles';
 import CartProduct from '../models/product/cart-product';
 import CartActions from '../components/cart/manage-cart-product-actions';
-import {ScrollView} from 'react-native-gesture-handler';
 import {checkoutRoute, productDetailRoute, searchRoute} from '../app.routes';
 import IconMessageView from '../components/icon-message-view/icon-message-view';
 import {connect} from 'react-redux';

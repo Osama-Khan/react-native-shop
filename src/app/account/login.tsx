@@ -1,7 +1,6 @@
 import {NavigationProp} from '@react-navigation/native';
 import React from 'react';
-import {ToastAndroid, View} from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
+import {ToastAndroid, View, ScrollView} from 'react-native';
 import {
   Title,
   Text,

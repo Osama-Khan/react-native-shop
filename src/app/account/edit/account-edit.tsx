@@ -1,9 +1,7 @@
 import React from 'react';
-import {View} from 'react-native';
+import {View, ScrollView} from 'react-native';
 import {Button, Caption, Divider, TextInput} from 'react-native-paper';
 import s from '../../../styles/styles';
-import DatePicker from 'react-native-date-picker';
-import Modal from '../../components/modal/modal';
 import colors from '../../../styles/colors';
 import UserState from '../../store/state/user-state';
 import userService from '../../services/user.service';
@@ -12,8 +10,6 @@ import ImageEditor from './account-edit-image';
 import {AppStateType} from '../../store/state';
 import {connect} from 'react-redux';
 import userActions from '../../store/actions/user.actions';
-import themeService from '../../services/theme.service';
-import {ScrollView} from 'react-native-gesture-handler';
 import DatePickerModal from '../../components/modal/date-picker.modal';
 
 type UserStateEditable = Pick<

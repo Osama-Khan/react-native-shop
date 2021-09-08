@@ -1,7 +1,6 @@
 import {NavigationProp, RouteProp} from '@react-navigation/native';
 import React from 'react';
-import {View} from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
+import {View, ScrollView} from 'react-native';
 import {Button, Divider, ProgressBar, Surface} from 'react-native-paper';
 import {connect} from 'react-redux';
 import colors from '../../styles/colors';
