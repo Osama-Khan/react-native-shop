@@ -6,5 +6,5 @@ export type ModalPropType = {
   children: React.ReactNode;
 
   /** Called when the user taps anywhere outside the modal */
-  onDismiss?: () => void;
+  onDismiss: () => void;
 };
