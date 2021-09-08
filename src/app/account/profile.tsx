@@ -43,7 +43,12 @@ class Profile extends React.Component<PropType> {
             <Text style={s.textMuted}>{'@' + user.username}</Text>
             <View style={s.row}>
               <Card style={[s.mt4, s.p4]}>
-                <Text>{user.roles && user.roles[0].name}</Text>
+                <Text>
+                  {(user.roles &&
+                    user.roles.length > 0 &&
+                    user.roles[0].name) ||
+                    'Member'}
+                </Text>
               </Card>
             </View>
           </View>
