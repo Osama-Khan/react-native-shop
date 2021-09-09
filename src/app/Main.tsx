@@ -2,7 +2,6 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import routes, {cartRoute} from './app.routes';
 import Icon from './components/icon';
-import styles from '../styles/styles';
 import colors from '../styles/colors';
 import themeService from './services/theme.service';
 import {screenOptions} from './App';
@@ -18,6 +17,7 @@ export default function Main(props: any) {
     <BottomTab.Navigator
       screenOptions={{
         tabBarHideOnKeyboard: true,
+        tabBarShowLabel: false,
         ...screenOptions(),
         ...tabBarColorOptions(),
       }}>
@@ -29,7 +29,6 @@ export default function Main(props: any) {
           {...props}
           options={{
             tabBarIcon: p => <Icon name={r.icon} {...p} />,
-            tabBarLabelStyle: styles.mb4,
             tabBarBadge: r.name === cartRoute.name ? cartItems : undefined,
           }}
           getId={() => r.id}
