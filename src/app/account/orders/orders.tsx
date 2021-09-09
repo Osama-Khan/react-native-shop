@@ -65,7 +65,13 @@ class Orders extends React.Component<any, StateType> {
           <ListingComponent
             criteria={this.state.criteria}
             fetchMethod={c => orderService.getOrders(c)}
-            container={o => <OrderCard order={o} key={o.id} />}
+            container={o => (
+              <OrderCard
+                navigation={this.props.navigation}
+                order={o}
+                key={o.id}
+              />
+            )}
             noResultsView={() => (
               <IconMessageView
                 icon="receipt"

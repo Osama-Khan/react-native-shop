@@ -1,15 +1,17 @@
+import {NavigationProp} from '@react-navigation/core';
 import React from 'react';
-import {View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import {Caption, Card, Divider, Text, Title} from 'react-native-paper';
 import colors from '../../../styles/colors';
 import s from '../../../styles/styles';
+import {productDetailRoute} from '../../app.routes';
 import Icon from '../../components/icon';
 import {LoadingCircles} from '../../components/svg/loading';
 import {OrderProductType, OrderType} from '../../models/types/order.types';
 import orderService from '../../services/order.service';
 import uiService from '../../services/ui.service';
 
-type PropType = {order: OrderType};
+type PropType = {order: OrderType; navigation: NavigationProp<any>};
 type StateType = {orderProducts?: OrderProductType[]; loading: boolean};
 
 export default class extends React.Component<PropType, StateType> {
@@ -27,7 +29,7 @@ export default class extends React.Component<PropType, StateType> {
       .orderProducts!.map(p => p.price)
       .reduce((p, c) => p + c);
     return (
-      <Card style={[s.m8, s.p4]}>
+      <Card style={[s.m8, s.p4]} mode="outlined">
         <View style={s.row}>
           <Title style={s.mb4}>Order #{order.id}</Title>
           <Icon
@@ -51,7 +53,15 @@ export default class extends React.Component<PropType, StateType> {
                   {this.state.orderProducts!.map(op => (
                     <View style={s.row} key={op.id}>
                       <Text style={s.mx4}>{op.quantity}&times;</Text>
-                      <Text style={s.mx4}>{op.product!.title}</Text>
+                      <TouchableOpacity
+                        onPress={() =>
+                          this.props.navigation.navigate(
+                            productDetailRoute.name,
+                            {id: op.product!.id},
+                          )
+                        }>
+                        <Text style={s.mx4}>{op.product!.title}</Text>
+                      </TouchableOpacity>
                     </View>
                   ))}
                 </>
