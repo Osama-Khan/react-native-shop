@@ -13,7 +13,6 @@ import {connect} from 'react-redux';
 import CartState from '../../store/state/cart-state';
 import cartActions from '../../store/actions/cart.actions';
 import {AppStateType} from '../../store/state';
-import {createAnimatableComponent} from 'react-native-animatable';
 
 type PropType = {
   product: ProductType;
@@ -26,55 +25,52 @@ class ProductListingCard extends React.Component<PropType> {
   render() {
     const product = this.props.product;
     const outOfStock = product.stock === 0;
-    const AnimatedView = createAnimatableComponent(View);
     return (
-      <AnimatedView animation="fadeIn">
-        <Card
-          style={s.card}
-          elevation={4}
-          onPress={() =>
-            this.props.navigation.navigate(productDetailRoute.name, {
-              id: product.id,
-            })
-          }
-          {...this.props}>
-          <View style={s.row}>
-            <View style={[s.img, s.imgBg]} />
-            <Image
-              source={{uri: product.images![0].image}}
-              style={s.img}
-              resizeMode="contain"
-            />
-            <View style={[s.p8, s.col9]}>
-              <Text numberOfLines={2} style={s.textBold}>
-                {product.title}
+      <Card
+        style={s.card}
+        elevation={4}
+        onPress={() =>
+          this.props.navigation.navigate(productDetailRoute.name, {
+            id: product.id,
+          })
+        }
+        {...this.props}>
+        <View style={s.row}>
+          <View style={[s.img, s.imgBg]} />
+          <Image
+            source={{uri: product.images![0].image}}
+            style={s.img}
+            resizeMode="contain"
+          />
+          <View style={[s.p8, s.col9]}>
+            <Text numberOfLines={2} style={s.textBold}>
+              {product.title}
+            </Text>
+            <Rating rating={product.rating} style={s.my4} />
+            <Text numberOfLines={1}>{product.description}</Text>
+            <View style={s.row}>
+              <Caption style={[s.mtAuto]}>
+                <Icon name="heart" color={colors.gray} />
+                &nbsp;{product.favoriteCount} Likes
+              </Caption>
+              <Text
+                style={[
+                  s.mlAuto,
+                  s.p4,
+                  s.mt8,
+                  s.textBadge,
+                  outOfStock ? s.textOutOfStock : s.textPrice,
+                ]}>
+                {outOfStock ? 'Out Of Stock' : 'Rs. ' + product.price}
               </Text>
-              <Rating rating={product.rating} style={s.my4} />
-              <Text numberOfLines={1}>{product.description}</Text>
-              <View style={s.row}>
-                <Caption style={[s.mtAuto]}>
-                  <Icon name="heart" color={colors.gray} />
-                  &nbsp;{product.favoriteCount} Likes
-                </Caption>
-                <Text
-                  style={[
-                    s.mlAuto,
-                    s.p4,
-                    s.mt8,
-                    s.textBadge,
-                    outOfStock ? s.textOutOfStock : s.textPrice,
-                  ]}>
-                  {outOfStock ? 'Out Of Stock' : 'Rs. ' + product.price}
-                </Text>
-              </View>
             </View>
           </View>
-          <View>
-            <Divider />
-            <this.CartAction />
-          </View>
-        </Card>
-      </AnimatedView>
+        </View>
+        <View>
+          <Divider />
+          <this.CartAction />
+        </View>
+      </Card>
     );
   }
 
