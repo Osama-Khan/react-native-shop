@@ -54,13 +54,13 @@ export default class AddModal extends React.Component<P, S> {
           <Title>Add Address</Title>
           <Divider />
           <TextInput
-            mode="outlined"
+            style={s.my4}
             label="Tag"
             value={this.state.tag}
             onChangeText={tag => this.setState({...this.state, tag})}
           />
           <TextInput
-            mode="outlined"
+            style={s.my4}
             label="Street Address"
             value={this.state.address}
             onChangeText={address => this.setState({...this.state, address})}
