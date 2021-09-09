@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, ScrollView, Image, Alert, AlertButton} from 'react-native';
+import {View, ScrollView, Image} from 'react-native';
 import {
   Card,
   Divider,
@@ -19,8 +19,10 @@ import {connect} from 'react-redux';
 import {AppStateType} from '../store/state';
 import colors from '../../styles/colors';
 import cartActions from '../store/actions/cart.actions';
+import ConfirmModal from '../components/modal/confirm.modal';
 
 class Cart extends React.Component<any, any> {
+  state = {modalVisible: false};
   render() {
     const state = this.props.state as AppStateType;
     const products = state.cart.products;
@@ -46,24 +48,7 @@ class Cart extends React.Component<any, any> {
                   style={[s.topRight, s.m8]}
                   icon="trash-can"
                   color={colors.red}
-                  onPress={() => {
-                    const btnYes: AlertButton = {
-                      text: 'Yes',
-                      style: 'destructive',
-                      onPress: () => {
-                        this.props.dispatch(cartActions.clearCart());
-                      },
-                    };
-                    const btnNo: AlertButton = {
-                      text: 'No',
-                      style: 'cancel',
-                    };
-                    const title = 'Clear cart?';
-                    const msg = 'Are you sure you want to clear the cart?';
-                    Alert.alert(title, msg, [btnYes, btnNo], {
-                      cancelable: true,
-                    });
-                  }}
+                  onPress={this.showModal}
                 />
                 {products.map(p => (
                   <this.CartProduct key={p.id} product={p} />
@@ -96,6 +81,19 @@ class Cart extends React.Component<any, any> {
             }}
           />
         )}
+        <ConfirmModal
+          title="Clear cart?"
+          description="Are you sure you want to clear the cart?"
+          positiveButton={{
+            onPress: () => {
+              this.props.dispatch(cartActions.clearCart());
+              this.hideModal();
+            },
+          }}
+          negativeButton={{onPress: this.hideModal}}
+          visible={this.state.modalVisible}
+          onDismiss={this.hideModal}
+        />
       </View>
     );
   }
@@ -132,6 +130,9 @@ class Cart extends React.Component<any, any> {
       />
     </Card>
   );
+
+  hideModal = () => this.setState({modalVisible: false});
+  showModal = () => this.setState({modalVisible: true});
 }
 
 function mapStateToProps(state: AppStateType) {
