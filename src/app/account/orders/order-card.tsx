@@ -1,16 +1,10 @@
 import React from 'react';
 import {View} from 'react-native';
-import {
-  Caption,
-  Card,
-  Divider,
-  ProgressBar,
-  Text,
-  Title,
-} from 'react-native-paper';
+import {Caption, Card, Divider, Text, Title} from 'react-native-paper';
 import colors from '../../../styles/colors';
 import s from '../../../styles/styles';
 import Icon from '../../components/icon';
+import {LoadingCircles} from '../../components/svg/loading';
 import {OrderProductType, OrderType} from '../../models/types/order.types';
 import orderService from '../../services/order.service';
 import uiService from '../../services/ui.service';
@@ -48,7 +42,9 @@ export default class extends React.Component<PropType, StateType> {
           <View style={s.row}>
             <View style={s.col8}>
               {this.state.loading ? (
-                <ProgressBar indeterminate={true} color={colors.gray} />
+                <View style={[s.center, s.flex]}>
+                  <LoadingCircles />
+                </View>
               ) : this.state.orderProducts ? (
                 <>
                   <Caption style={s.textBold}>Products</Caption>

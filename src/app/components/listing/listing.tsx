@@ -6,6 +6,7 @@ import {
   RefreshControl,
   ScrollView,
   TextStyle,
+  ActivityIndicator,
   View,
   ViewStyle,
 } from 'react-native';
@@ -13,9 +14,7 @@ import {
   createAnimatableComponent,
   CustomAnimation,
 } from 'react-native-animatable';
-import {ProgressBar} from 'react-native-paper';
 import Criteria from '../../models/criteria';
-import {LoadingCircles} from '../svg/loading';
 
 type P<I> = {
   /** Criteria used to filter results */
@@ -84,7 +83,12 @@ export default class ListingComponent<ItemType> extends React.PureComponent<
 
   render() {
     if (this.page === 0) {
-      return <ProgressBar indeterminate={true} />;
+      return (
+        <ActivityIndicator
+          style={{flex: 1, alignSelf: 'center'}}
+          size="large"
+        />
+      );
     }
 
     const paddingTop = this.props.padding?.top;
@@ -110,7 +114,7 @@ export default class ListingComponent<ItemType> extends React.PureComponent<
         <AnimatedView animation={this.props.animation}>
           {this.state.items!.map(this.props.container)}
         </AnimatedView>
-        {this.state.loading ? <LoadingCircles /> : <></>}
+        {this.state.loading ? <ActivityIndicator /> : <></>}
         {paddingBottom ? <View style={{paddingBottom}} /> : <></>}
       </ScrollView>
     ) : this.props.noResultsView ? (
