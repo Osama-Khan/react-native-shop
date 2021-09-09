@@ -3,14 +3,9 @@ import {Modal as M, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 import {Surface} from 'react-native-paper';
 import colors from '../../../styles/colors';
 import s from '../../../styles/styles';
+import {ModalPropType} from './modal-prop-type';
 
-type PropType = {
-  /** Should the modal be shown */
-  visible: boolean;
-
-  /** Content of the modal */
-  children: React.ReactNode;
-
+type PropType = ModalPropType & {
   /** Style of the modal holder */
   holderStyle?: StyleProp<ViewStyle>;
 
@@ -31,9 +26,6 @@ type PropType = {
 
   /** Type of animation */
   animationType?: 'fade' | 'none' | 'slide';
-
-  /** Called when the user taps anywhere outside the modal */
-  onDismiss?: () => void;
 };
 
 /** Base Modal component to provide a more tailored API over react native Modal */
