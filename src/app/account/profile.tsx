@@ -96,7 +96,7 @@ class Profile extends React.Component<PropType> {
           />
           <Divider />
         </List.Section>
-        <List.Section title="Settings">
+        <List.Section title="Application">
           <List.Item
             title="Settings"
             onPress={() => goto(settingsRoute.name)}
