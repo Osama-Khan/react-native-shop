@@ -1,10 +1,13 @@
 import {NavigationProp} from '@react-navigation/native';
 import React from 'react';
 import {ScrollView, Image, View} from 'react-native';
-import {Title, Text, Divider, List, Card} from 'react-native-paper';
+import {Title, Divider, List, Caption} from 'react-native-paper';
 import {connect} from 'react-redux';
 import colors from '../../styles/colors';
 import s from '../../styles/styles';
+import Triangle from '../components/svg/triangle';
+import themeService from '../services/theme.service';
+import uiService from '../services/ui.service';
 import {AppStateType} from '../store/state';
 import UserState from '../store/state/user-state';
 import {
@@ -30,30 +33,26 @@ class Profile extends React.Component<PropType> {
       navigation.navigate(name, params);
     return (
       <ScrollView>
-        <View style={[s.m8, s.row, s.center]}>
-          <Image
-            source={{uri: user.profileImage, height: 92}}
-            resizeMode="contain"
-            style={[s.col3, s.rounded]}
-          />
-          <View style={[s.ml8, s.col9]}>
-            <Title>
-              {user.firstName} {user.lastName}
-            </Title>
-            <Text style={s.textMuted}>{'@' + user.username}</Text>
-            <View style={s.row}>
-              <Card style={[s.mt4, s.p4]}>
-                <Text>
-                  {(user.roles &&
-                    user.roles.length > 0 &&
-                    user.roles[0].name) ||
-                    'Member'}
-                </Text>
-              </Card>
+        <View style={{backgroundColor: colors.primary}}>
+          <View style={[s.p8, {paddingTop: 48}, s.row, s.center]}>
+            <View style={[s.ml8, s.col9]}>
+              <Title style={[{fontWeight: 'bold', color: colors.white}]}>
+                {user.firstName} {user.lastName}
+              </Title>
+              <Caption style={{color: colors.light}}>
+                {'@' + user.username}
+              </Caption>
             </View>
+            <Image
+              source={{uri: user.profileImage, height: 48, width: 48}}
+              resizeMode="cover"
+              style={[s.roundedFull, s.mlAuto, s.mr16]}
+            />
+          </View>
+          <View style={{height: 24, width: '100%'}}>
+            <Triangle color={themeService.currentTheme.colors.background} />
           </View>
         </View>
-        <Divider />
         <List.Section title="Overview">
           <List.Item
             title="Listings"
@@ -101,6 +100,18 @@ class Profile extends React.Component<PropType> {
             title="Settings"
             onPress={() => goto(settingsRoute.name)}
             left={() => <List.Icon icon="cog" />}
+          />
+          <List.Item
+            title="Support"
+            onPress={() => {
+              const messages = [
+                'You got this!',
+                'I believe in you!',
+                'You can do this!',
+              ];
+              uiService.toast(messages[Math.floor(Math.random() * 3)]);
+            }}
+            left={() => <List.Icon icon="lifebuoy" />}
           />
           <List.Item
             title="Logout"
