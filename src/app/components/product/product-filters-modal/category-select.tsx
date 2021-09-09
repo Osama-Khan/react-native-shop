@@ -1,7 +1,6 @@
 import React from 'react';
 import {View} from 'react-native-animatable';
-import {Card, Divider, List, Text, Title} from 'react-native-paper';
-import colors from '../../../../styles/colors';
+import {Card, Divider, Text, Title} from 'react-native-paper';
 import Criteria from '../../../models/criteria';
 import {CategoryType} from '../../../models/types/category.type';
 import categoryService from '../../../services/category.service';
