@@ -1,11 +1,18 @@
 import {AxiosResponse} from 'axios';
 import React from 'react';
 import {
+  ImageStyle,
   NativeScrollEvent,
   RefreshControl,
   ScrollView,
+  TextStyle,
   View,
+  ViewStyle,
 } from 'react-native';
+import {
+  createAnimatableComponent,
+  CustomAnimation,
+} from 'react-native-animatable';
 import {ProgressBar} from 'react-native-paper';
 import Criteria from '../../models/criteria';
 import {LoadingCircles} from '../svg/loading';
@@ -27,6 +34,8 @@ type P<I> = {
 
   /** Gaps to show at the top and bottom of the scrollview */
   padding?: {top?: number; bottom?: number};
+
+  animation?: string | CustomAnimation<TextStyle & ViewStyle & ImageStyle>;
 
   /** Can be incremented to force a data update. Should be linked with
    * a state property to allow multiple updates */
@@ -98,7 +107,9 @@ export default class ListingComponent<ItemType> extends React.PureComponent<
           />
         }>
         {paddingTop ? <View style={{paddingTop}} /> : <></>}
-        {this.state.items!.map(this.props.container)}
+        <AnimatedView animation={this.props.animation}>
+          {this.state.items!.map(this.props.container)}
+        </AnimatedView>
         {this.state.loading ? <LoadingCircles /> : <></>}
         {paddingBottom ? <View style={{paddingBottom}} /> : <></>}
       </ScrollView>
@@ -145,3 +156,5 @@ export default class ListingComponent<ItemType> extends React.PureComponent<
     });
   };
 }
+
+const AnimatedView = createAnimatableComponent(View);
