@@ -38,6 +38,7 @@ export default class ProductListing extends React.Component<P, S> {
     return (
       <ListingComponent
         criteria={this.props.criteria}
+        animation="fadeIn"
         container={p => (
           <ProductListingCard
             product={p}
