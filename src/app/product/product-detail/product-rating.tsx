@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, Card, Title, Caption} from 'react-native-paper';
+import {Text, Card, Caption} from 'react-native-paper';
 import s from '../../../styles/styles';
 import {ProductType, RatingType} from '../../models/types/product.types';
 import Icon from '../../components/icon';

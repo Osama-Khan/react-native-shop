@@ -20,7 +20,7 @@ async function restoreUser() {
     let res;
     try {
       res = await userService.loginWithToken(token);
-    } catch (e) {
+    } catch (e: any) {
       const code = e.response.code;
       if (code === 401) {
         uiService.toast('Your session has expired. Please login again.');

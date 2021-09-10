@@ -1,6 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CartState from '../store/state/cart-state';
-import themeService from './theme.service';
 
 class StorageService {
   tokenKey = 'user-token';
