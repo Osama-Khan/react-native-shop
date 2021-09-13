@@ -21,7 +21,7 @@ export default function ConfirmModal(props: ConfirmModalProps) {
   const {title, description, positiveButton, negativeButton, ...others} = props;
   return (
     <Modal {...others}>
-      <Title style={{fontWeight: 'bold', margin: 8}}>{title}</Title>
+      <Title style={{fontWeight: 'bold', padding: 8}}>{title}</Title>
       <Divider />
       <Text style={{minHeight: '15%', margin: 8}}>{description}</Text>
       <Divider />
