@@ -49,8 +49,8 @@ export default class StackedScreens extends React.Component<P, S> {
       const isCenter = this.lastPosition === 0;
       const acceptRGesture = g.dx > thresh || g.vx > velThresh;
       const acceptLGesture = g.dx < -thresh || g.vx < -velThresh;
-      const shouldGoLeft = isCenter && acceptRGesture;
-      const shouldGoRight = isCenter && acceptLGesture;
+      const shouldGoLeft = isCenter && acceptRGesture && isLeft;
+      const shouldGoRight = isCenter && acceptLGesture && !isLeft;
       const shouldGoCenter =
         (isLeft && acceptLGesture) || (!isLeft && acceptRGesture);
       if (shouldGoLeft) {
