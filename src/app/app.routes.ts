@@ -1,13 +1,11 @@
 import Account from './account/account';
 import Cart from './cart/cart';
-import Categories from './categories/categories';
 import Home from './home/home';
 import Main from './Main';
 import Checkout from './checkout/checkout';
 import ProductDetail from './product/product-detail';
 import Search from './search/search';
 import accountRoutes from './account/account.routes';
-import CategoryProducts from './categories/category-products';
 
 // TYPES
 type RouteType = {
@@ -34,12 +32,6 @@ export const mainRoute: RouteType = {
   options: {headerShown: false},
 };
 
-export const categoryProductRoute: RouteType = {
-  id: 'category-product',
-  name: 'Category Product',
-  component: CategoryProducts,
-};
-
 export const productDetailRoute: RouteType = {
   id: 'detail',
   name: 'Detail',
@@ -58,13 +50,6 @@ export const homeRoute: BottomNavRouteType = {
   name: 'Home',
   icon: 'home',
   component: Home,
-};
-
-export const categoriesRoute: BottomNavRouteType = {
-  id: 'categories',
-  name: 'Categories',
-  icon: 'shape',
-  component: Categories,
 };
 
 export const searchRoute: BottomNavRouteType = {
@@ -89,14 +74,8 @@ export const accountRoute: BottomNavRouteType = {
 };
 
 const routes: RoutesType = {
-  bottomNav: [homeRoute, categoriesRoute, searchRoute, cartRoute, accountRoute],
-  stackNav: [
-    mainRoute,
-    productDetailRoute,
-    checkoutRoute,
-    ...accountRoutes,
-    categoryProductRoute,
-  ],
+  bottomNav: [homeRoute, searchRoute, cartRoute, accountRoute],
+  stackNav: [mainRoute, productDetailRoute, checkoutRoute, ...accountRoutes],
 };
 
 export default routes;

@@ -1,115 +1,127 @@
 import {NavigationProp, RouteProp} from '@react-navigation/native';
 import React from 'react';
-import {View} from 'react-native';
-import {FAB, Searchbar, Text} from 'react-native-paper';
+import {Card, Searchbar} from 'react-native-paper';
 import s from '../../styles/styles';
 import Criteria from '../models/criteria';
 import {ProductType} from '../models/types/product.types';
-import Icon from '../components/icon';
-import colors from '../../styles/colors';
 import {createRef} from 'react';
 import ProductListing from '../components/product/product-listing';
-import ProductFiltersModal from '../components/product/product-filters-modal/product-filters-modal';
 import IconMessageView from '../components/icon-message-view/icon-message-view';
+import StackedScreens from '../components/stacked-screens';
+import FiltersScreen from './filters.screen';
+import CategoriesScreen from './categories.screen';
+import {CategoryType} from '../models/types/category.type';
 
-type PropType = {navigation: NavigationProp<any>; route: RouteProp<any>};
+type RouteParamType = {withSearch?: string; withCategory?: CategoryType};
+type PropType = {
+  navigation: NavigationProp<any>;
+  route: RouteProp<any>;
+};
 type StateType = {
   criteria?: Criteria<ProductType>;
-  category?: string;
+  category?: CategoryType;
   query: string;
-  showFilters: boolean;
 };
 export default class Search extends React.Component<PropType, StateType> {
   readonly updateDelay = 500;
   updateTimeout?: NodeJS.Timeout;
-  searchBarRef: any;
+  searchBarRef: any = createRef();
 
   constructor(props: PropType) {
     super(props);
-    this.state = {query: '', showFilters: false};
-    this.searchBarRef = createRef();
+    this.state = this.deriveStateFromParams(props.route.params) || {query: ''};
   }
 
   componentDidMount() {
     this.props.navigation.addListener('focus', () => {
-      const query = this.props.route.params?.withSearch;
-      if (query && query !== this.state.query) {
-        this.setState({...this.state, query});
-        this.setUpdate();
+      const newState = this.deriveStateFromParams(this.props.route.params);
+      if (newState) {
+        this.setState(newState);
       }
     });
   }
 
+  deriveStateFromParams = (params?: RouteParamType): StateType | undefined => {
+    const withSearch = params?.withSearch;
+    const withCategory = params?.withCategory;
+    const shouldSetQuery = withSearch && withSearch !== this.state?.query;
+    const shouldSetCategory = withCategory?.id !== this.state?.category?.id;
+    if (shouldSetCategory || shouldSetQuery) {
+      const criteria = new Criteria(this.state?.criteria);
+      const query = shouldSetQuery ? withSearch : this.state?.query;
+      const category = shouldSetCategory ? withCategory : this.state?.category;
+      return {...this.state, query, category, criteria};
+    }
+  };
+
   render() {
-    const filters = this.state.showFilters;
     return (
-      <View style={s.flex}>
+      <StackedScreens
+        MainScreen={this.SearchScreen}
+        LeftScreen={this.LeftScreen}
+        RightScreen={this.RightScreen}
+      />
+    );
+  }
+
+  RightScreen = () => (
+    <FiltersScreen
+      onApply={state => {
+        const criteria = new Criteria<ProductType>();
+        criteria.setOrderBy(state.sortBy);
+        criteria.setOrderDir(state.sortByOrder);
+        if (state.maxPrice < 100000) {
+          criteria.addFilter('price', state.maxPrice, '<=');
+        }
+        if (state.outOfStock === false) {
+          criteria.addFilter('stock', 0, '>');
+        }
+        this.addSearchQuery(criteria);
+        this.setState({...this.state, criteria});
+      }}
+      onClear={this.resetFilters}
+    />
+  );
+  LeftScreen = () => (
+    <CategoriesScreen
+      onSelectCategory={cat => {
+        const criteria = new Criteria(this.state.criteria);
+        const category = cat.id === this.state.category?.id ? undefined : cat;
+        this.setState({...this.state, category, criteria});
+      }}
+      selectedCategory={this.state.category}
+    />
+  );
+
+  SearchScreen = () => {
+    return (
+      <Card style={[s.flex, s.overflowHidden]}>
         <Searchbar
-          style={[s.roundedNone]}
           value={this.state.query}
           placeholder="Search Products..."
           onChangeText={this.handleSearchChange}
           ref={this.searchBarRef}
-          editable={!filters}
         />
-        {this.state.criteria ? (
-          <ProductListing
-            criteria={this.state.criteria}
-            navigation={this.props.navigation}
-            categoryName={this.state.category}
-            noResultsView={() => (
-              <IconMessageView
-                icon="magnify-close"
-                title="Nothing found"
-                caption="No products matching current filters found"
-                btnProps={{
-                  action: () => this.resetFilters(true),
-                  icon: 'reload',
-                  text: 'Reset Filters',
-                }}
-              />
-            )}
-          />
-        ) : (
-          <View style={[s.flex, s.myAuto, s.mt24, s.center]}>
-            <Icon name="text-box-search" size={48} color={colors.gray} />
-            <Text style={[s.textMuted, s.mt12]}>
-              Start typing to see results...
-            </Text>
-          </View>
-        )}
-        <FAB
-          icon="filter"
-          style={[s.bottomRight, s.m8]}
-          onPress={() => this.setState({...this.state, showFilters: true})}
-          disabled={filters}
+        <ProductListing
+          criteria={this.state.criteria}
+          navigation={this.props.navigation}
+          categoryName={this.state.category?.name}
+          noResultsView={() => (
+            <IconMessageView
+              icon="magnify-close"
+              title="Nothing found"
+              caption="No products matching current filters found"
+              btnProps={{
+                action: () => this.resetFilters(true),
+                icon: 'reload',
+                text: 'Reset Filters',
+              }}
+            />
+          )}
         />
-        <ProductFiltersModal
-          visible={filters}
-          onApply={state => {
-            const criteria = new Criteria<ProductType>();
-            criteria.setOrderBy(state.sortBy);
-            criteria.setOrderDir(state.sortByOrder);
-            if (state.maxPrice < 100000) {
-              criteria.addFilter('price', state.maxPrice, '<=');
-            }
-            if (state.outOfStock === false) {
-              criteria.addFilter('stock', 0, '>');
-            }
-            this.addSearchQuery(criteria);
-            this.setState({
-              ...this.state,
-              criteria,
-              showFilters: false,
-              category: state.category?.name,
-            });
-          }}
-          onClear={this.resetFilters}
-          onDismiss={() => this.setState({...this.state, showFilters: false})}
-        />
-      </View>
+      </Card>
     );
-  }
+  };
 
   handleSearchChange = (query: string) => {
     this.setState({...this.state, query});
@@ -142,8 +154,6 @@ export default class Search extends React.Component<PropType, StateType> {
     this.setState({
       ...this.state,
       criteria,
-      category: undefined,
-      showFilters: false,
       query: clearQuery ? '' : this.state.query,
     });
   };

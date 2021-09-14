@@ -1,14 +1,14 @@
 import React from 'react';
 import {Card, Text} from 'react-native-paper';
-import {ScrollView, View, Image} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import s from '../../styles/styles';
 import {NavigationProp} from '@react-navigation/native';
 import {CategoryType} from '../models/types/category.type';
 import categoryService from '../services/category.service';
 import Icon from '../components/icon';
-import {icons} from '../categories/categories.helper';
-import {categoryProductRoute} from '../app.routes';
+import {icons} from '../search/categories.helper';
 import {LoadingCircles} from '../components/svg/loading';
+import {searchRoute} from '../app.routes';
 
 type P = {navigation: NavigationProp<any>};
 type S = {categories?: CategoryType[]};
@@ -35,9 +35,7 @@ export default class CategoriesList extends React.Component<P, S> {
             {this.state.categories.map(c => (
               <this.CategoryCard
                 key={c.id}
-                onPress={() =>
-                  navigate(categoryProductRoute.name, {category: c})
-                }
+                onPress={() => navigate(searchRoute.name, {withCategory: c})}
                 name={c.name}
                 icon={icons[c.name.toLowerCase()]}
               />
@@ -46,7 +44,7 @@ export default class CategoriesList extends React.Component<P, S> {
               key="more"
               name="More"
               icon="arrow-right"
-              onPress={() => navigate('Categories')}
+              onPress={() => navigate(searchRoute.name)}
             />
           </ScrollView>
         ) : (
