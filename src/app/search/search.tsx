@@ -45,7 +45,8 @@ export default class Search extends React.Component<PropType, StateType> {
     const withSearch = params?.withSearch;
     const withCategory = params?.withCategory;
     const shouldSetQuery = withSearch && withSearch !== this.state?.query;
-    const shouldSetCategory = withCategory?.id !== this.state?.category?.id;
+    const shouldSetCategory =
+      withCategory && withCategory?.id !== this.state?.category?.id;
     if (shouldSetCategory || shouldSetQuery) {
       const criteria = new Criteria(this.state?.criteria);
       const query = shouldSetQuery ? withSearch : this.state?.query;
