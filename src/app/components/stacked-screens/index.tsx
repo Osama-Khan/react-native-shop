@@ -74,18 +74,24 @@ export default class StackedScreens extends React.Component<P, S> {
 
   render() {
     const {MainScreen, LeftScreen, RightScreen} = this.props;
+    const isLeft = this.state.currentScreen === leftScreen;
     return (
       <View style={styles.container} {...this.panResponder.panHandlers}>
         <View style={styles.stack}>
-          {this.state.currentScreen === leftScreen ? (
-            <View style={{marginRight: this.windowWidth * 0.1}}>
-              <LeftScreen />
-            </View>
-          ) : (
-            <View style={{marginLeft: this.windowWidth * 0.1}}>
-              <RightScreen />
-            </View>
-          )}
+          <View
+            style={{
+              marginRight: this.windowWidth * 0.1,
+              display: isLeft ? 'flex' : 'none',
+            }}>
+            <LeftScreen />
+          </View>
+          <View
+            style={{
+              marginLeft: this.windowWidth * 0.1,
+              display: !isLeft ? 'flex' : 'none',
+            }}>
+            <RightScreen />
+          </View>
         </View>
         <Animated.View
           style={[styles.stack, {transform: [{translateX: this.x}]}]}>
