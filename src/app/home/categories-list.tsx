@@ -6,8 +6,8 @@ import {NavigationProp} from '@react-navigation/native';
 import {CategoryType} from '../models/types/category.type';
 import categoryService from '../services/category.service';
 import Icon from '../components/icon';
-import {icons} from '../categories/categories.helper';
 import {categoryProductRoute} from '../app.routes';
+import {icons} from '../search/categories.helper';
 import {LoadingCircles} from '../components/svg/loading';
 
 type P = {navigation: NavigationProp<any>};
