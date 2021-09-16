@@ -5,14 +5,15 @@ import {
   Dimensions,
   Easing,
   StyleSheet,
+  View,
 } from 'react-native';
-import {View} from 'react-native-animatable';
 
 type P = {
   MainScreen: React.ElementType;
   LeftScreen: React.ElementType;
   RightScreen: React.ElementType;
 };
+
 type S = {
   currentScreen: 0 | 1;
 };
@@ -54,21 +55,14 @@ export default class StackedScreens extends React.Component<P, S> {
       const shouldGoCenter =
         (isLeft && acceptLGesture) || (!isLeft && acceptRGesture);
       if (shouldGoLeft) {
-        this.xV = this.windowWidth * 0.9;
+        this.snapTo(this.windowWidth * 0.9);
       } else if (shouldGoRight) {
-        this.xV = this.windowWidth * -0.9;
+        this.snapTo((this.xV = this.windowWidth * -0.9));
       } else if (shouldGoCenter) {
-        this.xV = 0;
+        this.snapToCenter();
       } else {
-        this.xV = this.lastPosition;
+        this.snapToLast();
       }
-      Animated.timing(this.x, {
-        toValue: this.xV,
-        duration: 200,
-        easing: Easing.ease,
-        useNativeDriver: true,
-      }).start();
-      this.lastPosition = this.xV;
     },
   });
 
@@ -77,29 +71,56 @@ export default class StackedScreens extends React.Component<P, S> {
     const isLeft = this.state.currentScreen === leftScreen;
     return (
       <View style={styles.container} {...this.panResponder.panHandlers}>
-        <View style={styles.stack}>
-          <View
-            style={{
-              marginRight: this.windowWidth * 0.1,
-              display: isLeft ? 'flex' : 'none',
-            }}>
-            <LeftScreen />
-          </View>
-          <View
-            style={{
-              marginLeft: this.windowWidth * 0.1,
-              display: !isLeft ? 'flex' : 'none',
-            }}>
-            <RightScreen />
-          </View>
+        <View
+          style={{
+            marginRight: this.windowWidth * 0.1,
+            display: isLeft ? 'flex' : 'none',
+            flex: 1,
+          }}>
+          <LeftScreen />
+        </View>
+        <View
+          style={{
+            marginLeft: this.windowWidth * 0.1,
+            display: !isLeft ? 'flex' : 'none',
+            flex: 1,
+          }}>
+          <RightScreen />
         </View>
         <Animated.View
-          style={[styles.stack, {transform: [{translateX: this.x}]}]}>
+          style={[styles.mainScreen, {transform: [{translateX: this.x}]}]}>
           <MainScreen />
         </Animated.View>
       </View>
     );
   }
+
+  /** Slides main screen to the left side */
+  snapToLeft = () => {
+    this.setState({currentScreen: leftScreen});
+    this.snapTo(this.windowWidth * 0.9);
+  };
+  /** Slides main screen to the right side */
+  snapToRight = () => {
+    this.setState({currentScreen: rightScreen});
+    this.snapTo(this.windowWidth * -0.9);
+  };
+  /** Slides main screen to the center */
+  snapToCenter = () => this.snapTo(0);
+  /** Slides main screen to the last position */
+  snapToLast = () => this.snapTo(this.lastPosition);
+
+  /** Snaps the main screen smoothly to parameter x */
+  snapTo = (x: number) => {
+    Animated.timing(this.x, {
+      toValue: x,
+      duration: 200,
+      easing: Easing.ease,
+      useNativeDriver: true,
+    }).start();
+    this.xV = x;
+    this.lastPosition = x;
+  };
 
   get windowWidth() {
     return Dimensions.get('window').width;
@@ -108,10 +129,9 @@ export default class StackedScreens extends React.Component<P, S> {
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    height: '100%',
+    flex: 1,
   },
-  stack: {
+  mainScreen: {
     position: 'absolute',
     width: '100%',
     height: '100%',
