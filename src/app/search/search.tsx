@@ -167,6 +167,7 @@ export default class Search extends React.Component<PropType, StateType> {
     this.setState({
       ...this.state,
       criteria,
+      category: undefined,
       query: clearQuery ? '' : this.state.query,
     });
   };
