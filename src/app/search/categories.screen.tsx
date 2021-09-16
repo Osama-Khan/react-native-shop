@@ -8,8 +8,9 @@ import categoryService from '../services/category.service';
 import {getChildrenOf, icons} from './categories.helper';
 import {View} from 'react-native-animatable';
 import colors from '../../styles/colors';
+import {ScreenProps} from '../components/stacked-screens';
 
-type P = {
+type P = ScreenProps & {
   selectedCategory?: CategoryType;
   onSelectCategory: (category: CategoryType) => void;
 };

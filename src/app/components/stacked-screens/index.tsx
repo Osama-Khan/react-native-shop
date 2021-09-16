@@ -8,12 +8,17 @@ import {
   View,
 } from 'react-native';
 
-type P = {
-  MainScreen: React.ElementType;
-  LeftScreen: React.ElementType;
-  RightScreen: React.ElementType;
+export type ScreenProps = {
+  showLeft: () => void;
+  showRight: () => void;
+  hideBoth: () => void;
 };
 
+type P = {
+  MainScreen: React.ElementType<ScreenProps>;
+  LeftScreen: React.ElementType<ScreenProps>;
+  RightScreen: React.ElementType<ScreenProps>;
+};
 type S = {
   currentScreen: 0 | 1;
 };
@@ -77,7 +82,11 @@ export default class StackedScreens extends React.Component<P, S> {
             display: isLeft ? 'flex' : 'none',
             flex: 1,
           }}>
-          <LeftScreen />
+          <LeftScreen
+            showLeft={this.snapToLeft}
+            showRight={this.snapToRight}
+            hideBoth={this.snapToCenter}
+          />
         </View>
         <View
           style={{
@@ -85,11 +94,19 @@ export default class StackedScreens extends React.Component<P, S> {
             display: !isLeft ? 'flex' : 'none',
             flex: 1,
           }}>
-          <RightScreen />
+          <RightScreen
+            showLeft={this.snapToLeft}
+            showRight={this.snapToRight}
+            hideBoth={this.snapToCenter}
+          />
         </View>
         <Animated.View
           style={[styles.mainScreen, {transform: [{translateX: this.x}]}]}>
-          <MainScreen />
+          <MainScreen
+            showLeft={this.snapToLeft}
+            showRight={this.snapToRight}
+            hideBoth={this.snapToCenter}
+          />
         </Animated.View>
       </View>
     );

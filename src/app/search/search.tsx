@@ -6,7 +6,7 @@ import Criteria from '../models/criteria';
 import {ProductType} from '../models/types/product.types';
 import ProductListing from '../components/product/product-listing';
 import IconMessageView from '../components/icon-message-view/icon-message-view';
-import StackedScreens from '../components/stacked-screens';
+import StackedScreens, {ScreenProps} from '../components/stacked-screens';
 import FiltersScreen from './filters.screen';
 import CategoriesScreen from './categories.screen';
 import {CategoryType} from '../models/types/category.type';
@@ -66,8 +66,9 @@ export default class Search extends React.Component<PropType, StateType> {
     );
   }
 
-  RightScreen = () => (
+  RightScreen = (p: ScreenProps) => (
     <FiltersScreen
+      {...p}
       onApply={state => {
         const criteria = new Criteria<ProductType>();
         criteria.setOrderBy(state.sortBy);
@@ -84,8 +85,9 @@ export default class Search extends React.Component<PropType, StateType> {
       onClear={this.resetFilters}
     />
   );
-  LeftScreen = () => (
+  LeftScreen = (p: ScreenProps) => (
     <CategoriesScreen
+      {...p}
       onSelectCategory={cat => {
         const criteria = new Criteria(this.state.criteria);
         const category = cat.id === this.state.category?.id ? undefined : cat;

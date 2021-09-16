@@ -1,22 +1,15 @@
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import React from 'react';
 import {View} from 'react-native-animatable';
-import {
-  Title,
-  Divider,
-  Text,
-  Switch,
-  Button,
-  Caption,
-  Card,
-} from 'react-native-paper';
+import {Title, Text, Switch, Button, Caption, Card} from 'react-native-paper';
 import colors from '../../styles/colors';
 import s from '../../styles/styles';
 import ListSelect from '../components/list-select';
+import {ScreenProps} from '../components/stacked-screens';
 import {CategoryType} from '../models/types/category.type';
 import {ProductType} from '../models/types/product.types';
 
-type PropType = {
+type PropType = ScreenProps & {
   onApply: (filters: StateType) => void;
   onClear: () => void;
 };
