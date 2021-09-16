@@ -18,6 +18,7 @@ type P = {
   fetchMethod?: (criteria?: Criteria<ProductType>) => ResponseType;
   noResultsView?: () => React.ReactElement;
   scrollViewProps?: ScrollViewProps;
+  padding?: {top?: number; bottom?: number};
 };
 type S = {
   updateCount: number;
@@ -39,7 +40,7 @@ export default class ProductListing extends React.Component<P, S> {
   render() {
     return (
       <ListingComponent
-        criteria={this.props.criteria}
+        {...this.props}
         animation="fadeIn"
         container={p => (
           <ProductListingCard
@@ -77,7 +78,6 @@ export default class ProductListing extends React.Component<P, S> {
           ))
         }
         updateCount={this.state.updateCount}
-        scrollViewProps={this.props.scrollViewProps}
       />
     );
   }
