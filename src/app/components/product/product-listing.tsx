@@ -76,7 +76,6 @@ export default class ProductListing extends React.Component<P, S> {
             />
           ))
         }
-        padding={{bottom: 68}}
         updateCount={this.state.updateCount}
         scrollViewProps={this.props.scrollViewProps}
       />
