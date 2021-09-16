@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {Divider, Title, Text, Caption} from 'react-native-paper';
 import s from '../../../styles/styles';
-import {categoryProductRoute} from '../../app.routes';
+import {searchRoute} from '../../app.routes';
 import BreadCrumbs from '../../components/breadcrumbs';
 import {HighlightType, ProductType} from '../../models/types/product.types';
 import categoryService from '../../services/category.service';
@@ -30,7 +30,7 @@ export default function ProductInfo({product, navigation}: PropType) {
         return {
           text: c.name,
           onPress: () =>
-            navigation.navigate(categoryProductRoute.name, {category: c}),
+            navigation.navigate(searchRoute.name, {withCategory: c}),
         };
       })}
     />
