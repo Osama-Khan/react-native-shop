@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   View,
   ViewStyle,
+  ScrollViewProps,
 } from 'react-native';
 import {
   createAnimatableComponent,
@@ -39,6 +40,9 @@ type P<I> = {
   /** Can be incremented to force a data update. Should be linked with
    * a state property to allow multiple updates */
   updateCount?: number;
+
+  /** Props for the scroll view container */
+  scrollViewProps?: ScrollViewProps;
 };
 
 type S<I> = {items?: I[]; loading: boolean; refreshing: boolean};
@@ -96,12 +100,16 @@ export default class ListingComponent<ItemType> extends React.PureComponent<
 
     return this.state.items!.length > 0 ? (
       <ScrollView
-        onScroll={({nativeEvent}) => {
-          if (this.isScrollAtEnd(nativeEvent)) {
+        {...this.props.scrollViewProps}
+        onScroll={event => {
+          if (this.isScrollAtEnd(event.nativeEvent)) {
             if (!this.state.loading && this.page < this.maxPage) {
               this.page++;
               this.fetch(true);
             }
+          }
+          if (this.props.scrollViewProps?.onScroll) {
+            this.props.scrollViewProps.onScroll(event);
           }
         }}
         refreshControl={

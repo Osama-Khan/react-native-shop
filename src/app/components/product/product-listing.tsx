@@ -8,6 +8,7 @@ import Criteria from '../../models/criteria';
 import {AxiosResponse} from 'axios';
 import IconMessageView from '../icon-message-view/icon-message-view';
 import {searchRoute} from '../../app.routes';
+import {ScrollViewProps} from 'react-native';
 
 type ResponseType = Promise<AxiosResponse<{data: ProductType[]; meta: any}>>;
 type P = {
@@ -16,6 +17,7 @@ type P = {
   navigation: NavigationProp<any>;
   fetchMethod?: (criteria?: Criteria<ProductType>) => ResponseType;
   noResultsView?: () => React.ReactElement;
+  scrollViewProps?: ScrollViewProps;
 };
 type S = {
   updateCount: number;
@@ -76,6 +78,7 @@ export default class ProductListing extends React.Component<P, S> {
         }
         padding={{bottom: 68}}
         updateCount={this.state.updateCount}
+        scrollViewProps={this.props.scrollViewProps}
       />
     );
   }
