@@ -1,16 +1,17 @@
 import {NavigationProp, RouteProp} from '@react-navigation/native';
 import React from 'react';
-import {Card, Searchbar} from 'react-native-paper';
+import {IconButton, Searchbar} from 'react-native-paper';
 import s from '../../styles/styles';
 import Criteria from '../models/criteria';
 import {ProductType} from '../models/types/product.types';
-import {createRef} from 'react';
 import ProductListing from '../components/product/product-listing';
 import IconMessageView from '../components/icon-message-view/icon-message-view';
 import StackedScreens from '../components/stacked-screens';
 import FiltersScreen from './filters.screen';
 import CategoriesScreen from './categories.screen';
 import {CategoryType} from '../models/types/category.type';
+import {View} from 'react-native';
+import themeService from '../services/theme.service';
 
 type RouteParamType = {withSearch?: string; withCategory?: CategoryType};
 type PropType = {
@@ -22,10 +23,10 @@ type StateType = {
   category?: CategoryType;
   query: string;
 };
+
 export default class Search extends React.Component<PropType, StateType> {
   readonly updateDelay = 500;
   updateTimeout?: NodeJS.Timeout;
-  searchBarRef: any = createRef();
 
   constructor(props: PropType) {
     super(props);
@@ -96,13 +97,11 @@ export default class Search extends React.Component<PropType, StateType> {
 
   SearchScreen = () => {
     return (
-      <Card style={[s.flex, s.overflowHidden]}>
-        <Searchbar
-          value={this.state.query}
-          placeholder="Search Products..."
-          onChangeText={this.handleSearchChange}
-          ref={this.searchBarRef}
-        />
+      <View
+        style={[
+          s.flex,
+          {backgroundColor: themeService.currentTheme.colors.card},
+        ]}>
         <ProductListing
           criteria={this.state.criteria}
           navigation={this.props.navigation}
@@ -120,7 +119,20 @@ export default class Search extends React.Component<PropType, StateType> {
             />
           )}
         />
-      </Card>
+        <Searchbar
+          style={s.roundedNone}
+          value={this.state.query}
+          placeholder="Search Products..."
+          onChangeText={this.handleSearchChange}
+          clearButtonMode="always"
+          clearIcon={p => (
+            <IconButton
+              icon="filter-remove"
+              onPress={() => this.resetFilters(true)}
+            />
+          )}
+        />
+      </View>
     );
   };
 
