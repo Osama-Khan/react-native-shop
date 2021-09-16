@@ -47,7 +47,7 @@ class ProductListingCard extends React.Component<PropType> {
               {product.title}
             </Text>
             <Rating rating={product.rating} style={s.my4} />
-            <Text numberOfLines={1}>{product.description}</Text>
+            <Caption numberOfLines={1}>{product.description}</Caption>
             <View style={s.row}>
               <Caption style={[s.mtAuto]}>
                 <Icon name="heart" color={colors.gray} />
