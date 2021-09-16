@@ -10,8 +10,9 @@ import StackedScreens, {ScreenProps} from '../components/stacked-screens';
 import FiltersScreen from './filters.screen';
 import CategoriesScreen from './categories.screen';
 import {CategoryType} from '../models/types/category.type';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import themeService from '../services/theme.service';
+import Icon from '../components/icon';
 
 type RouteParamType = {withSearch?: string; withCategory?: CategoryType};
 type PropType = {
@@ -104,6 +105,19 @@ export default class Search extends React.Component<PropType, StateType> {
           s.flex,
           {backgroundColor: themeService.currentTheme.colors.card},
         ]}>
+        <Searchbar
+          style={s.roundedNone}
+          value={this.state.query}
+          placeholder="Search Products..."
+          onChangeText={this.handleSearchChange}
+          clearButtonMode="always"
+          clearIcon={() => (
+            <IconButton
+              icon="filter-remove"
+              onPress={() => this.resetFilters(true)}
+            />
+          )}
+        />
         <ProductListing
           criteria={this.state.criteria}
           navigation={this.props.navigation}
@@ -120,20 +134,10 @@ export default class Search extends React.Component<PropType, StateType> {
               }}
             />
           )}
+          padding={{bottom: 64}}
         />
-        <Searchbar
-          style={s.roundedNone}
-          value={this.state.query}
-          placeholder="Search Products..."
-          onChangeText={this.handleSearchChange}
-          clearButtonMode="always"
-          clearIcon={p => (
-            <IconButton
-              icon="filter-remove"
-              onPress={() => this.resetFilters(true)}
-            />
-          )}
-        />
+        <Icon name="shape" size={24} style={[styles.icon, styles.left]} />
+        <Icon name="filter" size={24} style={[styles.icon, styles.right]} />
       </View>
     );
   };
@@ -176,3 +180,27 @@ export default class Search extends React.Component<PropType, StateType> {
   addSearchQuery = (criteria?: Criteria<ProductType>) =>
     criteria?.addFilter('title', `%25${this.state.query}%25`, 'like');
 }
+
+const styles = StyleSheet.create({
+  icon: {
+    position: 'absolute',
+    bottom: 18,
+    padding: 12,
+    borderColor: themeService.currentTheme.colors.border,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    backgroundColor: themeService.currentTheme.colors.card,
+  },
+  left: {
+    left: 0,
+    ...s.roundedTopRight,
+    ...s.roundedBottomRight,
+    borderRightWidth: 1,
+  },
+  right: {
+    right: 0,
+    ...s.roundedTopLeft,
+    ...s.roundedBottomLeft,
+    borderLeftWidth: 1,
+  },
+});
