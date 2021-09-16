@@ -1,20 +1,21 @@
 import {AxiosResponse} from 'axios';
 import React from 'react';
 import {
+  ActivityIndicator,
   ImageStyle,
   NativeScrollEvent,
   RefreshControl,
   ScrollView,
+  ScrollViewProps,
   TextStyle,
-  ActivityIndicator,
   View,
   ViewStyle,
-  ScrollViewProps,
 } from 'react-native';
 import {
   createAnimatableComponent,
   CustomAnimation,
 } from 'react-native-animatable';
+import colors from '../../../styles/colors';
 import Criteria from '../../models/criteria';
 
 type P<I> = {
@@ -80,7 +81,7 @@ export default class ListingComponent<ItemType> extends React.PureComponent<
       this.criteria = new Criteria(this.props.criteria);
       this.page = 0;
       this.maxPage = 1;
-      this.currentUpdate++;
+      this.currentUpdate = this.props.updateCount || 0;
       this.fetch();
     }
   }
@@ -91,6 +92,7 @@ export default class ListingComponent<ItemType> extends React.PureComponent<
         <ActivityIndicator
           style={{flex: 1, alignSelf: 'center'}}
           size="large"
+          color={colors.primary}
         />
       );
     }
