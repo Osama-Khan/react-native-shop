@@ -81,9 +81,13 @@ export default class Search extends React.Component<PropType, StateType> {
           criteria.addFilter('stock', 0, '>');
         }
         this.addSearchQuery(criteria);
+        p.toCenter();
         this.setState({...this.state, criteria});
       }}
-      onClear={this.resetFilters}
+      onClear={() => {
+        p.toCenter();
+        this.resetFilters();
+      }}
     />
   );
   LeftScreen = (p: ScreenProps) => (
@@ -92,6 +96,7 @@ export default class Search extends React.Component<PropType, StateType> {
       onSelectCategory={cat => {
         const criteria = new Criteria(this.state.criteria);
         const category = cat.id === this.state.category?.id ? undefined : cat;
+        p.toCenter();
         this.setState({...this.state, category, criteria});
       }}
       selectedCategory={this.state.category}
