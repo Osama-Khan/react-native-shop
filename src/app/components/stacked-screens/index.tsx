@@ -9,9 +9,12 @@ import {
 } from 'react-native';
 
 export type ScreenProps = {
-  showLeft: () => void;
-  showRight: () => void;
-  hideBoth: () => void;
+  /** Slides the main screen to reveal left screen */
+  toLeft: () => void;
+  /** Slides the main screen to reveal right screen */
+  toRight: () => void;
+  /** Slides the main screen to the center */
+  toCenter: () => void;
 };
 
 type P = {
@@ -83,9 +86,9 @@ export default class StackedScreens extends React.Component<P, S> {
             flex: 1,
           }}>
           <LeftScreen
-            showLeft={this.snapToLeft}
-            showRight={this.snapToRight}
-            hideBoth={this.snapToCenter}
+            toLeft={this.snapToLeft}
+            toRight={this.snapToRight}
+            toCenter={this.snapToCenter}
           />
         </View>
         <View
@@ -95,17 +98,17 @@ export default class StackedScreens extends React.Component<P, S> {
             flex: 1,
           }}>
           <RightScreen
-            showLeft={this.snapToLeft}
-            showRight={this.snapToRight}
-            hideBoth={this.snapToCenter}
+            toLeft={this.snapToLeft}
+            toRight={this.snapToRight}
+            toCenter={this.snapToCenter}
           />
         </View>
         <Animated.View
           style={[styles.mainScreen, {transform: [{translateX: this.x}]}]}>
           <MainScreen
-            showLeft={this.snapToLeft}
-            showRight={this.snapToRight}
-            hideBoth={this.snapToCenter}
+            toLeft={this.snapToLeft}
+            toRight={this.snapToRight}
+            toCenter={this.snapToCenter}
           />
         </Animated.View>
       </View>
