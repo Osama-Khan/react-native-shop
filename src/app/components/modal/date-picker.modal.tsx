@@ -1,8 +1,5 @@
 import React, {useState} from 'react';
-import DatePicker from 'react-native-date-picker';
-import {Button, Divider} from 'react-native-paper';
-import Modal from '.';
-import themeService from '../../services/theme.service';
+import DatePicker from '@react-native-community/datetimepicker';
 
 export type DatePickerPropsType = {
   visible: boolean;
@@ -15,29 +12,21 @@ export type DatePickerPropsType = {
 
 export default function DatePickerModal(props: DatePickerPropsType) {
   const [date, setDate] = useState(props.startingDate || new Date());
-  return (
-    <Modal visible={props.visible} onDismiss={props.onDismiss}>
-      <DatePicker
-        date={date}
-        androidVariant={
-          themeService.currentThemeName === 'dark'
-            ? 'nativeAndroid'
-            : 'iosClone'
+  return props.visible ? (
+    <DatePicker
+      value={date}
+      maximumDate={props.maxDate}
+      onChange={({nativeEvent, type}: any) => {
+        if (type === 'dismissed') {
+          props.onDismiss();
+          return;
         }
-        maximumDate={props.maxDate}
-        style={{alignSelf: 'center'}}
-        onDateChange={date => {
-          setDate(date);
-          props.onDateChange && props.onDateChange(date);
-        }}
-        mode="date"
-      />
-      <Divider style={{marginVertical: 8}} />
-      <Button
-        style={{margin: 8, marginLeft: 'auto'}}
-        onPress={() => props.onPick(date)}>
-        Apply
-      </Button>
-    </Modal>
+        const date = nativeEvent?.timestamp;
+        props.onPick(date);
+        setDate(date);
+      }}
+    />
+  ) : (
+    <></>
   );
 }
