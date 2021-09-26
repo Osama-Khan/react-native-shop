@@ -33,7 +33,9 @@ export default function DatePickerInput({
         {...datePickerProps}
         onDismiss={() => setShow(false)}
         onPick={date => {
-          const dateOfBirth = `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`;
+          const dateOfBirth = `${date.getDate()}/${
+            date.getMonth() + 1
+          }/${date.getFullYear()}`;
           if (onPick) onPick(date);
           setDate(dateOfBirth);
           setShow(false);
