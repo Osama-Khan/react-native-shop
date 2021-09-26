@@ -5,6 +5,7 @@ export type DatePickerPropsType = {
   visible: boolean;
   startingDate?: Date;
   maxDate?: Date;
+  minDate?: Date;
   onPick: (date: Date) => void;
   onDismiss: () => void;
   onDateChange?: (date: Date) => void;
@@ -16,6 +17,7 @@ export default function DatePickerModal(props: DatePickerPropsType) {
     <DatePicker
       value={date}
       maximumDate={props.maxDate}
+      minimumDate={props.minDate}
       onChange={({nativeEvent, type}: any) => {
         if (type === 'dismissed') {
           props.onDismiss();
