@@ -1,15 +1,10 @@
+import {Formik, FormikContext} from 'formik';
 import React from 'react';
-import {ScrollView, TouchableOpacity, View} from 'react-native';
-import {
-  Button,
-  Card,
-  Divider,
-  TextInput as TI,
-  Title,
-} from 'react-native-paper';
+import {ScrollView, View} from 'react-native';
+import {Button, Caption, TextInput as TI, Title} from 'react-native-paper';
 import {TextInputProps} from 'react-native-paper/lib/typescript/components/TextInput/TextInput';
 import s from '../../styles/styles';
-import DatePickerModal from '../components/modal/date-picker.modal';
+import {DatePickerInputFormik} from '../components/pickers';
 import themeService from '../services/theme.service';
 import uiService from '../services/ui.service';
 import userService from '../services/user.service';
@@ -18,148 +13,124 @@ type P = {backToLogin: () => void};
 type S = {
   datePickerShown: boolean;
   loading: boolean;
-  firstName: string;
-  lastName: string;
-  username: string;
-  email: string;
-  password: string;
-  dateOfBirth: string;
+  valid: boolean;
+};
+
+const initialFormValues = {
+  firstName: '',
+  lastName: '',
+  username: '',
+  email: '',
+  password: '',
+  dateOfBirth: '',
 };
 
 export default class Register extends React.Component<P, S> {
+  static contextType = FormikContext;
+
   state: S = {
     datePickerShown: false,
     loading: false,
-    firstName: '',
-    lastName: '',
-    username: '',
-    email: '',
-    password: '',
-    dateOfBirth: '',
+    valid: false,
   };
   render() {
     return (
       <View style={s.flex}>
-        <ScrollView>
-          <Card style={[s.p8, s.m8]}>
-            <Title style={[s.m4, s.textBold]}>Register</Title>
-            <Divider />
-            <View style={[s.row, s.mt8, {justifyContent: 'space-between'}]}>
-              <TextInput
-                label="First Name"
-                style={{width: '48%'}}
-                value={this.state.firstName}
-                onChangeText={firstName =>
-                  this.setState({
-                    ...this.state,
-                    firstName,
-                  })
-                }
-              />
-              <TextInput
-                label="Last Name"
-                style={{width: '48%'}}
-                value={this.state.lastName}
-                onChangeText={lastName =>
-                  this.setState({
-                    ...this.state,
-                    lastName,
-                  })
-                }
-              />
-            </View>
-            <TextInput
-              label="Username"
-              value={this.state.username}
-              onChangeText={username =>
-                this.setState({
-                  ...this.state,
-                  username,
-                })
-              }
-            />
-            <TextInput
-              label="Email"
-              keyboardType="email-address"
-              value={this.state.email}
-              onChangeText={email =>
-                this.setState({
-                  ...this.state,
-                  email,
-                })
-              }
-            />
-            <TextInput
-              label="Password"
-              value={this.state.password}
-              onChangeText={password =>
-                this.setState({
-                  ...this.state,
-                  password,
-                })
-              }
-              secureTextEntry
-            />
-            <TouchableOpacity
-              onPress={() =>
-                this.setState({...this.state, datePickerShown: true})
-              }>
-              <TextInput
-                label="Date of Birth"
-                editable={false}
-                value={
-                  this.state.dateOfBirth
-                    ? new Date(this.state.dateOfBirth).toLocaleDateString()
-                    : ''
-                }
-              />
-            </TouchableOpacity>
-            <Button
-              icon="check"
-              mode="contained"
-              onPress={this.register}
-              disabled={this.isFormInvalid || this.state.loading}
-              loading={this.state.loading}>
-              Register
-            </Button>
-            <Button
-              icon="chevron-left"
-              mode="contained"
-              style={s.mt8}
-              disabled={this.state.loading}
-              color={themeService.currentTheme.colors.border}
-              onPress={this.props.backToLogin}>
-              Back to Login
-            </Button>
-          </Card>
+        <ScrollView style={s.p16}>
+          <Title style={s.textBold}>Register</Title>
+          <Caption>Create an account </Caption>
+          <Formik
+            initialValues={initialFormValues}
+            onSubmit={this.register}
+            validate={this.validateForm}>
+            {({
+              handleChange,
+              errors,
+              touched,
+              handleBlur,
+              handleSubmit,
+              values,
+            }) => (
+              <View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <TextInput
+                    label="First Name"
+                    onChangeText={handleChange('firstName')}
+                    onBlur={handleBlur('firstName')}
+                    value={values.firstName}
+                    error={touched.firstName && !!errors.firstName}
+                    style={[s.flex, s.mr4]}
+                  />
+                  <TextInput
+                    label="Last Name"
+                    onChangeText={handleChange('lastName')}
+                    onBlur={handleBlur('lastName')}
+                    error={touched.lastName && !!errors.lastName}
+                    value={values.lastName}
+                    style={[s.flex, s.ml4]}
+                  />
+                </View>
+                <TextInput
+                  label="Username"
+                  value={values.username}
+                  onChangeText={handleChange('username')}
+                  onBlur={handleBlur('username')}
+                  error={touched.username && !!errors.username}
+                />
+                <TextInput
+                  label="Email"
+                  keyboardType="email-address"
+                  value={values.email}
+                  onChangeText={handleChange('email')}
+                  onBlur={handleBlur('email')}
+                  error={touched.email && !!errors.email}
+                />
+                <TextInput
+                  label="Password"
+                  value={values.password}
+                  onChangeText={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  error={touched.password && !!errors.password}
+                  secureTextEntry
+                />
+                <DatePickerInputFormik
+                  propKey="dateOfBirth"
+                  label="Date Of Birth"
+                />
+                <Button
+                  icon="check"
+                  mode="contained"
+                  style={s.mt8}
+                  onPress={handleSubmit}
+                  disabled={!this.state.valid || this.state.loading}
+                  loading={this.state.loading}>
+                  Register
+                </Button>
+                <Button
+                  icon="chevron-left"
+                  mode="contained"
+                  style={s.mt8}
+                  disabled={this.state.loading}
+                  color={themeService.currentTheme.colors.border}
+                  onPress={this.props.backToLogin}>
+                  Back to Login
+                </Button>
+              </View>
+            )}
+          </Formik>
         </ScrollView>
-        <DatePickerModal
-          onDismiss={() =>
-            this.setState({...this.state, datePickerShown: false})
-          }
-          onPick={date => {
-            const dateOfBirth = `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`;
-            this.setState({
-              ...this.state,
-              dateOfBirth,
-              datePickerShown: false,
-            });
-          }}
-          visible={this.state.datePickerShown}
-        />
       </View>
     );
   }
 
-  register = () => {
-    const {datePickerShown, loading, ...registerData} = this.state;
-    if (this.isFormInvalid) {
-      uiService.toast('Please fill in all the fields!');
-      return;
-    }
+  register = (data: typeof initialFormValues) => {
     this.setState({...this.state, loading: true});
     userService
-      .register(registerData)
+      .register(data)
       .then(() => {
         uiService.toast(
           'Your account has been registered, you may now log in!',
@@ -174,10 +145,27 @@ export default class Register extends React.Component<P, S> {
       );
   };
 
-  get isFormInvalid() {
-    const {datePickerShown, loading, ...registerData} = this.state as any;
-    return Object.keys(registerData).some(k => !registerData[k]);
-  }
+  validateForm = (values: {[key: string]: string}) => {
+    const errors: any = {};
+    let hasError = false;
+
+    Object.keys(values).forEach(k => {
+      if (!values[k]) {
+        hasError = true;
+        errors[k] = 'Required';
+      }
+    });
+
+    // Trigger setState only when validity state changes
+    if (this.state.valid && hasError) {
+      this.setState({...this.state, valid: false});
+    }
+    if (!this.state.valid && !hasError) {
+      this.setState({...this.state, valid: true});
+    }
+
+    return errors;
+  };
 }
 
 const TextInput = (props: Partial<TextInputProps>) => (
