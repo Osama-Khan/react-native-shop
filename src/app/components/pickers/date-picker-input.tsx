@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {TouchableOpacity} from 'react-native';
 import {TextInput} from 'react-native-paper';
 import {TextInputProps} from 'react-native-paper/lib/typescript/components/TextInput/TextInput';
-import DatePickerModal, {DatePickerPropsType} from '../modal/date-picker.modal';
+import {DatePicker, DatePickerPropsType} from '.';
 
 export type DatePickerInputPropsType = Partial<
   Omit<TextInputProps, 'editable'>
@@ -29,7 +29,7 @@ export default function DatePickerInput({
       <TouchableOpacity onPress={() => setShow(true)}>
         <TextInput value={date} {...props} editable={false} />
       </TouchableOpacity>
-      <DatePickerModal
+      <DatePicker
         {...datePickerProps}
         onDismiss={() => setShow(false)}
         onPick={date => {

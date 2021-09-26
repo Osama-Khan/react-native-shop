@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import DatePicker from '@react-native-community/datetimepicker';
+import Picker from '@react-native-community/datetimepicker';
 
 export type DatePickerPropsType = {
   visible: boolean;
@@ -11,10 +11,10 @@ export type DatePickerPropsType = {
   onDateChange?: (date: Date) => void;
 };
 
-export default function DatePickerModal(props: DatePickerPropsType) {
+export default function DatePicker(props: DatePickerPropsType) {
   const [date, setDate] = useState(props.startingDate || new Date());
   return props.visible ? (
-    <DatePicker
+    <Picker
       value={date}
       maximumDate={props.maxDate}
       minimumDate={props.minDate}

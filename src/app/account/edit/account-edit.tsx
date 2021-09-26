@@ -10,7 +10,7 @@ import ImageEditor from './account-edit-image';
 import {AppStateType} from '../../store/state';
 import {connect} from 'react-redux';
 import userActions from '../../store/actions/user.actions';
-import DatePickerModal from '../../components/modal/date-picker.modal';
+import {DatePicker} from '../../components/pickers';
 
 type UserStateEditable = Pick<
   UserState,
@@ -141,7 +141,7 @@ class AccountEdit extends React.Component<any, StateType> {
             Save
           </Button>
         </ScrollView>
-        <DatePickerModal
+        <DatePicker
           visible={this.state.dobModalShown}
           onDismiss={() => this.setState({...this.state, dobModalShown: false})}
           maxDate={this.getMaxDate()}
