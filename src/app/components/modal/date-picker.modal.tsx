@@ -4,7 +4,7 @@ import {Button, Divider} from 'react-native-paper';
 import Modal from '.';
 import themeService from '../../services/theme.service';
 
-type P = {
+export type DatePickerPropsType = {
   visible: boolean;
   startingDate?: Date;
   maxDate?: Date;
@@ -12,7 +12,8 @@ type P = {
   onDismiss: () => void;
   onDateChange?: (date: Date) => void;
 };
-export default function DatePickerModal(props: P) {
+
+export default function DatePickerModal(props: DatePickerPropsType) {
   const [date, setDate] = useState(props.startingDate || new Date());
   return (
     <Modal visible={props.visible} onDismiss={props.onDismiss}>
