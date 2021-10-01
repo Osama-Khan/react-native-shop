@@ -14,7 +14,7 @@ import {StatusBar} from 'react-native';
 
 class App extends React.Component<any, any> {
   state = {theme: themeService.currentThemeName};
-  Stack: any;
+  Stack = createStackNavigator();
 
   constructor(props: any) {
     super(props);
@@ -31,7 +31,6 @@ class App extends React.Component<any, any> {
 
   render() {
     const isDark = this.state.theme === 'dark';
-    this.Stack = createStackNavigator();
     const {Navigator, Screen} = this.Stack;
     return (
       <ReduxProvider store={store}>
