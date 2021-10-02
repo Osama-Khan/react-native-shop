@@ -6,6 +6,8 @@ import Checkout from './checkout/checkout';
 import ProductDetail from './product/product-detail';
 import Search from './search/search';
 import accountRoutes from './account/account.routes';
+import {ChatThreads} from './chat/chat-threads';
+import {Chat} from './chat/chat';
 
 // TYPES
 type RouteType = {
@@ -32,6 +34,12 @@ export const mainRoute: RouteType = {
   options: {headerShown: false},
 };
 
+export const chatDetailRoute: RouteType = {
+  id: 'chat',
+  name: 'Chat',
+  component: Chat,
+};
+
 export const productDetailRoute: RouteType = {
   id: 'detail',
   name: 'Detail',
@@ -50,6 +58,13 @@ export const homeRoute: BottomNavRouteType = {
   name: 'Home',
   icon: 'home',
   component: Home,
+};
+
+export const chatRoute: BottomNavRouteType = {
+  id: 'threads',
+  name: 'Threads',
+  icon: 'chat',
+  component: ChatThreads,
 };
 
 export const searchRoute: BottomNavRouteType = {
@@ -74,8 +89,14 @@ export const accountRoute: BottomNavRouteType = {
 };
 
 const routes: RoutesType = {
-  bottomNav: [homeRoute, searchRoute, cartRoute, accountRoute],
-  stackNav: [mainRoute, productDetailRoute, checkoutRoute, ...accountRoutes],
+  bottomNav: [homeRoute, chatRoute, searchRoute, cartRoute, accountRoute],
+  stackNav: [
+    mainRoute,
+    productDetailRoute,
+    checkoutRoute,
+    chatDetailRoute,
+    ...accountRoutes,
+  ],
 };
 
 export default routes;
