@@ -5,6 +5,8 @@ type NewMessageType = {
   message: string;
   /** Time the message was sent at */
   time: Date;
+  /** ID of the thread the message belongs to */
+  threadId: number;
 };
 
 export default class MessageState {

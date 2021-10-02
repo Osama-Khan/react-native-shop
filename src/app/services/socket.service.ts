@@ -30,13 +30,14 @@ class SocketService extends ApiService {
 
   private doPostLogin = () => {
     this.socket.emit('login', this.currentUser!.id);
-    this.socket.on('receiveMessage', ({message, sender, time}) => {
+    this.socket.on('receiveMessage', ({message, sender, time, threadId}) => {
       store.dispatch({
         type: 'message/receive',
         payload: {
           sender,
           message,
           time,
+          threadId,
         },
       });
     });
