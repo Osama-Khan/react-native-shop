@@ -9,9 +9,9 @@ export default function MessageReducer(
 ) {
   switch (action.type) {
     case 'message/receive':
-      const state = new MessageState(action.payload);
-      state.newMessages.push(action.payload);
-      return state;
+      const newState = new MessageState(state.newMessages);
+      newState.newMessages.push(action.payload);
+      return newState;
   }
   return state;
 }

@@ -5,7 +5,7 @@ import UserState from './user-state';
 export type AppStateType = {
   cart: CartState;
   user: UserState;
-  messages: MessageState;
+  message: MessageState;
 };
 
 export {CartState, UserState, MessageState};
