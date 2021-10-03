@@ -16,6 +16,12 @@ class ThreadService extends ApiService {
     const ret = await axios.get(endpoint + critStr);
     return ret;
   }
+
+  /** Starts a thread with the given message */
+  async startThread(thread: {from: number; to: number}, message: string) {
+    const ret = await axios.put(this.endpoint, {thread, message});
+    return ret;
+  }
 }
 
 export default new ThreadService();
