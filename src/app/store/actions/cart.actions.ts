@@ -17,11 +17,11 @@ type RemoveProductActionType = ActionType<
 type SetQuantityActionType = ActionType<'cart/setQty', SetQuantityPayloadType>;
 
 export type CartActionType =
+  | SetActionType
   | AddProductActionType
   | ClearCartActionType
   | RemoveProductActionType
   | SetQuantityActionType;
-
 const cartActions = {
   setCart: (payload: SetPayloadType): SetActionType => {
     return {
