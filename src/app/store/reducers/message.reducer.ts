@@ -12,6 +12,12 @@ export default function MessageReducer(
       const newState = new MessageState(state.newMessages);
       newState.newMessages.push(action.payload);
       return newState;
+    case 'message/seen':
+      const ids: number[] = action.payload;
+      const seenRemoved = new MessageState(
+        state.newMessages.filter(m => !ids.includes(m.id)),
+      );
+      return seenRemoved;
   }
   return state;
 }
