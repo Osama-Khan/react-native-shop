@@ -1,11 +1,12 @@
 import {MessageState} from '../state';
 import {ActionType} from '../actions/action.type';
+import {MessageActionType} from '../actions/message.actions';
 
 const initialState = new MessageState();
 
 export default function MessageReducer(
   state = initialState,
-  action: ActionType<string, any>,
+  action: MessageActionType | ActionType<'', undefined>,
 ) {
   switch (action.type) {
     case 'message/receive':
