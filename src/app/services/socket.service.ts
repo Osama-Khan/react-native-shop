@@ -1,3 +1,4 @@
+import messageActions from '../store/actions/message.actions';
 import {io} from 'socket.io-client';
 import store from '../store';
 import {UserState} from '../store/state';
@@ -30,16 +31,8 @@ class SocketService extends ApiService {
 
   private doPostLogin = () => {
     this.socket.emit('login', this.currentUser!.id);
-    this.socket.on('receiveMessage', ({message, sender, time, threadId}) => {
-      store.dispatch({
-        type: 'message/receive',
-        payload: {
-          sender,
-          message,
-          time,
-          threadId,
-        },
-      });
+    this.socket.on('receiveMessage', dto => {
+      store.dispatch(messageActions.receiveMessage(dto));
     });
   };
 }
