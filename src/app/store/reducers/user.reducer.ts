@@ -1,11 +1,12 @@
 import {UserState} from '../state';
 import {ActionType} from '../actions/action.type';
+import {UserActionType} from '../actions/user.actions';
 
 const initialState = new UserState();
 
 export default function UserReducer(
   state = initialState,
-  action: ActionType<string, any>,
+  action: UserActionType | ActionType<'', undefined>,
 ) {
   switch (action.type) {
     case 'user/set':
