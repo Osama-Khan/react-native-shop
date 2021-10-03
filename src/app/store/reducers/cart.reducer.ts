@@ -1,11 +1,12 @@
 import {CartState} from '../state';
 import {ActionType} from '../actions/action.type';
+import {CartActionType} from '../actions/cart.actions';
 
 const initialState = new CartState();
 
 export default function CartReducer(
   state = initialState,
-  action: ActionType<string, any>,
+  action: CartActionType | ActionType<'', undefined>,
 ) {
   let cart;
   switch (action.type) {
