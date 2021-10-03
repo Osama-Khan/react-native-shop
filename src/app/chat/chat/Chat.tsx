@@ -1,14 +1,13 @@
 import {NavigationProp, RouteProp} from '@react-navigation/core';
 import React from 'react';
-import {Image, TextInput, View} from 'react-native';
-import {Divider, IconButton, Surface} from 'react-native-paper';
+import {Image, View} from 'react-native';
+import {Divider} from 'react-native-paper';
 import {connect} from 'react-redux';
 import themeService from '../../services/theme.service';
 import {AppStateType, UserState} from '@app/store/state';
 import s from '../../../styles/styles';
-import {MessageList} from './MessageList';
+import MessageList from './MessageList';
 import messageService from '../../services/message.service';
-import {UserType} from '@app/models/types/user.types';
 import {MessageInput} from './MessageInput';
 
 type P = {
