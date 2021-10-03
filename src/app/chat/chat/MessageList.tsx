@@ -37,13 +37,14 @@ class MessageList extends React.Component<P, S> {
 
   componentDidMount() {
     messageService.fetchMessages(this.criteria).then(res => {
+      if (this.props.newMessages.length > 0) {
+        this.seenMessages();
+      }
       this.setState({...this.state, messages: res.data.data});
     });
   }
 
   render() {
-    if (this.props.newMessages.length > 0) this.seenMessages();
-
     const messages = this.state.messages;
     return messages ? (
       messages.length > 0 ? (
