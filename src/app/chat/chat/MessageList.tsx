@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {FlatList, StyleSheet} from 'react-native';
 import {ActivityIndicator, Caption, Text, Title} from 'react-native-paper';
-import {useSelector} from 'react-redux';
+import {connect} from 'react-redux';
 import Criteria from '../../models/criteria';
 import {MessageType} from '@app/models/types/message.type';
 import messageService from '../../services/message.service';
@@ -10,82 +10,116 @@ import {View} from 'react-native-animatable';
 import themeService from '../../services/theme.service';
 import s from '../../../styles/styles';
 import {getTime} from '../helpers';
+import {NewMessageType} from '@app/store/state/message-state';
+import messageActions from '../../store/actions/message.actions';
 
-type P = {threadId: number};
+type P = {
+  threadId: number;
+  readonly userId?: number;
+  readonly newMessages: NewMessageType[];
+  readonly dispatch: (action: any) => void;
+};
+type S = {messages?: Partial<MessageType[]>};
 
-export function MessageList({threadId}: P) {
-  const [messages, setMessages] = useState<MessageType[]>();
+class MessageList extends React.Component<P, S> {
+  state: S = {};
+  criteria = this.initCriteria();
 
-  const newMessages = useSelector<AppStateType, Partial<MessageType>[]>(state =>
-    state.message.newMessages
-      .filter(m => m.threadId === threadId)
-      .map((m, i) => {
-        const newMsg = m as any;
-        newMsg.id = 'new-' + i;
-        newMsg.createdAt = newMsg.time;
-        return newMsg;
-      }),
-  );
-  useEffect(() => {
+  initCriteria() {
     const criteria = new Criteria<MessageType>();
     criteria.setLimit(20);
-    criteria.addFilter('thread', threadId);
+    criteria.addFilter('thread', this.props.threadId);
     criteria.addRelation('sender');
     criteria.setOrderBy('createdAt');
     criteria.setOrderDir('DESC');
-    messageService.fetchMessages(criteria).then(res => {
-      setMessages(res.data.data);
+    return criteria;
+  }
+
+  componentDidMount() {
+    messageService.fetchMessages(this.criteria).then(res => {
+      this.setState({...this.state, messages: res.data.data});
     });
-  }, []);
+  }
 
-  return messages ? (
-    messages.length > 0 ? (
-      <FlatList
-        inverted={true}
-        data={[...newMessages.reverse(), ...messages]}
-        renderItem={m => (
-          <Message key={m.item.id} message={m.item} />
-        )}></FlatList>
+  render() {
+    if (this.props.newMessages.length > 0) this.seenMessages();
+
+    const messages = this.state.messages;
+    return messages ? (
+      messages.length > 0 ? (
+        <FlatList
+          inverted={true}
+          data={[...this.props.newMessages.reverse(), ...messages]}
+          renderItem={m => <this.Message key={m.item!.id} message={m.item} />}
+          onScroll={e => {
+            if (
+              e.nativeEvent.contentOffset.y === 0 &&
+              this.props.newMessages.length > 0
+            ) {
+              this.seenMessages();
+            }
+          }}
+        />
+      ) : (
+        <this.NoMessages />
+      )
     ) : (
-      <NoMessages />
-    )
-  ) : (
-    <LoadingMessages />
-  );
-}
+      <this.LoadingMessages />
+    );
+  }
 
-const Message = ({message}: any) => {
-  const userId = useSelector((state: AppStateType) => state.user.id);
-  const senderId = message.sender.id || message.sender;
-  const isOwn = senderId === userId;
-  return (
-    <View
-      style={[styles.message, isOwn ? styles.ownMessage : styles.otherMessage]}>
+  Message = ({message}: any) => {
+    const userId = this.props.userId;
+    const senderId = message.sender.id;
+    const isOwn = senderId === userId;
+    return (
       <View
         style={[
-          styles.messageSurface,
-          isOwn ? styles.ownMessageSurface : styles.otherMessageSurface,
+          styles.message,
+          isOwn ? styles.ownMessage : styles.otherMessage,
         ]}>
-        <Text style={{marginVertical: 8}}>{message.message}</Text>
-        <Caption style={{marginLeft: 'auto', marginTop: 'auto'}}>
-          {getTime(new Date(message.createdAt))}
-        </Caption>
+        <View
+          style={[
+            styles.messageSurface,
+            isOwn ? styles.ownMessageSurface : styles.otherMessageSurface,
+          ]}>
+          <Text style={{marginVertical: 8}}>{message.message}</Text>
+          <Caption style={{marginLeft: 'auto', marginTop: 'auto'}}>
+            {getTime(new Date(message.createdAt))}
+          </Caption>
+        </View>
       </View>
+    );
+  };
+
+  NoMessages = () => (
+    <View style={[s.flex, s.center]}>
+      <Title>Start a Conversation!</Title>
+      <Caption>Send a message and start a conversation.</Caption>
     </View>
   );
+  LoadingMessages = () => (
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <ActivityIndicator size="large" />
+    </View>
+  );
+
+  seenMessages = () =>
+    this.props.dispatch(
+      messageActions.seenMessage(this.props.newMessages.map(m => m.id)),
+    );
+}
+
+const mapStateToProps = (state: AppStateType, props: Partial<P>) => {
+  const userId = state.user.id;
+  const threadId = props.threadId;
+  const newMessages = state.message.newMessages.filter(
+    m => m.thread.id === threadId,
+  );
+  return {userId, newMessages};
 };
 
-const NoMessages = () => (
-  <View style={[s.flex, s.center]}>
-    <Title>Start a Conversation!</Title>
-    <Caption>Send a message and start a conversation.</Caption>
-  </View>
-);
-const LoadingMessages = () => (
-  <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-    <ActivityIndicator size="large" />
-  </View>
-);
+export default connect(mapStateToProps)(MessageList);
 
 const styles = StyleSheet.create({
   message: {
