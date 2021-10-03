@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
-import {TextInput, View} from 'react-native';
-import {IconButton, Surface} from 'react-native-paper';
+import {TouchableOpacity, TextInput, View} from 'react-native';
+import {Surface} from 'react-native-paper';
 import s from '../../../styles/styles';
 import themeService from '../../services/theme.service';
+import Icon from '../../components/icon';
 
 type P = {onSend: (message: string) => void};
 export function MessageInput({onSend}: P) {
@@ -17,21 +18,24 @@ export function MessageInput({onSend}: P) {
           onChangeText={text => setMessage(text)}
         />
       </Surface>
-      <View
+      <TouchableOpacity
         style={[
           s.roundedFull,
           s.m4,
           s.center,
-          {backgroundColor: themeService.currentTheme.colors.primary},
-        ]}>
-        <IconButton
-          icon="send"
-          onPress={() => {
-            onSend(message);
-            setMessage('');
-          }}
-        />
-      </View>
+          {
+            backgroundColor: themeService.currentTheme.colors.primary,
+            opacity: message ? 1 : 0.2,
+            width: 48,
+          },
+        ]}
+        onPress={() => {
+          onSend(message);
+          setMessage('');
+        }}
+        disabled={!message}>
+        <Icon name="send" size={24} />
+      </TouchableOpacity>
     </View>
   );
 }
