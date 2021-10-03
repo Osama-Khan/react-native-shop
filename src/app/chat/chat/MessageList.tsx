@@ -31,8 +31,10 @@ export function MessageList({threadId}: P) {
     criteria.setLimit(20);
     criteria.addFilter('thread', threadId);
     criteria.addRelation('sender');
+    criteria.setOrderBy('createdAt');
+    criteria.setOrderDir('DESC');
     messageService.fetchMessages(criteria).then(res => {
-      setMessages(res.data.data.reverse());
+      setMessages(res.data.data);
     });
   }, []);
 
