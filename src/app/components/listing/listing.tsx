@@ -5,7 +5,7 @@ import {
   ImageStyle,
   NativeScrollEvent,
   RefreshControl,
-  ScrollView,
+  FlatList,
   ScrollViewProps,
   TextStyle,
   View,
@@ -101,32 +101,39 @@ export default class ListingComponent<ItemType> extends React.PureComponent<
     const paddingBottom = this.props.padding?.bottom;
 
     return this.state.items!.length > 0 ? (
-      <ScrollView
-        {...this.props.scrollViewProps}
-        onScroll={event => {
-          if (this.isScrollAtEnd(event.nativeEvent)) {
-            if (!this.state.loading && this.page < this.maxPage) {
-              this.page++;
-              this.fetch(true);
+      <AnimatedView animation={this.props.animation}>
+        <FlatList
+          {...this.props.scrollViewProps}
+          data={this.state.items}
+          renderItem={info => this.props.container(info.item)}
+          onScroll={event => {
+            if (this.isScrollAtEnd(event.nativeEvent)) {
+              if (!this.state.loading && this.page < this.maxPage) {
+                this.page++;
+                this.fetch(true);
+              }
             }
+            if (this.props.scrollViewProps?.onScroll) {
+              this.props.scrollViewProps.onScroll(event);
+            }
+          }}
+          refreshControl={
+            <RefreshControl
+              onRefresh={() => this.fetch(false, true)}
+              refreshing={this.state.refreshing}
+            />
           }
-          if (this.props.scrollViewProps?.onScroll) {
-            this.props.scrollViewProps.onScroll(event);
-          }
-        }}
-        refreshControl={
-          <RefreshControl
-            onRefresh={() => this.fetch(false, true)}
-            refreshing={this.state.refreshing}
-          />
-        }>
-        {paddingTop ? <View style={{paddingTop}} /> : <></>}
-        <AnimatedView animation={this.props.animation}>
-          {this.state.items!.map(this.props.container)}
-        </AnimatedView>
-        {this.state.loading ? <ActivityIndicator /> : <></>}
-        {paddingBottom ? <View style={{paddingBottom}} /> : <></>}
-      </ScrollView>
+          ListHeaderComponent={() => (
+            <>{paddingTop ? <View style={{paddingTop}} /> : <></>}</>
+          )}
+          ListFooterComponent={() => (
+            <>
+              {this.state.loading ? <ActivityIndicator /> : <></>}
+              {paddingBottom ? <View style={{paddingBottom}} /> : <></>}
+            </>
+          )}
+        />
+      </AnimatedView>
     ) : this.props.noResultsView ? (
       <this.props.noResultsView />
     ) : (
