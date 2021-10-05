@@ -39,6 +39,8 @@ export function ChatThreads(props: P) {
     criteria.setLimit(15);
     criteria.addRelation('to');
     criteria.addRelation('from');
+    criteria.setOrderBy('createdAt');
+    criteria.setOrderDir('DESC');
   }
 
   const gotoChat = (thread: ThreadType) => {
