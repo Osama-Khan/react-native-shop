@@ -42,7 +42,7 @@ class Chat extends React.Component<P, S> {
             }}></View>
           <Image
             source={{uri: otherUser.profileImage, height: 32, width: 32}}
-            style={{marginLeft: 48, marginVertical: 12}}
+            style={{marginLeft: 48, marginVertical: 12, borderRadius: 48}}
           />
         </>
       ),
