@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React from 'react';
 import {Image, View} from 'react-native';
 import {Badge, Caption, List} from 'react-native-paper';
@@ -6,7 +7,6 @@ import s from '../../styles/styles';
 import {ThreadType} from '../models/types/thread.type';
 import themeService from '../services/theme.service';
 import {AppStateType} from '../store/state';
-import {getTime} from './helpers';
 
 type P = {onPress: () => void; thread: ThreadType};
 
@@ -43,7 +43,7 @@ export function ChatListItem(props: P) {
       )}
       right={() => (
         <View>
-          <Caption>{getTime(message.createdAt)}</Caption>
+          <Caption>{moment(message.createdAt).fromNow()}</Caption>
           {isNew ? <Badge>NEW</Badge> : <></>}
         </View>
       )}
