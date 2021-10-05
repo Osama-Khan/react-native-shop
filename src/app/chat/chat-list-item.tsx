@@ -24,6 +24,10 @@ export function ChatListItem(props: P) {
       description={message.message}
       descriptionStyle={{fontWeight: isNew ? 'bold' : 'normal'}}
       descriptionNumberOfLines={1}
+      style={{
+        borderBottomWidth: 1,
+        borderBottomColor: themeService.currentTheme.colors.border,
+      }}
       left={() => (
         <Image
           style={[
