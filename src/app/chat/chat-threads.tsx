@@ -28,6 +28,9 @@ class ChatThreads extends React.Component<P, S> {
     this.criteria.addRelation('from');
     this.criteria.setOrderBy('createdAt');
     this.criteria.setOrderDir('DESC');
+    props.navigation.addListener('focus', () =>
+      this.setState({...this.state, update: this.state.update + 1}),
+    );
   }
 
   render() {
@@ -72,6 +75,7 @@ class ChatThreads extends React.Component<P, S> {
               }}
             />
           )}
+          updateCount={this.state.update}
         />
         <FAB
           style={[s.bottomRight, s.m8]}
