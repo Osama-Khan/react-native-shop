@@ -1,8 +1,7 @@
 import {NavigationProp} from '@react-navigation/core';
 import s from '../../styles/styles';
-import React, {useState} from 'react';
+import React from 'react';
 import {FAB} from 'react-native-paper';
-import {useSelector} from 'react-redux';
 import {accountRoute, chatDetailRoute} from '../app.routes';
 import IconMessageView from '../components/icon-message-view/icon-message-view';
 import ListingComponent from '../components/listing/listing';
@@ -12,75 +11,87 @@ import threadService from '../services/thread.service';
 import {AppStateType} from '../store/state';
 import {ChatListItem} from './chat-list-item';
 import {NewThreadModal} from './new-thread-modal';
+import {connect} from 'react-redux';
+import {UserState} from '@app/store/state';
 
-type P = {navigation: NavigationProp<any>};
+type P = {navigation: NavigationProp<any>; readonly user: UserState};
+type S = {modalShown: boolean; update: number};
 
-let criteria: Criteria<ThreadType>;
+class ChatThreads extends React.Component<P, S> {
+  criteria = new Criteria<ThreadType>();
+  state: S = {modalShown: false, update: 0};
 
-export function ChatThreads(props: P) {
-  const user = useSelector((state: AppStateType) => state.user);
-  const [showModal, setShowModal] = useState(false);
-  if (!user.id)
-    return (
-      <IconMessageView
-        title="Login Required"
-        caption="You need to login before you can start chatting!"
-        icon="account-question"
-        btnProps={{
-          action: () => props.navigation.navigate(accountRoute.name),
-          icon: 'location-enter',
-          text: 'Login',
-        }}
-      />
-    );
-
-  if (!criteria) {
-    criteria = new Criteria();
-    criteria.setLimit(15);
-    criteria.addRelation('to');
-    criteria.addRelation('from');
-    criteria.setOrderBy('createdAt');
-    criteria.setOrderDir('DESC');
+  constructor(props: P) {
+    super(props);
+    this.criteria.setLimit(15);
+    this.criteria.addRelation('to');
+    this.criteria.addRelation('from');
+    this.criteria.setOrderBy('createdAt');
+    this.criteria.setOrderDir('DESC');
   }
 
-  const gotoChat = (thread: ThreadType) => {
-    props.navigation.navigate(chatDetailRoute.name, {thread});
-  };
+  render() {
+    const {navigation, user} = this.props;
+    if (!user.id)
+      return (
+        <IconMessageView
+          title="Login Required"
+          caption="You need to login before you can start chatting!"
+          icon="account-question"
+          btnProps={{
+            action: () => navigation.navigate(accountRoute.name),
+            icon: 'location-enter',
+            text: 'Login',
+          }}
+        />
+      );
 
-  return (
-    <>
-      <ListingComponent
-        container={t => (
-          <ChatListItem key={t.id} thread={t} onPress={() => gotoChat(t)} />
-        )}
-        criteria={criteria}
-        fetchMethod={c => threadService.fetchThreadsOf(user.id!, c)}
-        noResultsView={() => (
-          <IconMessageView
-            title="No Threads"
-            caption="You don't have any threads active"
-            icon="chat-processing"
-            btnProps={{
-              icon: 'message-plus',
-              text: 'Start a Chat',
-              action: () => {
-                setShowModal(true);
-              },
-            }}
-          />
-        )}
-      />
-      <FAB
-        style={[s.bottomRight, s.m8]}
-        icon="chat-plus"
-        onPress={() => setShowModal(true)}
-      />
-      <NewThreadModal
-        visible={showModal}
-        onDismiss={() => setShowModal(false)}
-        userId={user.id}
-        onSend={thread => gotoChat(thread)}
-      />
-    </>
-  );
+    const gotoChat = (thread: ThreadType) => {
+      navigation.navigate(chatDetailRoute.name, {thread});
+    };
+
+    return (
+      <>
+        <ListingComponent
+          container={t => (
+            <ChatListItem key={t.id} thread={t} onPress={() => gotoChat(t)} />
+          )}
+          criteria={this.criteria}
+          fetchMethod={c => threadService.fetchThreadsOf(user.id!, c)}
+          noResultsView={() => (
+            <IconMessageView
+              title="No Threads"
+              caption="You don't have any threads active"
+              icon="chat-processing"
+              btnProps={{
+                icon: 'message-plus',
+                text: 'Start a Chat',
+                action: () => {
+                  this.setState({...this.state, modalShown: true});
+                },
+              }}
+            />
+          )}
+        />
+        <FAB
+          style={[s.bottomRight, s.m8]}
+          icon="chat-plus"
+          onPress={() => this.setState({...this.state, modalShown: true})}
+        />
+        <NewThreadModal
+          visible={this.state.modalShown}
+          onDismiss={() => this.setState({...this.state, modalShown: false})}
+          userId={user.id}
+          onSend={thread => gotoChat(thread)}
+        />
+      </>
+    );
+  }
 }
+
+const mapStateToProps = (state: AppStateType) => {
+  return {user: state.user};
+};
+const Connected = connect(mapStateToProps)(ChatThreads);
+
+export {Connected as ChatThreads};
