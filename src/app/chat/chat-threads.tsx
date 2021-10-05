@@ -26,6 +26,8 @@ class ChatThreads extends React.Component<P, S> {
     this.criteria.setLimit(15);
     this.criteria.addRelation('to');
     this.criteria.addRelation('from');
+    this.criteria.setOrderBy('updatedAt');
+    this.criteria.setOrderDir('DESC');
     props.navigation.addListener('focus', () =>
       this.setState({...this.state, update: this.state.update + 1}),
     );
