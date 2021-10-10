@@ -12,6 +12,7 @@ import s from '../../../styles/styles';
 import {getTime} from '../helpers';
 import {NewMessageType} from '@app/store/state/message-state';
 import messageActions from '../../store/actions/message.actions';
+import colors from '../../../styles/colors';
 
 type P = {
   threadId: number;
@@ -84,8 +85,15 @@ class MessageList extends React.Component<P, S> {
             styles.messageSurface,
             isOwn ? styles.ownMessageSurface : styles.otherMessageSurface,
           ]}>
-          <Text style={{marginVertical: 8}}>{message.message}</Text>
-          <Caption style={{marginLeft: 'auto', marginTop: 'auto'}}>
+          <Text
+            style={[styles.messageText, isOwn ? styles.ownMessageText : {}]}>
+            {message.message}
+          </Text>
+          <Caption
+            style={[
+              styles.messageCaption,
+              isOwn ? styles.ownMessageCaption : {},
+            ]}>
             {getTime(new Date(message.createdAt))}
           </Caption>
         </View>
@@ -131,6 +139,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     minWidth: '30%',
   },
+  messageText: {
+    marginVertical: 8,
+  },
+  messageCaption: {
+    marginLeft: 'auto',
+    marginTop: 'auto',
+  },
   ownMessage: {
     justifyContent: 'flex-end',
     paddingLeft: '20%',
@@ -139,6 +154,13 @@ const styles = StyleSheet.create({
     backgroundColor: themeService.currentTheme.colors.primary,
     ...s.rounded,
     margin: 4,
+  },
+  ownMessageText: {
+    color: colors.light,
+  },
+  ownMessageCaption: {
+    color: colors.light,
+    opacity: 0.8,
   },
   otherMessage: {
     justifyContent: 'flex-start',

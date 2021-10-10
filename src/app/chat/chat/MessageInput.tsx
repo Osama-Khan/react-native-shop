@@ -4,6 +4,7 @@ import {Surface} from 'react-native-paper';
 import s from '../../../styles/styles';
 import themeService from '../../services/theme.service';
 import Icon from '../../components/icon';
+import colors from '../../../styles/colors';
 
 type P = {onSend: (message: string) => void};
 export function MessageInput({onSend}: P) {
@@ -25,7 +26,7 @@ export function MessageInput({onSend}: P) {
           s.center,
           {
             backgroundColor: themeService.currentTheme.colors.primary,
-            opacity: message ? 1 : 0.2,
+            opacity: message ? 1 : 0.5,
             width: 48,
           },
         ]}
@@ -34,7 +35,7 @@ export function MessageInput({onSend}: P) {
           setMessage('');
         }}
         disabled={!message}>
-        <Icon name="send" size={24} />
+        <Icon name="send" size={24} color={colors.light} />
       </TouchableOpacity>
     </View>
   );

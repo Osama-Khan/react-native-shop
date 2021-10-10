@@ -1,14 +1,14 @@
 import {NavigationProp, RouteProp} from '@react-navigation/core';
 import React from 'react';
 import {Image, View} from 'react-native';
-import {Divider} from 'react-native-paper';
+import {Divider, Title} from 'react-native-paper';
 import {connect} from 'react-redux';
-import themeService from '../../services/theme.service';
 import {AppStateType, UserState} from '@app/store/state';
 import s from '../../../styles/styles';
 import MessageList from './MessageList';
 import messageService from '../../services/message.service';
 import {MessageInput} from './MessageInput';
+import colors from '../../../styles/colors';
 
 type P = {
   navigation: NavigationProp<any>;
@@ -29,22 +29,22 @@ class Chat extends React.Component<P, S> {
     const thread = route.params!.thread;
     const otherUser = thread.from!.id === user.id ? thread.to! : thread.from!;
     navigation.setOptions({
-      headerTitle: otherUser.firstName,
       headerTitleStyle: s.ml20,
-      headerBackground: () => (
-        <>
-          <View
-            style={{
-              width: '100%',
-              height: '100%',
-              backgroundColor: themeService.currentTheme.colors.card,
-              position: 'absolute',
-            }}></View>
+      headerTitle: () => (
+        <View style={s.row}>
           <Image
             source={{uri: otherUser.profileImage, height: 32, width: 32}}
-            style={{marginLeft: 48, marginVertical: 12, borderRadius: 48}}
+            style={{position: 'relative', right: 24}}
           />
-        </>
+          <Title
+            style={{
+              position: 'relative',
+              right: 16,
+              color: colors.light,
+            }}>
+            {otherUser.firstName}
+          </Title>
+        </View>
       ),
     });
   }
