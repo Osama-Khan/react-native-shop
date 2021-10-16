@@ -1,7 +1,7 @@
 import {NavigationProp} from '@react-navigation/core';
 import s from '../../styles/styles';
 import React from 'react';
-import {FAB} from 'react-native-paper';
+import {ActivityIndicator, FAB} from 'react-native-paper';
 import {accountRoute, chatDetailRoute} from '../app.routes';
 import IconMessageView from '../components/icon-message-view/icon-message-view';
 import ListingComponent from '../components/listing/listing';
@@ -13,28 +13,42 @@ import {ChatListItem} from './chat-list-item';
 import {NewThreadModal} from './new-thread-modal';
 import {connect} from 'react-redux';
 import {UserState} from '@app/store/state';
+import {NewMessageType} from '@app/store/state/message-state';
+import {FlatList} from 'react-native-gesture-handler';
+import {RefreshControl, ToastAndroid} from 'react-native';
 
-type P = {navigation: NavigationProp<any>; readonly user: UserState};
-type S = {modalShown: boolean; update: number};
+type P = {
+  navigation: NavigationProp<any>;
+  readonly user: UserState;
+  readonly messages: NewMessageType[];
+};
+type S = {modalShown: boolean; data?: ThreadType[]; loading: boolean};
 
 class ChatThreads extends React.Component<P, S> {
   criteria = new Criteria<ThreadType>();
-  state: S = {modalShown: false, update: 0};
+  state: S = {modalShown: false, data: undefined, loading: false};
 
   constructor(props: P) {
     super(props);
-    this.criteria.setLimit(15);
+    this.criteria.setLimit(99999);
     this.criteria.addRelation('to');
     this.criteria.addRelation('from');
     this.criteria.setOrderBy('updatedAt');
     this.criteria.setOrderDir('DESC');
-    props.navigation.addListener('focus', () =>
-      this.setState({...this.state, update: this.state.update + 1}),
-    );
+  }
+
+  componentDidMount() {
+    const {navigation, user} = this.props;
+    navigation.addListener('focus', () => {
+      if (!user.id) return;
+      if (!this.state.data) {
+        this.loadData();
+      }
+    });
   }
 
   render() {
-    const {navigation, user} = this.props;
+    const {navigation, user, messages} = this.props;
     if (!user.id)
       return (
         <IconMessageView
@@ -55,27 +69,45 @@ class ChatThreads extends React.Component<P, S> {
 
     return (
       <>
-        <ListingComponent
-          container={t => (
-            <ChatListItem key={t.id} thread={t} onPress={() => gotoChat(t)} />
-          )}
-          criteria={this.criteria}
-          fetchMethod={c => threadService.fetchThreadsOf(user.id!, c)}
-          noResultsView={() => (
-            <IconMessageView
-              title="No Threads"
-              caption="You don't have any threads active"
-              icon="chat-processing"
-              btnProps={{
-                icon: 'message-plus',
-                text: 'Start a Chat',
-                action: () => {
-                  this.setState({...this.state, modalShown: true});
-                },
-              }}
+        <FlatList
+          data={this.state.data}
+          renderItem={({item: t}) => (
+            <ChatListItem
+              key={t.id}
+              newestMessage={
+                messages.find(
+                  m => t.from!.id === m.sender.id || t.to!.id === m.sender.id,
+                )?.message
+              }
+              thread={t}
+              onPress={() => gotoChat(t)}
             />
           )}
-          updateCount={this.state.update}
+          ListEmptyComponent={() =>
+            this.state.loading ? (
+              <ActivityIndicator style={[s.flex, s.center]} />
+            ) : (
+              <IconMessageView
+                title="No Threads"
+                caption="You don't have any threads active"
+                icon="chat-processing"
+                btnProps={{
+                  icon: 'message-plus',
+                  text: 'Start a Chat',
+                  action: () => {
+                    this.setState({...this.state, modalShown: true});
+                  },
+                }}
+              />
+            )
+          }
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.loading && !!this.state.data}
+              onRefresh={this.loadData}
+            />
+          }
+          contentContainerStyle={s.flex}
         />
         <FAB
           style={[s.bottomRight, s.m8]}
@@ -91,10 +123,27 @@ class ChatThreads extends React.Component<P, S> {
       </>
     );
   }
+
+  loadData = () => {
+    this.setState({...this.state, loading: true});
+    threadService
+      .fetchThreadsOf(this.props.user.id!, this.criteria)
+      .then(res => {
+        this.setState({...this.state, data: res.data.data, loading: false});
+      })
+      .catch(e => {
+        ToastAndroid.show('Could not load your chats!', ToastAndroid.SHORT);
+        this.setState({...this.state, loading: false});
+      });
+  };
 }
 
 const mapStateToProps = (state: AppStateType) => {
-  return {user: state.user};
+  const user = state.user;
+  const messages = state.message.newMessages.filter(
+    m => m.sender.id !== user.id,
+  );
+  return {user, messages};
 };
 const Connected = connect(mapStateToProps)(ChatThreads);
 

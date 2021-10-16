@@ -8,20 +8,21 @@ import {ThreadType} from '../models/types/thread.type';
 import themeService from '../services/theme.service';
 import {AppStateType} from '../store/state';
 
-type P = {onPress: () => void; thread: ThreadType};
+type P = {onPress: () => void; thread: ThreadType; newestMessage?: string};
 
 export function ChatListItem(props: P) {
-  const {thread, ...p} = props;
+  const {thread, newestMessage, ...p} = props;
   const userId = useSelector((state: AppStateType) => state.user.id);
   const from = userId === thread.from!.id ? thread.to! : thread.from!;
   const message = thread.latestMessage!;
-  const isNew = message.sender!.id !== userId && !message.seenAt;
+  const isNew =
+    (message.sender!.id !== userId && !message.seenAt) || !!newestMessage;
 
   return (
     <List.Item
       title={from.firstName + ' ' + from.lastName}
       titleStyle={{fontWeight: isNew ? 'bold' : 'normal'}}
-      description={message.message}
+      description={newestMessage || message.message}
       descriptionStyle={{fontWeight: isNew ? 'bold' : 'normal'}}
       descriptionNumberOfLines={1}
       style={{
