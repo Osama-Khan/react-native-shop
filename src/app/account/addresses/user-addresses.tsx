@@ -13,6 +13,7 @@ import uiService from '../../services/ui.service';
 import settingService from '../../services/setting.service';
 import {connect} from 'react-redux';
 import {AppStateType} from '../../store/state';
+import {View} from 'react-native-animatable';
 
 type P = {readonly userId?: number};
 type S = {
@@ -51,7 +52,9 @@ class UserAddresses extends React.Component<P, S> {
           )}
           fetchMethod={c => addressService.getAddresses(this.props.userId!, c)}
           criteria={this.criteria}
-          padding={{bottom: 64}}
+          listProps={{
+            ListFooterComponent: () => <View style={{paddingTop: 64}} />,
+          }}
           noResultsView={() => (
             <IconMessageView
               icon="home-group"

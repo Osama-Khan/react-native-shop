@@ -139,7 +139,9 @@ export default class Search extends React.Component<PropType, StateType> {
               }}
             />
           )}
-          padding={{bottom: 64}}
+          listProps={{
+            ListFooterComponent: <View style={{paddingTop: 64}} />,
+          }}
         />
         <Icon name="shape" size={24} style={[styles.icon, styles.left]} />
         <Icon name="filter" size={24} style={[styles.icon, styles.right]} />

@@ -6,10 +6,10 @@ import {
   NativeScrollEvent,
   RefreshControl,
   FlatList,
-  ScrollViewProps,
   TextStyle,
   View,
   ViewStyle,
+  FlatListProps,
 } from 'react-native';
 import {
   createAnimatableComponent,
@@ -18,7 +18,7 @@ import {
 import colors from '../../../styles/colors';
 import Criteria from '../../models/criteria';
 
-type P<I> = {
+export type ListingProps<I> = {
   /** Criteria used to filter results */
   criteria?: Criteria<I>;
 
@@ -33,24 +33,21 @@ type P<I> = {
   /** View shown when no results are found */
   noResultsView?: () => React.ReactElement;
 
-  /** Gaps to show at the top and bottom of the scrollview */
-  padding?: {top?: number; bottom?: number};
-
   animation?: string | CustomAnimation<TextStyle & ViewStyle & ImageStyle>;
 
   /** Can be incremented to force a data update. Should be linked with
    * a state property to allow multiple updates */
   updateCount?: number;
 
-  /** Props for the scroll view container */
-  scrollViewProps?: ScrollViewProps;
+  /** Props for the flat list component */
+  listProps?: Partial<FlatListProps<I>>;
 };
 
 type S<I> = {items?: I[]; loading: boolean; refreshing: boolean};
 
 /** A generic component that can be used to fetch and list items */
 export default class ListingComponent<ItemType> extends React.PureComponent<
-  P<ItemType>,
+  ListingProps<ItemType>,
   S<ItemType>
 > {
   private page = 0;
@@ -97,13 +94,10 @@ export default class ListingComponent<ItemType> extends React.PureComponent<
       );
     }
 
-    const paddingTop = this.props.padding?.top;
-    const paddingBottom = this.props.padding?.bottom;
-
     return this.state.items!.length > 0 ? (
       <AnimatedView animation={this.props.animation}>
         <FlatList
-          {...this.props.scrollViewProps}
+          {...this.props.listProps}
           data={this.state.items}
           renderItem={info => this.props.container(info.item)}
           onScroll={event => {
@@ -113,8 +107,8 @@ export default class ListingComponent<ItemType> extends React.PureComponent<
                 this.fetch(true);
               }
             }
-            if (this.props.scrollViewProps?.onScroll) {
-              this.props.scrollViewProps.onScroll(event);
+            if (this.props.listProps?.onScroll) {
+              this.props.listProps.onScroll(event);
             }
           }}
           refreshControl={
@@ -123,15 +117,6 @@ export default class ListingComponent<ItemType> extends React.PureComponent<
               refreshing={this.state.refreshing}
             />
           }
-          ListHeaderComponent={() => (
-            <>{paddingTop ? <View style={{paddingTop}} /> : <></>}</>
-          )}
-          ListFooterComponent={() => (
-            <>
-              {this.state.loading ? <ActivityIndicator /> : <></>}
-              {paddingBottom ? <View style={{paddingBottom}} /> : <></>}
-            </>
-          )}
         />
       </AnimatedView>
     ) : this.props.noResultsView ? (
