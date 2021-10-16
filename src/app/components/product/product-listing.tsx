@@ -1,24 +1,16 @@
 import React from 'react';
 import productService from '../../services/product.service';
 import ProductListingCard from './product-listing-card';
-import ListingComponent from '../listing/listing';
+import ListingComponent, {ListingProps} from '../listing/listing';
 import {ProductType} from '../../models/types/product.types';
 import {NavigationProp} from '@react-navigation/core';
 import Criteria from '../../models/criteria';
-import {AxiosResponse} from 'axios';
 import IconMessageView from '../icon-message-view/icon-message-view';
 import {searchRoute} from '../../app.routes';
-import {ScrollViewProps} from 'react-native';
 
-type ResponseType = Promise<AxiosResponse<{data: ProductType[]; meta: any}>>;
-type P = {
-  criteria?: Criteria<ProductType>;
+type P = Partial<ListingProps<ProductType>> & {
   categoryName?: string;
   navigation: NavigationProp<any>;
-  fetchMethod?: (criteria?: Criteria<ProductType>) => ResponseType;
-  noResultsView?: () => React.ReactElement;
-  scrollViewProps?: ScrollViewProps;
-  padding?: {top?: number; bottom?: number};
 };
 type S = {
   updateCount: number;
