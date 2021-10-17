@@ -1,7 +1,7 @@
 import React from 'react';
-import {Image, StyleSheet, View} from 'react-native';
-import {Text, Card, Divider, Caption, IconButton} from 'react-native-paper';
-import appStyle from '../../../styles/styles';
+import {Image, View} from 'react-native';
+import {Text, Card, Divider, Caption, Button} from 'react-native-paper';
+import s from '../../../styles/styles';
 import Rating from './product-rating';
 import colors from '../../../styles/colors';
 import {ProductType} from '../../models/types/product.types';
@@ -28,7 +28,6 @@ class ProductListingCard extends React.Component<PropType> {
     return (
       <Card
         style={s.card}
-        elevation={4}
         onPress={() =>
           this.props.navigation.navigate(productDetailRoute.name, {
             id: product.id,
@@ -36,13 +35,12 @@ class ProductListingCard extends React.Component<PropType> {
         }
         {...this.props}>
         <View style={s.row}>
-          <View style={[s.img, s.imgBg]} />
           <Image
-            source={{uri: product.images![0].image}}
-            style={s.img}
+            source={{uri: product.images![0].image, width: 96}}
+            style={[s.rounded, s.m4]}
             resizeMode="contain"
           />
-          <View style={[s.p8, s.col9]}>
+          <View style={[s.p8, s.flex]}>
             <Text numberOfLines={2} style={s.textBold}>
               {product.title}
             </Text>
@@ -77,6 +75,7 @@ class ProductListingCard extends React.Component<PropType> {
   CartAction = () => {
     const product = this.props.product;
     const cp = this.props.cart.getProduct(product.id);
+    const inStock = product.stock > 0;
     return cp ? (
       <CartActions
         product={cp}
@@ -86,29 +85,19 @@ class ProductListingCard extends React.Component<PropType> {
         }}
       />
     ) : (
-      <IconButton
-        style={[s.col12, s.mAuto]}
-        color={product.stock === 0 ? colors.gray : colors.green}
+      <Button
+        style={[s.col12, s.m0]}
+        color={inStock ? colors.green : colors.gray}
         onPress={() => {
           this.props.dispatch(cartActions.addProduct({product}));
         }}
-        disabled={product.stock === 0}
-        icon={product.stock === 0 ? 'cart-off' : 'cart-plus'}
-      />
+        disabled={!inStock}
+        icon={inStock ? 'cart-plus' : 'cart-off'}>
+        {inStock ? 'Add to Cart' : 'Unavailable'}
+      </Button>
     );
   };
 }
-
-const s = StyleSheet.create({
-  ...appStyle,
-  imgBg: {
-    height: '100%',
-    position: 'absolute',
-    left: 0,
-    backgroundColor: '#fff',
-  },
-  img: {width: '25%', minHeight: 64},
-});
 
 const mapStateToProps = (state: AppStateType) => {
   return {cart: state.cart};
