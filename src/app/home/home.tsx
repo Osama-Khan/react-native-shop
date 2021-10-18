@@ -73,7 +73,11 @@ class Home extends React.Component<P> {
           </Surface>
           <Image
             source={require('../../assets/images/box.png')}
-            style={[s.bottomLeft, s.ml4, {width: 114, height: 120}]}
+            style={[
+              s.bottomLeft,
+              s.ml4,
+              {width: 96, height: 101, opacity: 0.7},
+            ]}
           />
           <Title style={s.textCenter}> Get in Touch</Title>
           <View style={[s.row, s.alignCenter]}>
